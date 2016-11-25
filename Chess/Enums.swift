@@ -84,7 +84,7 @@ enum Diagonal {
     case g8h7
     case h1a8
     
-    var spaces: [Space] {
+    var spaces: Set<Space> {
         switch self {
         case .a1h8: return [.a1,.b2,.c3,.d4,.e5,.f6,.g7,.h8]
         case .b1h7: return [.b1,.c2,.d3,.e4,.f5,.g6,.h7]
@@ -182,7 +182,7 @@ enum Space: Int {
     case h7
     case h8
     
-    var diagonals: [Diagonal] {
+    var diagonals: Set<Diagonal> {
         switch self {
         case .a1: return [.a1h8]
         case .a2: return [.g8a2, .b1a2]

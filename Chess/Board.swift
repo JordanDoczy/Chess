@@ -44,63 +44,32 @@ class Board {
         return rank.spaces.map{ getPiece(at: $0) }
     }
     
-    func getSpace(rank: Rank, file: File) -> Space {
-        return file.spaces[rank.rawValue-1]
-    }
-    
-    func getValidKingMoves(space: Space, color: Color) -> [Space] {
-        
-        let adjacentMoves = space.adjacentSpaces
-        
-        guard space == .e8 && color == .black || space == .e1 && color == .white else {
-            return adjacentMoves
-        }
-        
-        switch color {
-        case .black: return adjacentMoves + [.c8,.g8]
-        case.white: return adjacentMoves + [.c1,.g1]
-        }
-    }
-    
-    func getValidMoves(space: Space, piece: Piece) -> [Space] {
-        var spaces = [Space]()
-        
-        switch piece {
-        case .whitePawn, .blackPawn:
-            spaces = getValidPawnMoves(space: space, color: piece.color)
-        case .whiteKnight, .blackKnight:
-            spaces = space.knightMoves
-        case .whiteBishop, .blackBishop:
-            spaces = space.diagonals.flatMap { $0.spaces }
-        case .whiteRook, .blackRook:
-            spaces = space.rank.spaces + space.file.spaces
-        case .whiteQueen, .blackQueen:
-            spaces = space.diagonals.flatMap { $0.spaces } + space.rank.spaces + space.file.spaces
-        case .whiteKing, .blackKing:
-            spaces = getValidKingMoves(space: space, color: piece.color)
-        }
-        
-        return spaces
-    }
-
-    func getValidPawnMoves(space: Space, color: Color) -> [Space] {
-        let adjacentSpaces = space.adjacentSpaces
-        var validSpaces = [Space]()
-        
-        switch color {
-        case .black:
-            validSpaces = adjacentSpaces.filter { $0.rank.rawValue < space.rank.rawValue }
-            if space.rank == ._7 {
-                validSpaces.append(getSpace(rank: ._5, file: space.file))
+    func isPathClear(from: Space, to: Space) -> Bool {
+        if from.rank == to.rank {
+            print(from.rank)
+            return true
+        } else if from.file == to.file {
+            if from.rank.rawValue < to.rank.rawValue {
+                for rankIndex in from.rank.rawValue+1...to.rank.rawValue {
+                    guard let rank = Rank(rawValue: rankIndex) else {
+                        return false
+                    }
+                    
+                    let space = BoardHelper.getSpace(rank: rank, file: from.file)
+                    if !isSpaceEmpty(space: space) {
+                        return false
+                    }
+                }
             }
-        case .white:
-            validSpaces = adjacentSpaces.filter { $0.rank.rawValue > space.rank.rawValue }
-            if space.rank == ._2 {
-                validSpaces.append(getSpace(rank: ._4, file: space.file))
-            }
+            
+            print(from.file)
+            return true
+        } else if let diagonal = from.diagonals.intersection(to.diagonals).first {
+            print(diagonal)
+            return true
         }
-        
-        return validSpaces
+            
+        return false
     }
     
     func printBoard() {
@@ -154,18 +123,10 @@ class Board {
         setSpace(.h7, to: .blackPawn)
     }
     
-    func setSpace(_ space: Space, to piece: Piece) {
+    func setSpace(_ space: Space, to piece: Piece?) {
         data[space.rawValue] = piece
     }
     
-    func testMoves(space: Space, piece: Piece) {
-        clearBoard()
-        setSpace(space, to: piece)
-
-        let spaces = getValidMoves(space: space, piece: piece)
-        for space in spaces {
-            setSpace(space, to: piece)
-        }
-    }
+    
     
 }

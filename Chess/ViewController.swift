@@ -15,9 +15,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //board.setBoard()
-        board.testMoves(space: .e8, piece: .blackKing)
+//        let board = BoardHelper.getBoardWithValidMoves(at: .e4, piece: .whiteBishop)
+//        board.printBoard()
+        
+        let board = Board()
+        board.setBoard()
+        board.setSpace(.a2, to: nil)
         board.printBoard()
+        
+        print(board.isPathClear(from: .a1, to: .a5))
+        
+        
     }
 
 
