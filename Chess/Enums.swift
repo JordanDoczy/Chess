@@ -18,7 +18,7 @@ enum File: String {
     case g = "g"
     case h = "h"
     
-    var spaces: [Space] {
+    var spaces: Set<Space> {
         switch self {
         case .a: return [.a1,.a2,.a3,.a4,.a5,.a6,.a7,.a8]
         case .b: return [.b1,.b2,.b3,.b4,.b5,.b6,.b7,.b8]
@@ -42,7 +42,7 @@ enum Rank: Int {
     case _7
     case _8
     
-    var spaces: [Space] {
+    var spaces: Set<Space> {
         switch self {
         case ._1: return [.a1,.b1,.c1,.d1,.e1,.f1,.g1,.h1]
         case ._2: return [.a2,.b2,.c2,.d2,.e2,.f2,.g2,.h2]
@@ -284,7 +284,7 @@ enum Space: Int {
         }
     }
     
-    var knightMoves: [Space] {
+    var knightMoves: Set<Space> {
         switch self {
         case .a1: return [.b3,.c2]
         case .a2: return [.b4,.c1,.c3]
@@ -360,7 +360,7 @@ enum Space: Int {
         }
     }
     
-    var adjacentSpaces: [Space] {
+    var adjacentSpaces: Set<Space> {
         switch self {
         case .a1: return [.a2,.b1,.b2]
         case .a2: return [.a1,.a3,.b1,.b2,.b3]

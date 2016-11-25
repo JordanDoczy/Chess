@@ -16,11 +16,11 @@ class Board {
         data = Array<Piece?>(repeating: nil, count: 64)
     }
     
-    func isSpaceEmpty(space: Space) -> Bool {
+    func isEmpty(at space: Space) -> Bool {
         return getPiece(at: space) == nil
     }
     
-    func isSpaceOccupiedByOpponent(space: Space, myColor: Color) -> Bool {
+    func isOccupiedByOpponent(at space: Space, myColor: Color) -> Bool {
         guard let piece = getPiece(at: space) else {
             return false
         }
@@ -28,48 +28,50 @@ class Board {
         return piece.color != myColor
     }
 
-    func getDiagonal(diagonal: Diagonal) -> [Piece?] {
-        return diagonal.spaces.map{ getPiece(at: $0) }
-    }
-
-    func getFile(file: File) -> [Piece?] {
-        return file.spaces.map{ getPiece(at: $0) }
-    }
-
     func getPiece(at space: Space) -> Piece? {
         return data[space.rawValue]
     }
     
-    func getRank(rank: Rank) -> [Piece?] {
-        return rank.spaces.map{ getPiece(at: $0) }
+    func getPieces(at diagonal: Diagonal) -> [Piece?] {
+        let spaces = diagonal.spaces.sorted { $0.file.rawValue < $1.file.rawValue }
+        return spaces.map{ getPiece(at: $0) }
     }
     
-    func isPathClear(from: Space, to: Space) -> Bool {
+    func getPieces(at file: File) -> [Piece?] {
+        let spaces = file.spaces.sorted { $0.rank.rawValue < $1.rank.rawValue }
+        return spaces.map{ getPiece(at: $0) }
+    }
+    
+    func getPieces(at rank: Rank) -> [Piece?] {
+        let spaces = rank.spaces.sorted { $0.file.rawValue < $1.file.rawValue }
+        return spaces.map{ getPiece(at: $0) }
+    }
+    
+    func isPathClearBetween(from: Space, to: Space) -> Bool {
+        
+        let origin = from.rawValue < to.rawValue ? from : to
+        let destination = origin == from ? to : from
+        
+        let spaces: Set<Space>
+        
         if from.rank == to.rank {
-            print(from.rank)
-            return true
+            spaces = from.rank.spaces
         } else if from.file == to.file {
-            if from.rank.rawValue < to.rank.rawValue {
-                for rankIndex in from.rank.rawValue+1...to.rank.rawValue {
-                    guard let rank = Rank(rawValue: rankIndex) else {
-                        return false
-                    }
-                    
-                    let space = BoardHelper.getSpace(rank: rank, file: from.file)
-                    if !isSpaceEmpty(space: space) {
-                        return false
-                    }
-                }
-            }
-            
-            print(from.file)
-            return true
+            spaces = from.file.spaces
         } else if let diagonal = from.diagonals.intersection(to.diagonals).first {
-            print(diagonal)
-            return true
+            spaces = diagonal.spaces
+        } else {
+            return false
         }
-            
-        return false
+        
+        let isClear = spaces
+            .filter {
+                $0.rawValue > origin.rawValue
+                    && $0.rawValue < destination.rawValue
+                    && !isEmpty(at: $0) }
+            .count == 0
+        
+        return isClear
     }
     
     func printBoard() {
@@ -84,7 +86,7 @@ class Board {
     }
     
     func printRank(rank: Rank) {
-        print( getRank(rank: rank).map { $0?.description ?? "[]" } )
+        print( getPieces(at: rank).map { $0?.description ?? "[]" })
     }
     
     func setBoard() {

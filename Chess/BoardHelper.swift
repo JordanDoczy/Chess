@@ -11,10 +11,11 @@ import Foundation
 class BoardHelper {
     
     static func getSpace(rank: Rank, file: File) -> Space {
-        return file.spaces[rank.rawValue-1]
+        return file.spaces.filter { $0.rank.rawValue == rank.rawValue }.first!
+//        [rank.rawValue-1]
     }
     
-    static func getValidKingMoves(at space: Space, color: Color) -> [Space] {
+    static func getValidKingMoves(at space: Space, color: Color) -> Set<Space> {
         
         let adjacentMoves = space.adjacentSpaces
         
@@ -23,13 +24,13 @@ class BoardHelper {
         }
         
         switch color {
-        case .black: return adjacentMoves + [.c8,.g8]
-        case.white: return adjacentMoves + [.c1,.g1]
+        case .black: return adjacentMoves.union([.c8,.g8])
+        case.white: return adjacentMoves.union([.c1,.g1])
         }
     }
     
-    static func getValidMoves(at space: Space, piece: Piece) -> [Space] {
-        var spaces = [Space]()
+    static func getValidMoves(at space: Space, piece: Piece) -> Set<Space> {
+        var spaces = Set<Space>()
         
         switch piece {
         case .whitePawn, .blackPawn:
@@ -37,11 +38,11 @@ class BoardHelper {
         case .whiteKnight, .blackKnight:
             spaces = space.knightMoves
         case .whiteBishop, .blackBishop:
-            spaces = space.diagonals.flatMap { $0.spaces }
+            spaces = Set(space.diagonals.flatMap { $0.spaces })
         case .whiteRook, .blackRook:
-            spaces = space.rank.spaces + space.file.spaces
+            spaces = space.rank.spaces.union(space.file.spaces)
         case .whiteQueen, .blackQueen:
-            spaces = space.diagonals.flatMap { $0.spaces } + space.rank.spaces + space.file.spaces
+            spaces = Set(space.diagonals.flatMap { $0.spaces }).union(space.rank.spaces).union(space.file.spaces)
         case .whiteKing, .blackKing:
             spaces = getValidKingMoves(at: space, color: piece.color)
         }
@@ -49,20 +50,20 @@ class BoardHelper {
         return spaces
     }
     
-    static func getValidPawnMoves(at space: Space, color: Color) -> [Space] {
+    static func getValidPawnMoves(at space: Space, color: Color) -> Set<Space> {
         let adjacentSpaces = space.adjacentSpaces
-        var validSpaces = [Space]()
+        var validSpaces = Set<Space>()
         
         switch color {
         case .black:
-            validSpaces = adjacentSpaces.filter { $0.rank.rawValue < space.rank.rawValue }
+            validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue < space.rank.rawValue })
             if space.rank == ._7 {
-                validSpaces.append(getSpace(rank: ._5, file: space.file))
+                validSpaces.insert(getSpace(rank: ._5, file: space.file))
             }
         case .white:
-            validSpaces = adjacentSpaces.filter { $0.rank.rawValue > space.rank.rawValue }
+            validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue > space.rank.rawValue })
             if space.rank == ._2 {
-                validSpaces.append(getSpace(rank: ._4, file: space.file))
+                validSpaces.insert(getSpace(rank: ._4, file: space.file))
             }
         }
         

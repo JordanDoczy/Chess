@@ -22,8 +22,7 @@ class ViewController: UIViewController {
         board.setBoard()
         board.setSpace(.a2, to: nil)
         board.printBoard()
-        
-        print(board.isPathClear(from: .a1, to: .a5))
+        print(board.isPathClearBetween(from: .a8, to: .a1))
         
         
     }
