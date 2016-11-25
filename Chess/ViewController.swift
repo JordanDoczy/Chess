@@ -15,8 +15,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //board.setUp()
-        board.testMoves(space: .e4, piece: .blackBishop)
+        //board.setBoard()
+        board.testMoves(space: .e8, piece: .blackKing)
         board.printBoard()
     }
 
