@@ -32,7 +32,7 @@ class Board {
         enPassant = nil
     }
     
-    func createFromFen(fen: String) {
+    fileprivate func createFromFen(fen: String) {
         let parts = fen.components(separatedBy: " ")
         
         guard parts.count == 6 else {
@@ -69,8 +69,52 @@ class Board {
         }
     }
     
-    func getCastleMoves() -> Set<Space>? {
+    fileprivate func getCastleMoves() -> Set<Space>? {
         return Set(castleOptions.map { $0.moves.king })
+    }
+    
+    func getFen() -> String {
+        let castleMoves = self.castleOptions.map { $0.rawValue }
+        let castleOptions = castleMoves.count > 0 ? castleMoves.joined() : "-"
+        let enPassant = self.enPassant?.rawValue ?? "-"
+        
+        var value = getFen(at: ._8) + "/"
+        value += getFen(at: ._7) + "/"
+        value += getFen(at: ._6) + "/"
+        value += getFen(at: ._5) + "/"
+        value += getFen(at: ._4) + "/"
+        value += getFen(at: ._3) + "/"
+        value += getFen(at: ._2) + "/"
+        value += getFen(at: ._1)
+        value += " \(color.rawValue)"
+        value += " \(castleOptions)"
+        value += " \(enPassant)"
+        
+        return value
+    }
+    
+    fileprivate func getFen(at rank: Rank) -> String {
+        let pieces = getPieces(at: rank)
+        var value = ""
+        var spaceCount = 0
+        
+        for piece in pieces {
+            if let piece = piece {
+                if spaceCount > 0 {
+                    value += "\(spaceCount)"
+                }
+                value += piece.rawValue
+                spaceCount = 0
+            } else {
+                spaceCount += 1
+            }
+        }
+        
+        if spaceCount > 0 {
+            value += "\(spaceCount)"
+        }
+
+        return value
     }
     
     func getPiece(at space: Space) -> Piece? {
@@ -100,18 +144,10 @@ class Board {
         return validMoves
     }
 
-    func isCastle() -> Bool {
-        return false
-    }
-
     func isEmpty(at space: Space) -> Bool {
         return getPiece(at: space) == nil
     }
 
-    func isEnPassant() -> Bool {
-        return false
-    }
-    
     func isOccupiedByOpponent(at space: Space, myColor: Color) -> Bool {
         guard let piece = getPiece(at: space) else {
             return false
