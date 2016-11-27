@@ -170,7 +170,7 @@ enum Diagonal {
     }
 }
 
-enum Space: String {
+enum Space: String, Equatable {
     case a1 = "a1"
     case a2 = "a2"
     case a3 = "a3"
@@ -493,6 +493,10 @@ enum Space: String {
         case .h8: return [.h7,.g7,.g8]
         }
     }
+}
+
+func == (lhs: Space, rhs: Space) -> Bool {
+    return lhs.rawValue == rhs.rawValue
 }
 
 enum CastleMoves: String {

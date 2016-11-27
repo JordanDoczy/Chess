@@ -8,25 +8,28 @@
 
 import Foundation
 
+typealias Move = (from: Space, to: Space)
+
 class Board {
     
     static var STANDARD_BOARD:String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     
     fileprivate var color:Color = .white
     fileprivate var castleOptions = Set<CastleMoves>()
-    fileprivate var data = Array<Piece?>(repeating: nil, count: 64)
+    fileprivate var data = [Space: Piece]()
     fileprivate var enPassant:Space?
     
-    init () {
-        createFromFen(fen: Board.STANDARD_BOARD)
+    convenience init() {
+        self.init(fen: Board.STANDARD_BOARD)
     }
     
     init(fen: String) {
         createFromFen(fen: fen)
+        print(getAllValidMoves())
     }
     
     func clear() {
-        data = Array<Piece?>(repeating: nil, count: 64)
+        data = [:]
         color = .white
         castleOptions = Set<CastleMoves>()
         enPassant = nil
@@ -118,7 +121,7 @@ class Board {
     }
     
     func getPiece(at space: Space) -> Piece? {
-        return data[space.index]
+        return data[space]
     }
     
     func getPieces(at diagonal: Diagonal) -> [Piece?] {
@@ -136,10 +139,34 @@ class Board {
         return spaces.map{ getPiece(at: $0) }
     }
     
+    func getSpaces(with color: Color?) -> [Space] {
+        return data.filter { $0.value.color == color }.map { $0.key }
+    }
+
+    func getAllValidMoves() -> [Move] {
+        let spaces = getSpaces(with: color)
+        var validMoves = [Move]()
+        
+        for space in spaces {
+            if let piece = getPiece(at: space) {
+                let moves = getValidMoves(from: space, piece: piece)
+                validMoves += moves.map { Move(from: space, to: $0) }
+            }
+        }
+        
+        return validMoves
+    }
+    
+    // TODO: change to return all valid moves including special cases: pawn first move, enpassant, castling, 
+    /// and ensuring move does not place player in check
     func getValidMoves(from: Space, piece: Piece) -> Set<Space> {
         var validMoves = BoardHelper.getValidMoves(at: from, piece: piece)
-        if let castleMoves = getCastleMoves() {
-            validMoves.formUnion(castleMoves)
+        switch piece {
+        case .blackKing, .whiteKing:
+            if let castleMoves = getCastleMoves() {
+                validMoves.formUnion(castleMoves)
+            }
+        default: break
         }
         return validMoves
     }
@@ -249,6 +276,6 @@ class Board {
     }
     
     func setSpace(_ space: Space, to piece: Piece?) {
-        data[space.index] = piece
+        data[space] = piece
     }
 }

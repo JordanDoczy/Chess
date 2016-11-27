@@ -10,9 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    var board = Board()
-    var history = [Board]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
