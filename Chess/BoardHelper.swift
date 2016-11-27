@@ -12,7 +12,6 @@ class BoardHelper {
     
     static func getSpace(rank: Rank, file: File) -> Space {
         return file.spaces.filter { $0.rank.rawValue == rank.rawValue }.first!
-//        [rank.rawValue-1]
     }
     
     static func getValidKingMoves(at space: Space, color: Color) -> Set<Space> {

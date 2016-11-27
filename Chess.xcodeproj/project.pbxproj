@@ -15,6 +15,7 @@
 		E64AD1811DE791C800F55B49 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1801DE791C800F55B49 /* Enums.swift */; };
 		E64AD1831DE7976B00F55B49 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1821DE7976B00F55B49 /* Board.swift */; };
 		E64AD1851DE883EB00F55B49 /* BoardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1841DE883EB00F55B49 /* BoardHelper.swift */; };
+		E64AD1871DEA40EA00F55B49 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1861DEA40EA00F55B49 /* Game.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		E64AD1801DE791C800F55B49 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		E64AD1821DE7976B00F55B49 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		E64AD1841DE883EB00F55B49 /* BoardHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardHelper.swift; sourceTree = "<group>"; };
+		E64AD1861DEA40EA00F55B49 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 			children = (
 				E6019CF81DD7800400B8D613 /* AppDelegate.swift */,
 				E6019CFA1DD7800400B8D613 /* ViewController.swift */,
+				E64AD1861DEA40EA00F55B49 /* Game.swift */,
 				E64AD1821DE7976B00F55B49 /* Board.swift */,
 				E64AD1841DE883EB00F55B49 /* BoardHelper.swift */,
 				E64AD1801DE791C800F55B49 /* Enums.swift */,
@@ -146,6 +149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E64AD1851DE883EB00F55B49 /* BoardHelper.swift in Sources */,
+				E64AD1871DEA40EA00F55B49 /* Game.swift in Sources */,
 				E6019CFB1DD7800400B8D613 /* ViewController.swift in Sources */,
 				E6019CF91DD7800400B8D613 /* AppDelegate.swift in Sources */,
 				E64AD1831DE7976B00F55B49 /* Board.swift in Sources */,

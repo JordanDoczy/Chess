@@ -10,26 +10,71 @@ import Foundation
 
 class Board {
     
+    static var STANDARD_BOARD:String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    
+    fileprivate var color:Color = .white
+    fileprivate var castleOptions = Set<CastleMoves>()
     fileprivate var data = Array<Piece?>(repeating: nil, count: 64)
+    fileprivate var enPassant:Space?
     
-    func clearBoard() {
+    init () {
+        createFromFen(fen: Board.STANDARD_BOARD)
+    }
+    
+    init(fen: String) {
+        createFromFen(fen: fen)
+    }
+    
+    func clear() {
         data = Array<Piece?>(repeating: nil, count: 64)
+        color = .white
+        castleOptions = Set<CastleMoves>()
+        enPassant = nil
     }
     
-    func isEmpty(at space: Space) -> Bool {
-        return getPiece(at: space) == nil
-    }
-    
-    func isOccupiedByOpponent(at space: Space, myColor: Color) -> Bool {
-        guard let piece = getPiece(at: space) else {
-            return false
+    func createFromFen(fen: String) {
+        let parts = fen.components(separatedBy: " ")
+        
+        guard parts.count == 6 else {
+            return
         }
         
-        return piece.color != myColor
+        color = Color(rawValue: parts[1]) ?? .white
+        enPassant = Space(rawValue: parts[3])
+        
+        let castles = parts[2]
+        for castle in castles.characters {
+            if let castleMove = CastleMoves(rawValue: String(castle)) {
+                castleOptions.insert(castleMove)
+            }
+        }
+        
+        var rank: Rank = ._8
+        let rows = parts[0].components(separatedBy: "/")
+        for row in rows {
+            var file: File = .a
+            for character in row.characters {
+                if let piece = Piece(rawValue: String(character)) {
+                    let space = BoardHelper.getSpace(rank: rank, file: file)
+                    setSpace(space, to: piece)
+                    file = file.nextFile
+                } else if let emptySpaces = Int(String(character)) {
+                    file = File(rawValue: file.rawValue + emptySpaces) ?? .a
+                }
+                
+                if file == .a {
+                    rank = rank.previousRank
+                }
+            }
+        }
     }
-
+    
+    func getCastleMoves() -> Set<Space>? {
+        return Set(castleOptions.map { $0.moves.king })
+    }
+    
     func getPiece(at space: Space) -> Piece? {
-        return data[space.rawValue]
+        return data[space.index]
     }
     
     func getPieces(at diagonal: Diagonal) -> [Piece?] {
@@ -47,9 +92,37 @@ class Board {
         return spaces.map{ getPiece(at: $0) }
     }
     
+    func getValidMoves(from: Space, piece: Piece) -> Set<Space> {
+        var validMoves = BoardHelper.getValidMoves(at: from, piece: piece)
+        if let castleMoves = getCastleMoves() {
+            validMoves.formUnion(castleMoves)
+        }
+        return validMoves
+    }
+
+    func isCastle() -> Bool {
+        return false
+    }
+
+    func isEmpty(at space: Space) -> Bool {
+        return getPiece(at: space) == nil
+    }
+
+    func isEnPassant() -> Bool {
+        return false
+    }
+    
+    func isOccupiedByOpponent(at space: Space, myColor: Color) -> Bool {
+        guard let piece = getPiece(at: space) else {
+            return false
+        }
+        
+        return piece.color != myColor
+    }
+
     func isPathClearBetween(from: Space, to: Space) -> Bool {
         
-        let origin = from.rawValue < to.rawValue ? from : to
+        let origin = from.index < to.index ? from : to
         let destination = origin == from ? to : from
         
         let spaces: Set<Space>
@@ -66,12 +139,62 @@ class Board {
         
         let isClear = spaces
             .filter {
-                $0.rawValue > origin.rawValue
-                    && $0.rawValue < destination.rawValue
-                    && !isEmpty(at: $0) }
+                $0.index > origin.index
+                && $0.index < destination.index
+                && !isEmpty(at: $0) }
             .count == 0
         
         return isClear
+    }
+    
+    func movePiece(from: Space, to: Space) -> Bool {
+        guard let piece = getPiece(at: from),
+            isEmpty(at: to) || isOccupiedByOpponent(at: to, myColor: piece.color),
+            getValidMoves(from: from, piece: piece).contains(to) else {
+                return false
+        }
+        
+        if piece != .blackKnight && piece != .whiteKnight && !isPathClearBetween(from: from, to: to) {
+            return false
+        }
+        
+        switch piece {
+        case .whitePawn, .blackPawn:
+            if to == enPassant {
+                if to.rank == ._3 {
+                    setSpace(BoardHelper.getSpace(rank: ._4, file: to.file), to: nil)
+                } else {
+                    setSpace(BoardHelper.getSpace(rank: ._7, file: to.file), to: nil)
+                }
+            } else if from.file != to.file && !isOccupiedByOpponent(at: to, myColor: piece.color) {
+                return false
+            }
+        case .whiteKing, .blackKing:
+            if abs(from.file.rawValue - to.file.rawValue) == 2 {
+                let rookFrom:Space, rookTo:Space
+                
+                switch to.file {
+                case .g:
+                    rookFrom = BoardHelper.getSpace(rank: to.rank, file: .h)
+                    rookTo = BoardHelper.getSpace(rank: to.rank, file: .f)
+                case .c:
+                    rookFrom = BoardHelper.getSpace(rank: to.rank, file: .a)
+                    rookTo = BoardHelper.getSpace(rank: to.rank, file: .d)
+                default: return false
+                }
+                
+                if !movePiece(from: rookFrom, to: rookTo) {
+                    return false
+                }
+            }
+        default:
+            break
+        }
+        
+        setSpace(to, to: piece)
+        setSpace(from, to: nil)
+        
+        return true
     }
     
     func printBoard() {
@@ -84,51 +207,12 @@ class Board {
         printRank(rank: ._2)
         printRank(rank: ._1)
     }
-    
+
     func printRank(rank: Rank) {
         print( getPieces(at: rank).map { $0?.description ?? "[]" })
     }
     
-    func setBoard() {
-        setSpace(.a1, to: .whiteRook)
-        setSpace(.b1, to: .whiteKnight)
-        setSpace(.c1, to: .whiteBishop)
-        setSpace(.d1, to: .whiteQueen)
-        setSpace(.e1, to: .whiteKing)
-        setSpace(.f1, to: .whiteBishop)
-        setSpace(.g1, to: .whiteKnight)
-        setSpace(.h1, to: .whiteRook)
-        setSpace(.a2, to: .whitePawn)
-        setSpace(.b2, to: .whitePawn)
-        setSpace(.c2, to: .whitePawn)
-        setSpace(.d2, to: .whitePawn)
-        setSpace(.e2, to: .whitePawn)
-        setSpace(.f2, to: .whitePawn)
-        setSpace(.g2, to: .whitePawn)
-        setSpace(.h2, to: .whitePawn)
-        
-        setSpace(.a8, to: .blackRook)
-        setSpace(.b8, to: .blackKnight)
-        setSpace(.c8, to: .blackBishop)
-        setSpace(.d8, to: .blackQueen)
-        setSpace(.e8, to: .blackKing)
-        setSpace(.f8, to: .blackBishop)
-        setSpace(.g8, to: .blackKnight)
-        setSpace(.h8, to: .blackRook)
-        setSpace(.a7, to: .blackPawn)
-        setSpace(.b7, to: .blackPawn)
-        setSpace(.c7, to: .blackPawn)
-        setSpace(.d7, to: .blackPawn)
-        setSpace(.e7, to: .blackPawn)
-        setSpace(.f7, to: .blackPawn)
-        setSpace(.g7, to: .blackPawn)
-        setSpace(.h7, to: .blackPawn)
-    }
-    
     func setSpace(_ space: Space, to piece: Piece?) {
-        data[space.rawValue] = piece
+        data[space.index] = piece
     }
-    
-    
-    
 }

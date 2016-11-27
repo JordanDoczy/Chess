@@ -8,15 +8,15 @@
 
 import Foundation
 
-enum File: String {
-    case a = "a"
-    case b = "b"
-    case c = "c"
-    case d = "d"
-    case e = "e"
-    case f = "f"
-    case g = "g"
-    case h = "h"
+enum File: Int {
+    case a = 1
+    case b
+    case c
+    case d
+    case e
+    case f
+    case g
+    case h
     
     var spaces: Set<Space> {
         switch self {
@@ -30,6 +30,33 @@ enum File: String {
         case .h: return [.h1,.h2,.h3,.h4,.h5,.h6,.h7,.h8]
         }
     }
+    
+    var nextFile: File {
+        switch self {
+        case .a: return .b
+        case .b: return .c
+        case .c: return .d
+        case .d: return .e
+        case .e: return .f
+        case .f: return .g
+        case .g: return .h
+        case .h: return .a
+        }
+    }
+    
+    var previousFile: File {
+        switch self {
+        case .a: return .h
+        case .b: return .a
+        case .c: return .b
+        case .d: return .c
+        case .e: return .d
+        case .f: return .e
+        case .g: return .f
+        case .h: return .g
+        }
+    }
+
 }
 
 enum Rank: Int {
@@ -54,6 +81,33 @@ enum Rank: Int {
         case ._8: return [.a8,.b8,.c8,.d8,.e8,.f8,.g8,.h8]
         }
     }
+    
+    var nextRank: Rank {
+        switch self {
+        case ._1: return ._2
+        case ._2: return ._3
+        case ._3: return ._4
+        case ._4: return ._5
+        case ._5: return ._6
+        case ._6: return ._7
+        case ._7: return ._8
+        case ._8: return ._1
+        }
+    }
+    
+    var previousRank: Rank {
+        switch self {
+        case ._1: return ._8
+        case ._2: return ._1
+        case ._3: return ._2
+        case ._4: return ._3
+        case ._5: return ._4
+        case ._6: return ._5
+        case ._7: return ._6
+        case ._8: return ._7
+        }
+    }
+
 }
 
 enum Diagonal {
@@ -116,71 +170,75 @@ enum Diagonal {
     }
 }
 
-enum Space: Int {
-    case a1 = 0
-    case a2
-    case a3
-    case a4
-    case a5
-    case a6
-    case a7
-    case a8
-    case b1
-    case b2
-    case b3
-    case b4
-    case b5
-    case b6
-    case b7
-    case b8
-    case c1
-    case c2
-    case c3
-    case c4
-    case c5
-    case c6
-    case c7
-    case c8
-    case d1
-    case d2
-    case d3
-    case d4
-    case d5
-    case d6
-    case d7
-    case d8
-    case e1
-    case e2
-    case e3
-    case e4
-    case e5
-    case e6
-    case e7
-    case e8
-    case f1
-    case f2
-    case f3
-    case f4
-    case f5
-    case f6
-    case f7
-    case f8
-    case g1
-    case g2
-    case g3
-    case g4
-    case g5
-    case g6
-    case g7
-    case g8
-    case h1
-    case h2
-    case h3
-    case h4
-    case h5
-    case h6
-    case h7
-    case h8
+enum Space: String {
+    case a1 = "a1"
+    case a2 = "a2"
+    case a3 = "a3"
+    case a4 = "a4"
+    case a5 = "a5"
+    case a6 = "a6"
+    case a7 = "a7"
+    case a8 = "a8"
+    case b1 = "b1"
+    case b2 = "b2"
+    case b3 = "b3"
+    case b4 = "b4"
+    case b5 = "b5"
+    case b6 = "b6"
+    case b7 = "b7"
+    case b8 = "b8"
+    case c1 = "c1"
+    case c2 = "c2"
+    case c3 = "c3"
+    case c4 = "c4"
+    case c5 = "c5"
+    case c6 = "c6"
+    case c7 = "c7"
+    case c8 = "c8"
+    case d1 = "d1"
+    case d2 = "d2"
+    case d3 = "d3"
+    case d4 = "d4"
+    case d5 = "d5"
+    case d6 = "d6"
+    case d7 = "d7"
+    case d8 = "d8"
+    case e1 = "e1"
+    case e2 = "e2"
+    case e3 = "e3"
+    case e4 = "e4"
+    case e5 = "e5"
+    case e6 = "e6"
+    case e7 = "e7"
+    case e8 = "e8"
+    case f1 = "f1"
+    case f2 = "f2"
+    case f3 = "f3"
+    case f4 = "f4"
+    case f5 = "f5"
+    case f6 = "f6"
+    case f7 = "f7"
+    case f8 = "f8"
+    case g1 = "g1"
+    case g2 = "g2"
+    case g3 = "g3"
+    case g4 = "g4"
+    case g5 = "g5"
+    case g6 = "g6"
+    case g7 = "g7"
+    case g8 = "g8"
+    case h1 = "h1"
+    case h2 = "h2"
+    case h3 = "h3"
+    case h4 = "h4"
+    case h5 = "h5"
+    case h6 = "h6"
+    case h7 = "h7"
+    case h8 = "h8"
+    
+    var index: Int {
+        return ((self.file.rawValue-1) * 8) + self.rank.rawValue - 1
+    }
     
     var diagonals: Set<Diagonal> {
         switch self {
@@ -435,12 +493,27 @@ enum Space: Int {
         case .h8: return [.h7,.g7,.g8]
         }
     }
-    
 }
 
-enum Color {
-    case black
-    case white
+enum CastleMoves: String {
+    case blackKingSide =  "k"
+    case blackQueenSide = "q"
+    case whiteKingSide =  "K"
+    case whiteQueenSide = "Q"
+    
+    var moves: (king: Space, rook: Space) {
+        switch  self {
+        case .blackKingSide:  return (king: .g8, rook: .f8)
+        case .blackQueenSide: return (king: .c8, rook: .d8)
+        case .whiteKingSide:  return (king: .g1, rook: .f1)
+        case .whiteQueenSide: return (king: .c1, rook: .d1)
+        }
+    }
+}
+
+enum Color: String {
+    case black = "b"
+    case white = "w"
     
     var description: String {
         switch self {
@@ -450,34 +523,34 @@ enum Color {
     }
 }
 
-enum Piece {
-    case blackPawn
-    case blackKnight
-    case blackBishop
-    case blackRook
-    case blackQueen
-    case blackKing
-    case whitePawn
-    case whiteKnight
-    case whiteBishop
-    case whiteRook
-    case whiteQueen
-    case whiteKing
+enum Piece: String {
+    case blackPawn =   "p"
+    case blackKnight = "n"
+    case blackBishop = "b"
+    case blackRook =   "r"
+    case blackQueen =  "q"
+    case blackKing =   "k"
+    case whitePawn =   "P"
+    case whiteKnight = "N"
+    case whiteBishop = "B"
+    case whiteRook =   "R"
+    case whiteQueen =  "Q"
+    case whiteKing =   "K"
     
     var description: String {
         switch self {
-        case .blackPawn: return "♟"
+        case .blackPawn:   return "♟"
         case .blackKnight: return "♞"
         case .blackBishop: return "♝"
-        case .blackRook: return "♜"
-        case .blackQueen: return "♛"
-        case .blackKing: return "♚"
-        case .whitePawn: return "♙"
+        case .blackRook:   return "♜"
+        case .blackQueen:  return "♛"
+        case .blackKing:   return "♚"
+        case .whitePawn:   return "♙"
         case .whiteKnight: return "♘"
         case .whiteBishop: return "♗"
-        case .whiteRook: return "♖"
-        case .whiteQueen: return "♕"
-        case .whiteKing: return "♔"
+        case .whiteRook:   return "♖"
+        case .whiteQueen:  return "♕"
+        case .whiteKing:   return "♔"
         }
     }
     
