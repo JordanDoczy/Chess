@@ -13,10 +13,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let board = Board(fen: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1")
+        let board = Board(fen: "rnb1kbnr/ppppqppp/8/8/8/8/PPPP1PPP/RNBQKB1R w KQkq e3 0 1")
+        let moves = board.getValidMoves().sorted { $0.from.rank.rawValue < $1.from.rank.rawValue }.sorted { $0.from.file.rawValue < $1.from.file.rawValue }
         board.printBoard()
-        print("")
-        print(board.getFen())
+        print(board.isInCheck())
+    
+        //print(board.isValidMove(Move(from: .e2, to: .f4), possibleMoves: nil))
+
+        //print(moves)
     }
     
 }

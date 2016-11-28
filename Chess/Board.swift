@@ -8,16 +8,17 @@
 
 import Foundation
 
-typealias Move = (from: Space, to: Space)
-
-class Board {
+class Board: ChessModel {
     
     static var STANDARD_BOARD:String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     
-    fileprivate var color:Color = .white
+    internal var color:Color = .white
     fileprivate var castleOptions = Set<CastleMoves>()
+    internal var castleMoves: Set<Space> {
+        return Set(castleOptions.map { $0.king.to })
+    }
     fileprivate var data = [Space: Piece]()
-    fileprivate var enPassant:Space?
+    internal var enPassant:Space?
     
     convenience init() {
         self.init(fen: Board.STANDARD_BOARD)
@@ -25,7 +26,8 @@ class Board {
     
     init(fen: String) {
         createFromFen(fen: fen)
-        print(getAllValidMoves())
+        //print(getValidMoves())
+        //print(isInCheck())
     }
     
     func clear() {
@@ -58,7 +60,7 @@ class Board {
             var file: File = .a
             for character in row.characters {
                 if let piece = Piece(rawValue: String(character)) {
-                    let space = BoardHelper.getSpace(rank: rank, file: file)
+                    let space = Board.getSpace(rank: rank, file: file)
                     setSpace(space, to: piece)
                     file = file.nextFile
                 } else if let emptySpaces = Int(String(character)) {
@@ -70,10 +72,6 @@ class Board {
                 }
             }
         }
-    }
-    
-    fileprivate func getCastleMoves() -> Set<Space>? {
-        return Set(castleOptions.map { $0.moves.king })
     }
     
     func getFen() -> String {
@@ -92,6 +90,8 @@ class Board {
         value += " \(color.rawValue)"
         value += " \(castleOptions)"
         value += " \(enPassant)"
+        value += " 0"
+        value += " 1"
         
         return value
     }
@@ -143,58 +143,43 @@ class Board {
         return data.filter { $0.value.color == color }.map { $0.key }
     }
 
-    func getAllValidMoves() -> [Move] {
-        let spaces = getSpaces(with: color)
-        var validMoves = [Move]()
+    func isInCheck() -> Bool {
+        let spaces = getSpaces(with: color.opposite).sorted { $0.index < $1.index }
+        let king = data.filter { $0.value.rawValue == (color == .white ? Piece.whiteKing.rawValue : Piece.blackKing.rawValue) }
         
-        for space in spaces {
-            if let piece = getPiece(at: space) {
-                let moves = getPossibleMoves(from: space, piece: piece)
-                validMoves += moves.map { Move(from: space, to: $0) }.filter { isValidMove($0) }
-            }
+        guard let kingSpace = king.first?.key else {
+            return false
         }
-        
-        return validMoves
-    }
-    
-    // TODO: change to return all valid moves including special cases: pawn first move, enpassant, castling, 
-    /// and ensuring move does not place player in check
-    func getPossibleMoves(from: Space, piece: Piece) -> Set<Space> {
-        var validMoves = BoardHelper.getValidMoves(at: from, piece: piece)
-        switch piece {
-        case .blackKing, .whiteKing:
-            if let castleMoves = getCastleMoves() {
-                validMoves.formUnion(castleMoves)
-            }
-        default: break
-        }
-        return validMoves
+
+        print(spaces,kingSpace)
+
+        let checks = spaces.filter { isValidMove(Move(from: $0, to: kingSpace), possibleMoves: nil, ignoreCheck: true) }
+        return checks.count > 0
     }
 
     func isEmpty(at space: Space) -> Bool {
         return getPiece(at: space) == nil
     }
 
-    func isOccupiedByOpponent(at space: Space, myColor: Color) -> Bool {
+    func isOccupiedByOpponent(at space: Space) -> Bool {
         guard let piece = getPiece(at: space) else {
             return false
         }
         
-        return piece.color != myColor
+        return color == .white ? piece.color == .black : piece.color == .white
     }
-
-    func isPathClearBetween(from: Space, to: Space) -> Bool {
-        
-        let origin = from.index < to.index ? from : to
-        let destination = origin == from ? to : from
+    
+    func isPathClearBetween(_ move: Move) -> Bool {
+        let origin = move.from.index < move.to.index ? move.from : move.to
+        let destination = origin == move.from ? move.to : move.from
         
         let spaces: Set<Space>
         
-        if from.rank == to.rank {
-            spaces = from.rank.spaces
-        } else if from.file == to.file {
-            spaces = from.file.spaces
-        } else if let diagonal = from.diagonals.intersection(to.diagonals).first {
+        if move.from.rank == move.to.rank {
+            spaces = move.from.rank.spaces
+        } else if move.from.file == move.to.file {
+            spaces = move.from.file.spaces
+        } else if let diagonal = move.from.diagonals.intersection(move.to.diagonals).first {
             spaces = diagonal.spaces
         } else {
             return false
@@ -203,136 +188,56 @@ class Board {
         let isClear = spaces
             .filter {
                 $0.index > origin.index
-                && $0.index < destination.index
-                && !isEmpty(at: $0) }
+                    && $0.index < destination.index
+                    && !isEmpty(at: $0) }
             .count == 0
         
         return isClear
-    }
-    
-    func isValidMove(_ move: Move) -> Bool {
-        let from = move.from
-        let to = move.to
-        
-        // note: this is a little ineffiecient
-        guard let piece = getPiece(at: from),
-            isEmpty(at: to) || isOccupiedByOpponent(at: to, myColor: piece.color),
-            getValidMoves(from: from, piece: piece).contains(to) else {
-                return false
-        }
-        
-        switch piece {
-        case .blackPawn, .whitePawn:
-            guard isPathClearBetween(from: from, to: to) else {
-                return false
-            }
-            
-            if to == enPassant {
-                if to.rank == ._3 {
-                    setSpace(BoardHelper.getSpace(rank: ._4, file: to.file), to: nil)
-                } else {
-                    setSpace(BoardHelper.getSpace(rank: ._7, file: to.file), to: nil)
-                }
-            } else if from.file != to.file && !isOccupiedByOpponent(at: to, myColor: piece.color) {
-                return false
-            }
 
-            break
-        case .blackKnight, .whiteKnight:
-            break
-        case .blackBishop, .whiteBishop:
-            guard isPathClearBetween(from: from, to: to) else {
-                return false
-            }
-            break
-        case .blackRook, .whiteRook:
-            guard isPathClearBetween(from: from, to: to) else {
-                return false
-            }
-            break
-        case .blackQueen, .whiteQueen:
-            guard isPathClearBetween(from: from, to: to) else {
-                return false
-            }
-            
-            break
-        case .blackKing, .whiteKing:
-            guard isPathClearBetween(from: from, to: to) else {
-                return false
-            }
-            
-            if abs(from.file.rawValue - to.file.rawValue) == 2 {
-                let rookMove:Move
-                
-                switch to.file {
-                case .g:
-                    rookMove = Move(from: BoardHelper.getSpace(rank: to.rank, file: .h),
-                                    to: BoardHelper.getSpace(rank: to.rank, file: .f))
-                case .c:
-                    rookMove = Move(from: BoardHelper.getSpace(rank: to.rank, file: .a),
-                                    to: BoardHelper.getSpace(rank: to.rank, file: .d))
-                default: return false
-                }
-                
-                if !isValidMove(rookMove) {
-                    return false
-                }
-            }
-            
-            break
-        }
-        
-        return true
     }
     
-    func movePiece(from: Space, to: Space) -> Bool {
-        guard let piece = getPiece(at: from),
-            isEmpty(at: to) || isOccupiedByOpponent(at: to, myColor: piece.color),
-            getValidMoves(from: from, piece: piece).contains(to) else {
-                return false
-        }
+    func isPathClearBetween(from: Space, to: Space) -> Bool {
+        return isPathClearBetween(Move(from: from, to: to))
+    }
+
+    func move(_ move: Move) {
         
-        if piece != .blackKnight && piece != .whiteKnight && !isPathClearBetween(from: from, to: to) {
-            return false
+        func enPassantCapture(_ space: Space) {
+            if space.rank == ._3 {
+                setSpace(Board.getSpace(rank: ._4, file: space.file), to: nil)
+            } else {
+                setSpace(Board.getSpace(rank: ._7, file: space.file), to: nil)
+            }
+        }
+
+        guard let piece = getPiece(at: move.from) else {
+            return
         }
         
         switch piece {
         case .whitePawn, .blackPawn:
-            if to == enPassant {
-                if to.rank == ._3 {
-                    setSpace(BoardHelper.getSpace(rank: ._4, file: to.file), to: nil)
-                } else {
-                    setSpace(BoardHelper.getSpace(rank: ._7, file: to.file), to: nil)
-                }
-            } else if from.file != to.file && !isOccupiedByOpponent(at: to, myColor: piece.color) {
-                return false
+            if move.to == enPassant {
+                enPassantCapture(move.to)
             }
         case .whiteKing, .blackKing:
-            if abs(from.file.rawValue - to.file.rawValue) == 2 {
-                let rookFrom:Space, rookTo:Space
-                
-                switch to.file {
-                case .g:
-                    rookFrom = BoardHelper.getSpace(rank: to.rank, file: .h)
-                    rookTo = BoardHelper.getSpace(rank: to.rank, file: .f)
-                case .c:
-                    rookFrom = BoardHelper.getSpace(rank: to.rank, file: .a)
-                    rookTo = BoardHelper.getSpace(rank: to.rank, file: .d)
-                default: return false
-                }
-                
-                if !movePiece(from: rookFrom, to: rookTo) {
-                    return false
-                }
+            switch move {
+            case CastleMoves.blackKingSide.king:
+                self.move(CastleMoves.blackKingSide.rook)
+            case CastleMoves.blackQueenSide.king:
+                self.move(CastleMoves.blackQueenSide.rook)
+            case CastleMoves.whiteKingSide.king:
+                self.move(CastleMoves.whiteKingSide.rook)
+            case CastleMoves.whiteQueenSide.king:
+                self.move(CastleMoves.whiteQueenSide.rook)
+            default:
+                break
             }
         default:
             break
         }
         
-        setSpace(to, to: piece)
-        setSpace(from, to: nil)
-        
-        return true
+        setSpace(move.to, to: piece)
+        setSpace(move.from, to: nil)
     }
     
     func printBoard() {
@@ -353,4 +258,157 @@ class Board {
     func setSpace(_ space: Space, to piece: Piece?) {
         data[space] = piece
     }
+    
+    func getPossibleMoves(at space: Space, for piece: Piece) -> Set<Space> {
+        switch piece {
+        case .whitePawn, .blackPawn:
+            return Board.getPawnMoves(at: space, color: piece.color)
+        case .whiteKnight, .blackKnight:
+            return space.knightMoves
+        case .whiteBishop, .blackBishop:
+            return Set(space.diagonals.flatMap { $0.spaces })
+        case .whiteRook, .blackRook:
+            return space.rank.spaces.union(space.file.spaces)
+        case .whiteQueen, .blackQueen:
+            return Set(space.diagonals.flatMap { $0.spaces }).union(space.rank.spaces).union(space.file.spaces)
+        case .whiteKing, .blackKing:
+            return space.adjacentSpaces.union(castleMoves)
+        }
+    }
+    
+    func getValidMoves() -> [Move] {
+        let spaces = getSpaces(with: color)
+        var validMoves = [Move]()
+        
+        for space in spaces {
+            if let piece = getPiece(at: space) {
+                let moves = getPossibleMoves(at: space, for: piece)
+                validMoves += moves.map { Move(from: space, to: $0) }.filter { isValidMove($0, possibleMoves: moves, ignoreCheck: false) }
+            }
+        }
+        
+        return validMoves
+    }
+    
+    func isValidMove(_ move: Move, possibleMoves: Set<Space>?, ignoreCheck: Bool = false) -> Bool {
+        let board = Board(fen: getFen())
+
+        guard let piece = getPiece(at: move.from) else {
+            return false
+        }
+        
+        guard let possibleMoves = possibleMoves else {
+            return isValidMove(move, possibleMoves: getPossibleMoves(at: move.from, for: piece), ignoreCheck: ignoreCheck)
+        }
+        
+        guard possibleMoves.contains(move.to), isEmpty(at: move.to) || isOccupiedByOpponent(at: move.to) else {
+            return false
+        }
+        
+        switch piece {
+        case .blackPawn, .whitePawn:
+            guard isPathClearBetween(from: move.from, to: move.to) else {
+                return false
+            }
+            
+            guard move.to == enPassant || (move.from.file == move.to.file && !isOccupiedByOpponent(at: move.to)) else {
+                return false
+            }
+            
+            board.move(move)
+            return ignoreCheck ? true : !board.isInCheck()
+            
+        case .blackKnight, .whiteKnight:
+            board.move(move)
+            return ignoreCheck ? true : !board.isInCheck()
+            
+        case .blackBishop, .whiteBishop:
+            guard isPathClearBetween(from: move.from, to: move.to) else {
+                return false
+            }
+            
+            board.move(move)
+            return ignoreCheck ? true : !board.isInCheck()
+            
+        case .blackRook, .whiteRook:
+            guard isPathClearBetween(from: move.from, to: move.to) else {
+                return false
+            }
+            
+            board.move(move)
+            return ignoreCheck ? true : !board.isInCheck()
+            
+        case .blackQueen, .whiteQueen:
+            guard isPathClearBetween(from: move.from, to: move.to) else {
+                return false
+            }
+            
+            board.move(move)
+            return ignoreCheck ? true : !board.isInCheck()
+            
+        case .blackKing, .whiteKing:
+            guard isPathClearBetween(from: move.from, to: move.to) else {
+                return false
+            }
+            
+            if abs(move.from.file.rawValue - move.to.file.rawValue) == 2 {
+                let rookMove:Move
+                
+                switch move.to.file {
+                case .g:
+                    rookMove = Move(from: Board.getSpace(rank: move.to.rank, file: .h),
+                                    to: Board.getSpace(rank: move.to.rank, file: .f))
+                case .c:
+                    rookMove = Move(from: Board.getSpace(rank: move.to.rank, file: .a),
+                                    to: Board.getSpace(rank: move.to.rank, file: .d))
+                default: return false
+                }
+                
+                if !isValidMove(rookMove, possibleMoves: nil, ignoreCheck: ignoreCheck) {
+                    return false
+                }
+            }
+            
+            board.move(move)
+            return ignoreCheck ? true : !board.isInCheck()
+        }
+    }
+
+    static func getPawnMoves(at space: Space, color: Color) -> Set<Space> {
+        let adjacentSpaces = space.adjacentSpaces
+        var validSpaces = Set<Space>()
+        
+        switch color {
+        case .black:
+            validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue < space.rank.rawValue })
+            if space.rank == ._7 {
+                validSpaces.insert(getSpace(rank: ._5, file: space.file))
+            }
+        case .white:
+            validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue > space.rank.rawValue })
+            if space.rank == ._2 {
+                validSpaces.insert(getSpace(rank: ._4, file: space.file))
+            }
+        }
+        
+        return validSpaces
+    }
+    
+    static func getSpace(rank: Rank, file: File) -> Space {
+        return file.spaces.filter { $0.rank.rawValue == rank.rawValue }.first!
+    }
+
+    static func getBoardWithValidMoves(at space: Space, piece: Piece) -> Board {
+        let board = Board()
+        board.setSpace(space, to: piece)
+        
+        let spaces = board.getPossibleMoves(at: space, for: piece)
+        for space in spaces {
+            board.setSpace(space, to: piece)
+        }
+        
+        return board
+    }
+
+    
 }

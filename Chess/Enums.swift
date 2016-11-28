@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias Move = (from: Space, to: Space)
+
 enum File: Int {
     case a = 1
     case b
@@ -499,18 +501,31 @@ func == (lhs: Space, rhs: Space) -> Bool {
     return lhs.rawValue == rhs.rawValue
 }
 
+func ~=(lhs: Move, rhs: Move) -> Bool {
+    return lhs.from ~= rhs.from && lhs.to ~= rhs.to
+}
+
 enum CastleMoves: String {
     case blackKingSide =  "k"
     case blackQueenSide = "q"
     case whiteKingSide =  "K"
     case whiteQueenSide = "Q"
     
-    var moves: (king: Space, rook: Space) {
+    var king: Move {
         switch  self {
-        case .blackKingSide:  return (king: .g8, rook: .f8)
-        case .blackQueenSide: return (king: .c8, rook: .d8)
-        case .whiteKingSide:  return (king: .g1, rook: .f1)
-        case .whiteQueenSide: return (king: .c1, rook: .d1)
+        case .blackKingSide:  return (from: .e8, to: .g8)
+        case .blackQueenSide: return (from: .e8, to: .c8)
+        case .whiteKingSide:  return (from: .e1, to: .g1)
+        case .whiteQueenSide: return (from: .e1, to: .c1)
+        }
+    }
+    
+    var rook: Move {
+        switch self {
+        case .blackKingSide:  return (from: .h8, to: .f8)
+        case .blackQueenSide: return (from: .a8, to: .d8)
+        case .whiteKingSide:  return (from: .h1, to: .f1)
+        case .whiteQueenSide: return (from: .a1, to: .d1)
         }
     }
 }
@@ -523,6 +538,13 @@ enum Color: String {
         switch self {
         case .black: return "black"
         case .white: return "white"
+        }
+    }
+    
+    var opposite: Color {
+        switch self {
+        case .black: return .white
+        case .white: return .black
         }
     }
 }

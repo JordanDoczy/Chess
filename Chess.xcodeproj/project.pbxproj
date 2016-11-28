@@ -16,6 +16,7 @@
 		E64AD1831DE7976B00F55B49 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1821DE7976B00F55B49 /* Board.swift */; };
 		E64AD1851DE883EB00F55B49 /* BoardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1841DE883EB00F55B49 /* BoardHelper.swift */; };
 		E64AD1871DEA40EA00F55B49 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1861DEA40EA00F55B49 /* Game.swift */; };
+		E6A6C8791DEBB510002E1B84 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A6C8781DEBB510002E1B84 /* Protocols.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		E64AD1821DE7976B00F55B49 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		E64AD1841DE883EB00F55B49 /* BoardHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardHelper.swift; sourceTree = "<group>"; };
 		E64AD1861DEA40EA00F55B49 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		E6A6C8781DEBB510002E1B84 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,10 +66,11 @@
 			children = (
 				E6019CF81DD7800400B8D613 /* AppDelegate.swift */,
 				E6019CFA1DD7800400B8D613 /* ViewController.swift */,
+				E6A6C8781DEBB510002E1B84 /* Protocols.swift */,
+				E64AD1801DE791C800F55B49 /* Enums.swift */,
 				E64AD1861DEA40EA00F55B49 /* Game.swift */,
 				E64AD1821DE7976B00F55B49 /* Board.swift */,
 				E64AD1841DE883EB00F55B49 /* BoardHelper.swift */,
-				E64AD1801DE791C800F55B49 /* Enums.swift */,
 				E6019CFC1DD7800400B8D613 /* Main.storyboard */,
 				E6019CFF1DD7800400B8D613 /* Assets.xcassets */,
 				E6019D011DD7800400B8D613 /* LaunchScreen.storyboard */,
@@ -150,6 +153,7 @@
 			files = (
 				E64AD1851DE883EB00F55B49 /* BoardHelper.swift in Sources */,
 				E64AD1871DEA40EA00F55B49 /* Game.swift in Sources */,
+				E6A6C8791DEBB510002E1B84 /* Protocols.swift in Sources */,
 				E6019CFB1DD7800400B8D613 /* ViewController.swift in Sources */,
 				E6019CF91DD7800400B8D613 /* AppDelegate.swift in Sources */,
 				E64AD1831DE7976B00F55B49 /* Board.swift in Sources */,
@@ -274,6 +278,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = Chess/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordandoczy.Chess;
@@ -286,6 +292,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = Chess/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordandoczy.Chess;
