@@ -25,7 +25,7 @@ protocol ChessModel {
     
     func isEmpty(at space: Space) -> Bool
     func isInCheck() -> Bool
-    func isOccupiedByOpponent(at space: Space) -> Bool
+    func isOccupiedByOpponent(at space: Space, myColor: Color) -> Bool
     func isPathClearBetween(_ move: Move) -> Bool
     
     func move(_ move: Move)

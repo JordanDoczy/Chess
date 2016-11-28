@@ -26,8 +26,6 @@ class Board: ChessModel {
     
     init(fen: String) {
         createFromFen(fen: fen)
-        //print(getValidMoves())
-        //print(isInCheck())
     }
     
     func clear() {
@@ -151,8 +149,6 @@ class Board: ChessModel {
             return false
         }
 
-        print(spaces,kingSpace)
-
         let checks = spaces.filter { isValidMove(Move(from: $0, to: kingSpace), possibleMoves: nil, ignoreCheck: true) }
         return checks.count > 0
     }
@@ -161,12 +157,12 @@ class Board: ChessModel {
         return getPiece(at: space) == nil
     }
 
-    func isOccupiedByOpponent(at space: Space) -> Bool {
+    func isOccupiedByOpponent(at space: Space, myColor: Color) -> Bool {
         guard let piece = getPiece(at: space) else {
             return false
         }
         
-        return color == .white ? piece.color == .black : piece.color == .white
+        return myColor == .white ? piece.color == .black : piece.color == .white
     }
     
     func isPathClearBetween(_ move: Move) -> Bool {
@@ -291,8 +287,6 @@ class Board: ChessModel {
     }
     
     func isValidMove(_ move: Move, possibleMoves: Set<Space>?, ignoreCheck: Bool = false) -> Bool {
-        let board = Board(fen: getFen())
-
         guard let piece = getPiece(at: move.from) else {
             return false
         }
@@ -301,9 +295,11 @@ class Board: ChessModel {
             return isValidMove(move, possibleMoves: getPossibleMoves(at: move.from, for: piece), ignoreCheck: ignoreCheck)
         }
         
-        guard possibleMoves.contains(move.to), isEmpty(at: move.to) || isOccupiedByOpponent(at: move.to) else {
+        guard possibleMoves.contains(move.to), isEmpty(at: move.to) || isOccupiedByOpponent(at: move.to, myColor: piece.color) else {
             return false
         }
+
+        let board = Board(fen: getFen())
         
         switch piece {
         case .blackPawn, .whitePawn:
@@ -311,7 +307,7 @@ class Board: ChessModel {
                 return false
             }
             
-            guard move.to == enPassant || (move.from.file == move.to.file && !isOccupiedByOpponent(at: move.to)) else {
+            guard move.to == enPassant || (move.from.file == move.to.file && !isOccupiedByOpponent(at: move.to, myColor: piece.color)) else {
                 return false
             }
             
