@@ -12,10 +12,10 @@
 		E6019CFE1DD7800400B8D613 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6019CFC1DD7800400B8D613 /* Main.storyboard */; };
 		E6019D001DD7800400B8D613 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6019CFF1DD7800400B8D613 /* Assets.xcassets */; };
 		E6019D031DD7800400B8D613 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6019D011DD7800400B8D613 /* LaunchScreen.storyboard */; };
+		E61337661DECFBD500072506 /* Fen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61337651DECFBD500072506 /* Fen.swift */; };
 		E64AD1811DE791C800F55B49 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1801DE791C800F55B49 /* Enums.swift */; };
 		E64AD1831DE7976B00F55B49 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1821DE7976B00F55B49 /* Board.swift */; };
 		E64AD1871DEA40EA00F55B49 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1861DEA40EA00F55B49 /* Game.swift */; };
-		E6A6C8791DEBB510002E1B84 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A6C8781DEBB510002E1B84 /* Protocols.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,10 +26,10 @@
 		E6019CFF1DD7800400B8D613 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E6019D021DD7800400B8D613 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6019D041DD7800400B8D613 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E61337651DECFBD500072506 /* Fen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fen.swift; sourceTree = "<group>"; };
 		E64AD1801DE791C800F55B49 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		E64AD1821DE7976B00F55B49 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		E64AD1861DEA40EA00F55B49 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
-		E6A6C8781DEBB510002E1B84 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,9 +64,9 @@
 			children = (
 				E6019CF81DD7800400B8D613 /* AppDelegate.swift */,
 				E6019CFA1DD7800400B8D613 /* ViewController.swift */,
-				E6A6C8781DEBB510002E1B84 /* Protocols.swift */,
 				E64AD1801DE791C800F55B49 /* Enums.swift */,
 				E64AD1861DEA40EA00F55B49 /* Game.swift */,
+				E61337651DECFBD500072506 /* Fen.swift */,
 				E64AD1821DE7976B00F55B49 /* Board.swift */,
 				E6019CFC1DD7800400B8D613 /* Main.storyboard */,
 				E6019CFF1DD7800400B8D613 /* Assets.xcassets */,
@@ -149,7 +149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E64AD1871DEA40EA00F55B49 /* Game.swift in Sources */,
-				E6A6C8791DEBB510002E1B84 /* Protocols.swift in Sources */,
+				E61337661DECFBD500072506 /* Fen.swift in Sources */,
 				E6019CFB1DD7800400B8D613 /* ViewController.swift in Sources */,
 				E6019CF91DD7800400B8D613 /* AppDelegate.swift in Sources */,
 				E64AD1831DE7976B00F55B49 /* Board.swift in Sources */,
