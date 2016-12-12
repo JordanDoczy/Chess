@@ -104,28 +104,27 @@ class Board: NSCopying {
 
     func getValidMoves() -> [Move] {
         let spaces = getSpaces(with: color)
+        let opponentOccupiedSpaces = getSpaces(with: color.opposite)
         var validMoves = [Move]()
         
-        for space in spaces {
-            if let piece = getPiece(at: space) {
-                let moves = getPossibleMoves(at: space, for: piece)
-                validMoves += moves.map { Move(from: space, to: $0) }.filter { isValidMove($0, possibleMoves: moves, ignoreCheck: false) }
-            }
+        let king = spaces.filter{ data[$0] == (color == .white ? Piece.whiteKing : Piece.blackKing) }.first
+        guard let kingPosition = king else {
+            return []
         }
-        
+
+        let moves = spaces.flatMap { space in getPossibleMoves(at: space, for: getPiece(at: space)!).map{ Move(from: space, to: $0) }}
+        let checks = opponentOccupiedSpaces.flatMap { space in getPossibleMoves(at: space, for: getPiece(at: space)!).filter{ $0 == kingPosition }.map{ Move(from: space, to: $0) }}
+
+        validMoves = moves.filter { isValidMove($0, checks: checks) }
         return validMoves
     }
     
-    func isInCheck() -> Bool {
-        let spaces = getSpaces(with: color.opposite).sorted { $0.index < $1.index }
-        let king = data.filter { $0.value.rawValue == (color == .white ? Piece.whiteKing.rawValue : Piece.blackKing.rawValue) }
-        
-        guard let kingSpace = king.first?.key else {
+    func isInCheck(checks: [Move]) -> Bool {
+        guard checks.count > 0 else {
             return false
         }
-
-        let checks = spaces.filter { isValidMove(Move(from: $0, to: kingSpace), possibleMoves: nil, ignoreCheck: true) }
-        return checks.count > 0
+        
+        return checks.filter { isValidMove($0, checks: []) }.count > 0
     }
 
     func isEmpty(at space: Space) -> Bool {
@@ -171,16 +170,9 @@ class Board: NSCopying {
         return isPathClearBetween(Move(from: from, to: to))
     }
     
-    func isValidMove(_ move: Move, possibleMoves: Set<Space>?, ignoreCheck: Bool = false) -> Bool {
-        guard let piece = getPiece(at: move.from) else {
-            return false
-        }
-        
-        guard let possibleMoves = possibleMoves else {
-            return isValidMove(move, possibleMoves: getPossibleMoves(at: move.from, for: piece), ignoreCheck: ignoreCheck)
-        }
-        
-        guard possibleMoves.contains(move.to), isEmpty(at: move.to) || isOccupiedByOpponent(at: move.to, myColor: piece.color) else {
+    func isValidMove(_ move: Move, checks: [Move]) -> Bool {
+        guard let piece = getPiece(at: move.from),
+            isEmpty(at: move.to) || isOccupiedByOpponent(at: move.to, myColor: piece.color) else {
             return false
         }
         
@@ -197,11 +189,11 @@ class Board: NSCopying {
             }
             
             board.move(move)
-            return ignoreCheck ? true : !board.isInCheck()
+            return !board.isInCheck(checks: checks)
             
         case .blackKnight, .whiteKnight:
             board.move(move)
-            return ignoreCheck ? true : !board.isInCheck()
+            return !board.isInCheck(checks: checks)
             
         case .blackBishop, .whiteBishop:
             guard isPathClearBetween(from: move.from, to: move.to) else {
@@ -209,7 +201,7 @@ class Board: NSCopying {
             }
             
             board.move(move)
-            return ignoreCheck ? true : !board.isInCheck()
+            return !board.isInCheck(checks: checks)
             
         case .blackRook, .whiteRook:
             guard isPathClearBetween(from: move.from, to: move.to) else {
@@ -217,7 +209,7 @@ class Board: NSCopying {
             }
             
             board.move(move)
-            return ignoreCheck ? true : !board.isInCheck()
+            return !board.isInCheck(checks: checks)
             
         case .blackQueen, .whiteQueen:
             guard isPathClearBetween(from: move.from, to: move.to) else {
@@ -225,7 +217,7 @@ class Board: NSCopying {
             }
             
             board.move(move)
-            return ignoreCheck ? true : !board.isInCheck()
+            return !board.isInCheck(checks: checks)
             
         case .blackKing, .whiteKing:
             guard isPathClearBetween(from: move.from, to: move.to) else {
@@ -245,13 +237,13 @@ class Board: NSCopying {
                 default: return false
                 }
                 
-                if !isValidMove(rookMove, possibleMoves: nil, ignoreCheck: ignoreCheck) {
+                if !isValidMove(rookMove, checks: checks) {
                     return false
                 }
             }
             
             board.move(move)
-            return ignoreCheck ? true : !board.isInCheck()
+            return !board.isInCheck(checks: checks)
         }
     }
 
@@ -303,18 +295,18 @@ class Board: NSCopying {
                 break
             }
         case .whiteKing, .blackKing:
-            switch move {
-            case CastleMoves.blackKingSide.king:
-                self.move(CastleMoves.blackKingSide.rook)
-            case CastleMoves.blackQueenSide.king:
-                self.move(CastleMoves.blackQueenSide.rook)
-            case CastleMoves.whiteKingSide.king:
-                self.move(CastleMoves.whiteKingSide.rook)
-            case CastleMoves.whiteQueenSide.king:
-                self.move(CastleMoves.whiteQueenSide.rook)
-            default:
-                break
-            }
+//            switch move {
+//            case CastleMoves.blackKingSide.king:
+//                self.move(CastleMoves.blackKingSide.rook)
+//            case CastleMoves.blackQueenSide.king:
+//                self.move(CastleMoves.blackQueenSide.rook)
+//            case CastleMoves.whiteKingSide.king:
+//                self.move(CastleMoves.whiteKingSide.rook)
+//            case CastleMoves.whiteQueenSide.king:
+//                self.move(CastleMoves.whiteQueenSide.rook)
+//            default:
+//                break
+//            }
             castleOptions.removeAll()
         default:
             break
@@ -348,3 +340,11 @@ class Board: NSCopying {
         data[space] = piece
     }
 }
+
+//func == (lhs: Space, rhs: Space) -> Bool {
+//    return lhs.rawValue == rhs.rawValue
+//}
+//
+//func ~=(lhs: Move, rhs: Move) -> Bool {
+//    return lhs.from ~= rhs.from && lhs.to ~= rhs.to
+//}

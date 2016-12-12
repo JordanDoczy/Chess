@@ -497,14 +497,6 @@ enum Space: String, Equatable {
     }
 }
 
-func == (lhs: Space, rhs: Space) -> Bool {
-    return lhs.rawValue == rhs.rawValue
-}
-
-func ~=(lhs: Move, rhs: Move) -> Bool {
-    return lhs.from ~= rhs.from && lhs.to ~= rhs.to
-}
-
 enum CastleMoves: String {
     case blackKingSide =  "k"
     case blackQueenSide = "q"
