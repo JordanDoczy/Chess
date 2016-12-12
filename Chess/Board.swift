@@ -295,18 +295,18 @@ class Board: NSCopying {
                 break
             }
         case .whiteKing, .blackKing:
-//            switch move {
-//            case CastleMoves.blackKingSide.king:
-//                self.move(CastleMoves.blackKingSide.rook)
-//            case CastleMoves.blackQueenSide.king:
-//                self.move(CastleMoves.blackQueenSide.rook)
-//            case CastleMoves.whiteKingSide.king:
-//                self.move(CastleMoves.whiteKingSide.rook)
-//            case CastleMoves.whiteQueenSide.king:
-//                self.move(CastleMoves.whiteQueenSide.rook)
-//            default:
-//                break
-//            }
+            switch move {
+            case CastleMoves.blackKingSide.king:
+                self.move(CastleMoves.blackKingSide.rook)
+            case CastleMoves.blackQueenSide.king:
+                self.move(CastleMoves.blackQueenSide.rook)
+            case CastleMoves.whiteKingSide.king:
+                self.move(CastleMoves.whiteKingSide.rook)
+            case CastleMoves.whiteQueenSide.king:
+                self.move(CastleMoves.whiteQueenSide.rook)
+            default:
+                break
+            }
             castleOptions.removeAll()
         default:
             break
@@ -341,10 +341,10 @@ class Board: NSCopying {
     }
 }
 
-//func == (lhs: Space, rhs: Space) -> Bool {
-//    return lhs.rawValue == rhs.rawValue
-//}
-//
-//func ~=(lhs: Move, rhs: Move) -> Bool {
-//    return lhs.from ~= rhs.from && lhs.to ~= rhs.to
-//}
+func == (lhs: Space, rhs: Space) -> Bool {
+    return lhs.rawValue == rhs.rawValue
+}
+
+func ~=(lhs: Move, rhs: Move) -> Bool {
+    return lhs.from ~= rhs.from && lhs.to ~= rhs.to
+}
