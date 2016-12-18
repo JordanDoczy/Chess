@@ -18,19 +18,19 @@ class ViewController: UIViewController {
     
     func test1() {
         let board = Fen.createBoard()
-        print(Fen.getFen(from: board))
+        //print(Fen.getFen(from: board))
         
-        board.move(Move(from: .e2, to: .e4))
-        print(Fen.getFen(from: board))
-        
-        board.move(Move(from: .g8, to: .f6))
-        print(Fen.getFen(from: board))
-        
-        board.move(Move(from: .b1, to: .c3))
-        print(Fen.getFen(from: board))
-        
-        board.move(Move(from: .e7, to: .e5))
-        print(Fen.getFen(from: board))
+//        board.move(Move(from: .e2, to: .e4))
+//        print(Fen.getFen(from: board))
+//        
+//        board.move(Move(from: .g8, to: .f6))
+//        print(Fen.getFen(from: board))
+//        
+//        board.move(Move(from: .b1, to: .c3))
+//        print(Fen.getFen(from: board))
+//        
+//        board.move(Move(from: .e7, to: .e5))
+//        print(Fen.getFen(from: board))
         
         //        let validMoves1 = board.getValidMoves()
         //        for move1 in validMoves1 {

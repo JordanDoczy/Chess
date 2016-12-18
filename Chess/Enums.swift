@@ -20,16 +20,16 @@ enum File: Int {
     case g
     case h
     
-    var spaces: Set<Space> {
+    var spaces: UInt64 {
         switch self {
-        case .a: return [.a1,.a2,.a3,.a4,.a5,.a6,.a7,.a8]
-        case .b: return [.b1,.b2,.b3,.b4,.b5,.b6,.b7,.b8]
-        case .c: return [.c1,.c2,.c3,.c4,.c5,.c6,.c7,.c8]
-        case .d: return [.d1,.d2,.d3,.d4,.d5,.d6,.d7,.d8]
-        case .e: return [.e1,.e2,.e3,.e4,.e5,.e6,.e7,.e8]
-        case .f: return [.f1,.f2,.f3,.f4,.f5,.f6,.f7,.f8]
-        case .g: return [.g1,.g2,.g3,.g4,.g5,.g6,.g7,.g8]
-        case .h: return [.h1,.h2,.h3,.h4,.h5,.h6,.h7,.h8]
+        case .a: return Space.a1.rawValue | Space.a2.rawValue | Space.a3.rawValue | Space.a4.rawValue | Space.a5.rawValue | Space.a6.rawValue | Space.a7.rawValue | Space.a8.rawValue
+        case .b: return Space.b1.rawValue | Space.b2.rawValue | Space.b3.rawValue | Space.b4.rawValue | Space.b5.rawValue | Space.b6.rawValue | Space.b7.rawValue | Space.b8.rawValue
+        case .c: return Space.c1.rawValue | Space.c2.rawValue | Space.c3.rawValue | Space.c4.rawValue | Space.c5.rawValue | Space.c6.rawValue | Space.c7.rawValue | Space.c8.rawValue
+        case .d: return Space.d1.rawValue | Space.d2.rawValue | Space.d3.rawValue | Space.d4.rawValue | Space.d5.rawValue | Space.d6.rawValue | Space.d7.rawValue | Space.d8.rawValue
+        case .e: return Space.e1.rawValue | Space.e2.rawValue | Space.e3.rawValue | Space.e4.rawValue | Space.e5.rawValue | Space.e6.rawValue | Space.e7.rawValue | Space.e8.rawValue
+        case .f: return Space.f1.rawValue | Space.f2.rawValue | Space.f3.rawValue | Space.f4.rawValue | Space.f5.rawValue | Space.f6.rawValue | Space.f7.rawValue | Space.f8.rawValue
+        case .g: return Space.g1.rawValue | Space.g2.rawValue | Space.g3.rawValue | Space.g4.rawValue | Space.g5.rawValue | Space.g6.rawValue | Space.g7.rawValue | Space.g8.rawValue
+        case .h: return Space.h1.rawValue | Space.h2.rawValue | Space.h3.rawValue | Space.h4.rawValue | Space.h5.rawValue | Space.h6.rawValue | Space.h7.rawValue | Space.h8.rawValue
         }
     }
     
@@ -71,16 +71,16 @@ enum Rank: Int {
     case _7
     case _8
     
-    var spaces: Set<Space> {
+    var spaces: UInt64{
         switch self {
-        case ._1: return [.a1,.b1,.c1,.d1,.e1,.f1,.g1,.h1]
-        case ._2: return [.a2,.b2,.c2,.d2,.e2,.f2,.g2,.h2]
-        case ._3: return [.a3,.b3,.c3,.d3,.e3,.f3,.g3,.h3]
-        case ._4: return [.a4,.b4,.c4,.d4,.e4,.f4,.g4,.h4]
-        case ._5: return [.a5,.b5,.c5,.d5,.e5,.f5,.g5,.h5]
-        case ._6: return [.a6,.b6,.c6,.d6,.e6,.f6,.g6,.h6]
-        case ._7: return [.a7,.b7,.c7,.d7,.e7,.f7,.g7,.h7]
-        case ._8: return [.a8,.b8,.c8,.d8,.e8,.f8,.g8,.h8]
+        case ._1: return Space.a1.rawValue | Space.b1.rawValue | Space.c1.rawValue | Space.d1.rawValue | Space.e1.rawValue | Space.f1.rawValue | Space.g1.rawValue | Space.h1.rawValue
+        case ._2: return Space.a2.rawValue | Space.b2.rawValue | Space.c2.rawValue | Space.d2.rawValue | Space.e2.rawValue | Space.f2.rawValue | Space.g2.rawValue | Space.h2.rawValue
+        case ._3: return Space.a3.rawValue | Space.b3.rawValue | Space.c3.rawValue | Space.d3.rawValue | Space.e3.rawValue | Space.f3.rawValue | Space.g3.rawValue | Space.h3.rawValue
+        case ._4: return Space.a4.rawValue | Space.b4.rawValue | Space.c4.rawValue | Space.d4.rawValue | Space.e4.rawValue | Space.f4.rawValue | Space.g4.rawValue | Space.h4.rawValue
+        case ._5: return Space.a5.rawValue | Space.b5.rawValue | Space.c5.rawValue | Space.d5.rawValue | Space.e5.rawValue | Space.f5.rawValue | Space.g5.rawValue | Space.h5.rawValue
+        case ._6: return Space.a6.rawValue | Space.b6.rawValue | Space.c6.rawValue | Space.d6.rawValue | Space.e6.rawValue | Space.f6.rawValue | Space.g6.rawValue | Space.h6.rawValue
+        case ._7: return Space.a7.rawValue | Space.b7.rawValue | Space.c7.rawValue | Space.d7.rawValue | Space.e7.rawValue | Space.f7.rawValue | Space.g7.rawValue | Space.h7.rawValue
+        case ._8: return Space.a8.rawValue | Space.b8.rawValue | Space.c8.rawValue | Space.d8.rawValue | Space.e8.rawValue | Space.f8.rawValue | Space.g8.rawValue | Space.h8.rawValue
         }
     }
     
@@ -140,34 +140,34 @@ enum Diagonal {
     case g8h7
     case h1a8
     
-    var spaces: Set<Space> {
+    var spaces: UInt64 {
         switch self {
-        case .a1h8: return [.a1,.b2,.c3,.d4,.e5,.f6,.g7,.h8]
-        case .b1h7: return [.b1,.c2,.d3,.e4,.f5,.g6,.h7]
-        case .b1a2: return [.b1,.a2]
-        case .b8a7: return [.b8,.a7]
-        case .b8h2: return [.b8,.c7,.d6,.e5,.f4,.g3,.h2]
-        case .c1h6: return [.c1,.d2,.e3,.f4,.g5,.h6]
-        case .c1a3: return [.c1,.b2,.a3]
-        case .c8a6: return [.c8,.b7,.a6]
-        case .c8h3: return [.c8,.d7,.e6,.f5,.g4,.h3]
-        case .d1h5: return [.d1,.e2,.f3,.g4,.h5]
-        case .d1a4: return [.d1,.c2,.b3,.a4]
-        case .d8a5: return [.d8,.c7,.b6,.a5]
-        case .d8h4: return [.d8,.e7,.f6,.g5,.h4]
-        case .e1h4: return [.e1,.f2,.g3,.h4]
-        case .e1a5: return [.e1,.d2,.c3,.b4,.a5]
-        case .e8a4: return [.e8,.d7,.c6,.b5,.a4]
-        case .e8h5: return [.e8,.f7,.g6,.h5]
-        case .f1h3: return [.f1,.g2,.h3]
-        case .f1a6: return [.f1,.e2,.d3,.c4,.b5,.a6]
-        case .f8a3: return [.f8,.e7,.d6,.c5,.b4,.a3]
-        case .f8h6: return [.f8,.g7,.h6]
-        case .g1h2: return [.g1,.h2]
-        case .g1a7: return [.g1,.f2,.e3,.d4,.c5,.b6,.a7]
-        case .g8a2: return [.g8,.f7,.e6,.d5,.c4,.b3,.a2]
-        case .g8h7: return [.g8,.h7]
-        case .h1a8: return [.h1,.g2,.f3,.e4,.d5,.c6,.b7,.a8]
+        case .a1h8: return Space.a1.rawValue | Space.b2.rawValue | Space.c3.rawValue | Space.d4.rawValue | Space.e5.rawValue | Space.f6.rawValue | Space.g7.rawValue | Space.h8.rawValue
+        case .b1h7: return Space.b1.rawValue | Space.c2.rawValue | Space.d3.rawValue | Space.e4.rawValue | Space.f5.rawValue | Space.g6.rawValue | Space.h7.rawValue
+        case .b1a2: return Space.b1.rawValue | Space.a2.rawValue
+        case .b8a7: return Space.b8.rawValue | Space.a7.rawValue
+        case .b8h2: return Space.b8.rawValue | Space.c7.rawValue | Space.d6.rawValue | Space.e5.rawValue | Space.f4.rawValue | Space.g3.rawValue | Space.h2.rawValue
+        case .c1h6: return Space.c1.rawValue | Space.d2.rawValue | Space.e3.rawValue | Space.f4.rawValue | Space.g5.rawValue | Space.h6.rawValue
+        case .c1a3: return Space.c1.rawValue | Space.b2.rawValue | Space.a3.rawValue
+        case .c8a6: return Space.c8.rawValue | Space.b7.rawValue | Space.a6.rawValue
+        case .c8h3: return Space.c8.rawValue | Space.d7.rawValue | Space.e6.rawValue | Space.f5.rawValue | Space.g4.rawValue | Space.h3.rawValue
+        case .d1h5: return Space.d1.rawValue | Space.e2.rawValue | Space.f3.rawValue | Space.g4.rawValue | Space.h5.rawValue
+        case .d1a4: return Space.d1.rawValue | Space.c2.rawValue | Space.b3.rawValue | Space.a4.rawValue
+        case .d8a5: return Space.d8.rawValue | Space.c7.rawValue | Space.b6.rawValue | Space.a5.rawValue
+        case .d8h4: return Space.d8.rawValue | Space.e7.rawValue | Space.f6.rawValue | Space.g5.rawValue | Space.h4.rawValue
+        case .e1h4: return Space.e1.rawValue | Space.f2.rawValue | Space.g3.rawValue | Space.h4.rawValue
+        case .e1a5: return Space.e1.rawValue | Space.d2.rawValue | Space.c3.rawValue | Space.b4.rawValue | Space.a5.rawValue
+        case .e8a4: return Space.e8.rawValue | Space.d7.rawValue | Space.c6.rawValue | Space.b5.rawValue | Space.a4.rawValue
+        case .e8h5: return Space.e8.rawValue | Space.f7.rawValue | Space.g6.rawValue | Space.h5.rawValue
+        case .f1h3: return Space.f1.rawValue | Space.g2.rawValue | Space.h3.rawValue
+        case .f1a6: return Space.f1.rawValue | Space.e2.rawValue | Space.d3.rawValue | Space.c4.rawValue | Space.b5.rawValue | Space.a6.rawValue
+        case .f8a3: return Space.f8.rawValue | Space.e7.rawValue | Space.d6.rawValue | Space.c5.rawValue | Space.b4.rawValue | Space.a3.rawValue
+        case .f8h6: return Space.f8.rawValue | Space.g7.rawValue | Space.h6.rawValue
+        case .g1h2: return Space.g1.rawValue | Space.h2.rawValue
+        case .g1a7: return Space.g1.rawValue | Space.f2.rawValue | Space.e3.rawValue | Space.d4.rawValue | Space.c5.rawValue | Space.b6.rawValue | Space.a7.rawValue
+        case .g8a2: return Space.g8.rawValue | Space.f7.rawValue | Space.e6.rawValue | Space.d5.rawValue | Space.c4.rawValue | Space.b3.rawValue | Space.a2.rawValue
+        case .g8h7: return Space.g8.rawValue | Space.h7.rawValue
+        case .h1a8: return Space.h1.rawValue | Space.g2.rawValue | Space.f3.rawValue | Space.e4.rawValue | Space.d5.rawValue | Space.c6.rawValue | Space.b7.rawValue | Space.a8.rawValue
         }
     }
 }
@@ -238,79 +238,79 @@ enum Space: UInt64 {
     case h7 = 0b100000000000000000000000000000000000000000000000000000000000000
     case h8 = 0b1000000000000000000000000000000000000000000000000000000000000000
 
-    var diagonals: Set<Diagonal> {
+    var diagonals: UInt64 {
         switch self {
-        case .a1: return [.a1h8]
-        case .a2: return [.g8a2, .b1a2]
-        case .a3: return [.f8a3, .c1a3]
-        case .a4: return [.e8a4, .d1a4]
-        case .a5: return [.d8a5, .e1a5]
-        case .a6: return [.c8a6, .f1a6]
-        case .a7: return [.b8a7, .g1a7]
-        case .a8: return [.h1a8]
+        case .a1: return Diagonal.a1h8.spaces
+        case .a2: return Diagonal.g8a2.spaces | Diagonal.b1a2.spaces
+        case .a3: return Diagonal.f8a3.spaces | Diagonal.c1a3.spaces
+        case .a4: return Diagonal.e8a4.spaces | Diagonal.d1a4.spaces
+        case .a5: return Diagonal.d8a5.spaces | Diagonal.e1a5.spaces
+        case .a6: return Diagonal.c8a6.spaces | Diagonal.f1a6.spaces
+        case .a7: return Diagonal.b8a7.spaces | Diagonal.g1a7.spaces
+        case .a8: return Diagonal.h1a8.spaces
             
-        case .b1: return [.b1a2, .b1h7]
-        case .b2: return [.a1h8, .c1a3]
-        case .b3: return [.g8a2, .d1a4]
-        case .b4: return [.f8a3, .e1a5]
-        case .b5: return [.e8a4, .f1a6]
-        case .b6: return [.d8a5, .g1a7]
-        case .b7: return [.c8a6, .h1a8]
-        case .b8: return [.b8a7, .b8h2]
+        case .b1: return Diagonal.b1a2.spaces | Diagonal.b1h7.spaces
+        case .b2: return Diagonal.a1h8.spaces | Diagonal.c1a3.spaces
+        case .b3: return Diagonal.g8a2.spaces | Diagonal.d1a4.spaces
+        case .b4: return Diagonal.f8a3.spaces | Diagonal.e1a5.spaces
+        case .b5: return Diagonal.e8a4.spaces | Diagonal.f1a6.spaces
+        case .b6: return Diagonal.d8a5.spaces | Diagonal.g1a7.spaces
+        case .b7: return Diagonal.c8a6.spaces | Diagonal.h1a8.spaces
+        case .b8: return Diagonal.b8a7.spaces | Diagonal.b8h2.spaces
             
-        case .c1: return [.c1a3, .c1h6]
-        case .c2: return [.d1a4, .b1h7]
-        case .c3: return [.e1a5, .a1h8]
-        case .c4: return [.g8a2, .f1a6]
-        case .c5: return [.f8a3, .g1a7]
-        case .c6: return [.e8a4, .h1a8]
-        case .c7: return [.d8a5, .b8h2]
-        case .c8: return [.c8a6, .c8h3]
+        case .c1: return Diagonal.c1a3.spaces | Diagonal.c1h6.spaces
+        case .c2: return Diagonal.d1a4.spaces | Diagonal.b1h7.spaces
+        case .c3: return Diagonal.e1a5.spaces | Diagonal.a1h8.spaces
+        case .c4: return Diagonal.g8a2.spaces | Diagonal.f1a6.spaces
+        case .c5: return Diagonal.f8a3.spaces | Diagonal.g1a7.spaces
+        case .c6: return Diagonal.e8a4.spaces | Diagonal.h1a8.spaces
+        case .c7: return Diagonal.d8a5.spaces | Diagonal.b8h2.spaces
+        case .c8: return Diagonal.c8a6.spaces | Diagonal.c8h3.spaces
             
-        case .d1: return [.d1a4, .d1h5]
-        case .d2: return [.c1h6, .e1a5]
-        case .d3: return [.b1h7, .f1a6]
-        case .d4: return [.a1h8, .g1a7]
-        case .d5: return [.g8a2, .h1a8]
-        case .d6: return [.f8a3, .b8h2]
-        case .d7: return [.e8a4, .c8h3]
-        case .d8: return [.d8a5, .d8h4]
+        case .d1: return Diagonal.d1a4.spaces | Diagonal.d1h5.spaces
+        case .d2: return Diagonal.c1h6.spaces | Diagonal.e1a5.spaces
+        case .d3: return Diagonal.b1h7.spaces | Diagonal.f1a6.spaces
+        case .d4: return Diagonal.a1h8.spaces | Diagonal.g1a7.spaces
+        case .d5: return Diagonal.g8a2.spaces | Diagonal.h1a8.spaces
+        case .d6: return Diagonal.f8a3.spaces | Diagonal.b8h2.spaces
+        case .d7: return Diagonal.e8a4.spaces | Diagonal.c8h3.spaces
+        case .d8: return Diagonal.d8a5.spaces | Diagonal.d8h4.spaces
             
-        case .e1: return [.e1a5, .e1h4]
-        case .e2: return [.d1h5, .f1a6]
-        case .e3: return [.c1h6, .g1a7]
-        case .e4: return [.b1h7, .h1a8]
-        case .e5: return [.a1h8, .b8h2]
-        case .e6: return [.g8a2, .c8h3]
-        case .e7: return [.f8a3, .d8h4]
-        case .e8: return [.e8a4, .e8h5]
+        case .e1: return Diagonal.e1a5.spaces | Diagonal.e1h4.spaces
+        case .e2: return Diagonal.d1h5.spaces | Diagonal.f1a6.spaces
+        case .e3: return Diagonal.c1h6.spaces | Diagonal.g1a7.spaces
+        case .e4: return Diagonal.b1h7.spaces | Diagonal.h1a8.spaces
+        case .e5: return Diagonal.a1h8.spaces | Diagonal.b8h2.spaces
+        case .e6: return Diagonal.g8a2.spaces | Diagonal.c8h3.spaces
+        case .e7: return Diagonal.f8a3.spaces | Diagonal.d8h4.spaces
+        case .e8: return Diagonal.e8a4.spaces | Diagonal.e8h5.spaces
             
-        case .f1: return [.f1a6, .f1h3]
-        case .f2: return [.e1h4, .g1a7]
-        case .f3: return [.d1h5, .h1a8]
-        case .f4: return [.c1h6, .b8h2]
-        case .f5: return [.b1h7, .c8h3]
-        case .f6: return [.a1h8, .d8h4]
-        case .f7: return [.g8a2, .e8h5]
-        case .f8: return [.f8a3, .f8h6]
+        case .f1: return Diagonal.f1a6.spaces | Diagonal.f1h3.spaces
+        case .f2: return Diagonal.e1h4.spaces | Diagonal.g1a7.spaces
+        case .f3: return Diagonal.d1h5.spaces | Diagonal.h1a8.spaces
+        case .f4: return Diagonal.c1h6.spaces | Diagonal.b8h2.spaces
+        case .f5: return Diagonal.b1h7.spaces | Diagonal.c8h3.spaces
+        case .f6: return Diagonal.a1h8.spaces | Diagonal.d8h4.spaces
+        case .f7: return Diagonal.g8a2.spaces | Diagonal.e8h5.spaces
+        case .f8: return Diagonal.f8a3.spaces | Diagonal.f8h6.spaces
             
-        case .g1: return [.g1a7, .g1h2]
-        case .g2: return [.f1h3, .h1a8]
-        case .g3: return [.e1h4, .b8h2]
-        case .g4: return [.d1h5, .c8h3]
-        case .g5: return [.c1h6, .d8h4]
-        case .g6: return [.b1h7, .e8h5]
-        case .g7: return [.a1h8, .f8h6]
-        case .g8: return [.g8a2, .g8h7]
+        case .g1: return Diagonal.g1a7.spaces | Diagonal.g1h2.spaces
+        case .g2: return Diagonal.f1h3.spaces | Diagonal.h1a8.spaces
+        case .g3: return Diagonal.e1h4.spaces | Diagonal.b8h2.spaces
+        case .g4: return Diagonal.d1h5.spaces | Diagonal.c8h3.spaces
+        case .g5: return Diagonal.c1h6.spaces | Diagonal.d8h4.spaces
+        case .g6: return Diagonal.b1h7.spaces | Diagonal.e8h5.spaces
+        case .g7: return Diagonal.a1h8.spaces | Diagonal.f8h6.spaces
+        case .g8: return Diagonal.g8a2.spaces | Diagonal.g8h7.spaces
             
-        case .h1: return [.h1a8]
-        case .h2: return [.b8h2, .g1h2]
-        case .h3: return [.c8h3, .f1h3]
-        case .h4: return [.d8h4, .e1h4]
-        case .h5: return [.e8h5, .d1h5]
-        case .h6: return [.f8h6, .c1h6]
-        case .h7: return [.g8h7, .b1h7]
-        case .h8: return [.a1h8]
+        case .h1: return Diagonal.h1a8.spaces
+        case .h2: return Diagonal.b8h2.spaces | Diagonal.g1h2.spaces
+        case .h3: return Diagonal.c8h3.spaces | Diagonal.f1h3.spaces
+        case .h4: return Diagonal.d8h4.spaces | Diagonal.e1h4.spaces
+        case .h5: return Diagonal.e8h5.spaces | Diagonal.d1h5.spaces
+        case .h6: return Diagonal.f8h6.spaces | Diagonal.c1h6.spaces
+        case .h7: return Diagonal.g8h7.spaces | Diagonal.b1h7.spaces
+        case .h8: return Diagonal.a1h8.spaces
         }
     }
     
@@ -340,83 +340,159 @@ enum Space: UInt64 {
         }
     }
     
-    var knightMoves: Set<Space> {
+    var knightMoves: UInt64 {
         switch self {
-        case .a1: return [.b3,.c2]
-        case .a2: return [.b4,.c1,.c3]
-        case .a3: return [.b5,.b1,.c4,.c2]
-        case .a4: return [.b6,.b2,.c5,.c3]
-        case .a5: return [.b7,.b3,.c6,.c4]
-        case .a6: return [.b8,.b4,.c7,.c5]
-        case .a7: return [.b5,.c8,.c6]
-        case .a8: return [.b6,.c7]
+        case .a1: return Space.b3.rawValue | Space.c2.rawValue
+        case .a2: return Space.b4.rawValue | Space.c1.rawValue | Space.c3.rawValue
+        case .a3: return Space.b5.rawValue | Space.b1.rawValue | Space.c4.rawValue | Space.c2.rawValue
+        case .a4: return Space.b6.rawValue | Space.b2.rawValue | Space.c5.rawValue | Space.c3.rawValue
+        case .a5: return Space.b7.rawValue | Space.b3.rawValue | Space.c6.rawValue | Space.c4.rawValue
+        case .a6: return Space.b8.rawValue | Space.b4.rawValue | Space.c7.rawValue | Space.c5.rawValue
+        case .a7: return Space.b5.rawValue | Space.c8.rawValue | Space.c6.rawValue
+        case .a8: return Space.b6.rawValue | Space.c7.rawValue
             
-        case .b1: return [.a3,.c3,.d2]
-        case .b2: return [.a4,.c4,.d1,.d3]
-        case .b3: return [.a1,.a5,.c1,.c5,.d2,.d4]
-        case .b4: return [.a2,.a6,.c2,.c6,.d3,.d5]
-        case .b5: return [.a3,.a7,.c3,.c7,.d4,.d6]
-        case .b6: return [.a4,.a8,.c4,.c8,.d5,.d7]
-        case .b7: return [.a5,.c5,.d6,.d8]
-        case .b8: return [.a6,.c6,.d7]
+        case .b1: return Space.a3.rawValue | Space.c3.rawValue | Space.d2.rawValue
+        case .b2: return Space.a4.rawValue | Space.c4.rawValue | Space.d1.rawValue | Space.d3.rawValue
+        case .b3: return Space.a1.rawValue | Space.a5.rawValue | Space.c1.rawValue | Space.c5.rawValue | Space.d2.rawValue | Space.d4.rawValue
+        case .b4: return Space.a2.rawValue | Space.a6.rawValue | Space.c2.rawValue | Space.c6.rawValue | Space.d3.rawValue | Space.d5.rawValue
+        case .b5: return Space.a3.rawValue | Space.a7.rawValue | Space.c3.rawValue | Space.c7.rawValue | Space.d4.rawValue | Space.d6.rawValue
+        case .b6: return Space.a4.rawValue | Space.a8.rawValue | Space.c4.rawValue | Space.c8.rawValue | Space.d5.rawValue | Space.d7.rawValue
+        case .b7: return Space.a5.rawValue | Space.c5.rawValue | Space.d6.rawValue | Space.d8.rawValue
+        case .b8: return Space.a6.rawValue | Space.c6.rawValue | Space.d7.rawValue
             
-        case .c1: return [.a2,.b3,.d3,.e2]
-        case .c2: return [.a1,.a3,.b4,.d4,.e1,.e3]
-        case .c3: return [.a2,.a4,.b1,.b5,.d1,.d5,.e2,.e4]
-        case .c4: return [.a3,.a5,.b2,.b6,.d2,.d6,.e3,.e5]
-        case .c5: return [.a4,.a6,.b3,.b7,.d3,.d7,.e4,.e6]
-        case .c6: return [.a5,.a7,.b4,.b8,.d4,.d8,.e6,.e7]
-        case .c7: return [.a6,.a8,.b5,.d5,.e6,.e8]
-        case .c8: return [.a7,.b6,.d6,.e7]
+        case .c1: return Space.a2.rawValue | Space.b3.rawValue | Space.d3.rawValue | Space.e2.rawValue
+        case .c2: return Space.a1.rawValue | Space.a3.rawValue | Space.b4.rawValue | Space.d4.rawValue | Space.e1.rawValue | Space.e3.rawValue
+        case .c3: return Space.a2.rawValue | Space.a4.rawValue | Space.b1.rawValue | Space.b5.rawValue | Space.d1.rawValue | Space.d5.rawValue | Space.e2.rawValue | Space.e4.rawValue
+        case .c4: return Space.a3.rawValue | Space.a5.rawValue | Space.b2.rawValue | Space.b6.rawValue | Space.d2.rawValue | Space.d6.rawValue | Space.e3.rawValue | Space.e5.rawValue
+        case .c5: return Space.a4.rawValue | Space.a6.rawValue | Space.b3.rawValue | Space.b7.rawValue | Space.d3.rawValue | Space.d7.rawValue | Space.e4.rawValue | Space.e6.rawValue
+        case .c6: return Space.a5.rawValue | Space.a7.rawValue | Space.b4.rawValue | Space.b8.rawValue | Space.d4.rawValue | Space.d8.rawValue | Space.e6.rawValue | Space.e7.rawValue
+        case .c7: return Space.a6.rawValue | Space.a8.rawValue | Space.b5.rawValue | Space.d5.rawValue | Space.e6.rawValue | Space.e8.rawValue
+        case .c8: return Space.a7.rawValue | Space.b6.rawValue | Space.d6.rawValue | Space.e7.rawValue
             
-        case .d1: return [.b2,.c3,.e3,.f2]
-        case .d2: return [.b1,.b3,.c4,.e4,.f1,.f3]
-        case .d3: return [.b2,.b4,.c1,.c5,.e1,.e5,.f2,.f4]
-        case .d4: return [.b3,.b5,.c2,.c6,.e2,.e6,.f3,.f5]
-        case .d5: return [.b4,.b6,.c3,.c7,.e3,.e7,.f4,.f6]
-        case .d6: return [.b5,.b7,.c4,.c8,.e4,.e8,.f6,.f7]
-        case .d7: return [.b6,.b8,.c5,.e5,.f6,.f8]
-        case .d8: return [.b7,.c6,.e6,.f7]
+        case .d1: return Space.b2.rawValue | Space.c3.rawValue | Space.e3.rawValue | Space.f2.rawValue
+        case .d2: return Space.b1.rawValue | Space.b3.rawValue | Space.c4.rawValue | Space.e4.rawValue | Space.f1.rawValue | Space.f3.rawValue
+        case .d3: return Space.b2.rawValue | Space.b4.rawValue | Space.c1.rawValue | Space.c5.rawValue | Space.e1.rawValue | Space.e5.rawValue | Space.f2.rawValue | Space.f4.rawValue
+        case .d4: return Space.b3.rawValue | Space.b5.rawValue | Space.c2.rawValue | Space.c6.rawValue | Space.e2.rawValue | Space.e6.rawValue | Space.f3.rawValue | Space.f5.rawValue
+        case .d5: return Space.b4.rawValue | Space.b6.rawValue | Space.c3.rawValue | Space.c7.rawValue | Space.e3.rawValue | Space.e7.rawValue | Space.f4.rawValue | Space.f6.rawValue
+        case .d6: return Space.b5.rawValue | Space.b7.rawValue | Space.c4.rawValue | Space.c8.rawValue | Space.e4.rawValue | Space.e8.rawValue | Space.f6.rawValue | Space.f7.rawValue
+        case .d7: return Space.b6.rawValue | Space.b8.rawValue | Space.c5.rawValue | Space.e5.rawValue | Space.f6.rawValue | Space.f8.rawValue
+        case .d8: return Space.b7.rawValue | Space.c6.rawValue | Space.e6.rawValue | Space.f7.rawValue
             
-        case .e1: return [.c2,.d3,.f3,.g2]
-        case .e2: return [.c1,.c3,.d4,.f4,.g1,.g3]
-        case .e3: return [.c2,.c4,.d1,.d5,.f1,.f5,.g2,.g4]
-        case .e4: return [.c3,.c5,.d2,.d6,.f2,.f6,.g3,.g5]
-        case .e5: return [.c4,.c6,.d3,.d7,.f3,.f7,.g4,.g6]
-        case .e6: return [.c5,.c7,.d4,.d8,.f4,.f8,.g6,.g7]
-        case .e7: return [.c6,.c8,.d5,.f5,.g6,.g8]
-        case .e8: return [.c7,.d6,.f6,.g7]
+        case .e1: return Space.c2.rawValue | Space.d3.rawValue | Space.f3.rawValue | Space.g2.rawValue
+        case .e2: return Space.c1.rawValue | Space.c3.rawValue | Space.d4.rawValue | Space.f4.rawValue | Space.g1.rawValue | Space.g3.rawValue
+        case .e3: return Space.c2.rawValue | Space.c4.rawValue | Space.d1.rawValue | Space.d5.rawValue | Space.f1.rawValue | Space.f5.rawValue | Space.g2.rawValue | Space.g4.rawValue
+        case .e4: return Space.c3.rawValue | Space.c5.rawValue | Space.d2.rawValue | Space.d6.rawValue | Space.f2.rawValue | Space.f6.rawValue | Space.g3.rawValue | Space.g5.rawValue
+        case .e5: return Space.c4.rawValue | Space.c6.rawValue | Space.d3.rawValue | Space.d7.rawValue | Space.f3.rawValue | Space.f7.rawValue | Space.g4.rawValue | Space.g6.rawValue
+        case .e6: return Space.c5.rawValue | Space.c7.rawValue | Space.d4.rawValue | Space.d8.rawValue | Space.f4.rawValue | Space.f8.rawValue | Space.g6.rawValue | Space.g7.rawValue
+        case .e7: return Space.c6.rawValue | Space.c8.rawValue | Space.d5.rawValue | Space.f5.rawValue | Space.g6.rawValue | Space.g8.rawValue
+        case .e8: return Space.c7.rawValue | Space.d6.rawValue | Space.f6.rawValue | Space.g7.rawValue
             
-        case .f1: return [.d2,.e3,.g3,.h2]
-        case .f2: return [.d1,.d3,.e4,.g4,.g1,.h3]
-        case .f3: return [.d2,.d4,.e1,.e5,.g1,.g5,.h2,.h4]
-        case .f4: return [.d3,.d5,.e2,.e6,.g2,.g6,.h3,.h5]
-        case .f5: return [.d4,.d6,.e3,.e7,.g3,.g7,.h4,.h6]
-        case .f6: return [.d5,.d7,.e4,.e8,.g4,.g8,.h6,.h7]
-        case .f7: return [.d6,.d8,.e5,.g5,.h6,.h8]
-        case .f8: return [.d7,.e6,.g6,.h7]
+        case .f1: return Space.d2.rawValue | Space.e3.rawValue | Space.g3.rawValue | Space.h2.rawValue
+        case .f2: return Space.d1.rawValue | Space.d3.rawValue | Space.e4.rawValue | Space.g4.rawValue | Space.g1.rawValue | Space.h3.rawValue
+        case .f3: return Space.d2.rawValue | Space.d4.rawValue | Space.e1.rawValue | Space.e5.rawValue | Space.g1.rawValue | Space.g5.rawValue | Space.h2.rawValue | Space.h4.rawValue
+        case .f4: return Space.d3.rawValue | Space.d5.rawValue | Space.e2.rawValue | Space.e6.rawValue | Space.g2.rawValue | Space.g6.rawValue | Space.h3.rawValue | Space.h5.rawValue
+        case .f5: return Space.d4.rawValue | Space.d6.rawValue | Space.e3.rawValue | Space.e7.rawValue | Space.g3.rawValue | Space.g7.rawValue | Space.h4.rawValue | Space.h6.rawValue
+        case .f6: return Space.d5.rawValue | Space.d7.rawValue | Space.e4.rawValue | Space.e8.rawValue | Space.g4.rawValue | Space.g8.rawValue | Space.h6.rawValue | Space.h7.rawValue
+        case .f7: return Space.d6.rawValue | Space.d8.rawValue | Space.e5.rawValue | Space.g5.rawValue | Space.h6.rawValue | Space.h8.rawValue
+        case .f8: return Space.d7.rawValue | Space.e6.rawValue | Space.g6.rawValue | Space.h7.rawValue
             
-        case .g1: return [.h3,.f3,.e2]
-        case .g2: return [.h4,.f4,.e1,.e3]
-        case .g3: return [.h1,.h5,.f1,.f5,.e2,.e4]
-        case .g4: return [.h2,.h6,.f2,.f6,.e3,.e5]
-        case .g5: return [.h3,.h7,.f3,.f7,.e4,.e6]
-        case .g6: return [.h4,.h8,.f4,.f8,.e5,.e7]
-        case .g7: return [.h5,.f5,.e6,.e8]
-        case .g8: return [.h6,.f6,.e7]
+        case .g1: return Space.h3.rawValue | Space.f3.rawValue | Space.e2.rawValue
+        case .g2: return Space.h4.rawValue | Space.f4.rawValue | Space.e1.rawValue | Space.e3.rawValue
+        case .g3: return Space.h1.rawValue | Space.h5.rawValue | Space.f1.rawValue | Space.f5.rawValue | Space.e2.rawValue | Space.e4.rawValue
+        case .g4: return Space.h2.rawValue | Space.h6.rawValue | Space.f2.rawValue | Space.f6.rawValue | Space.e3.rawValue | Space.e5.rawValue
+        case .g5: return Space.h3.rawValue | Space.h7.rawValue | Space.f3.rawValue | Space.f7.rawValue | Space.e4.rawValue | Space.e6.rawValue
+        case .g6: return Space.h4.rawValue | Space.h8.rawValue | Space.f4.rawValue | Space.f8.rawValue | Space.e5.rawValue | Space.e7.rawValue
+        case .g7: return Space.h5.rawValue | Space.f5.rawValue | Space.e6.rawValue | Space.e8.rawValue
+        case .g8: return Space.h6.rawValue | Space.f6.rawValue | Space.e7.rawValue
             
-        case .h1: return [.g3,.f2]
-        case .h2: return [.g4,.f1,.f3]
-        case .h3: return [.g5,.g1,.f4,.f2]
-        case .h4: return [.g6,.g2,.f5,.f3]
-        case .h5: return [.g7,.g3,.f6,.f4]
-        case .h6: return [.g8,.g4,.f7,.f5]
-        case .h7: return [.g5,.f8,.f6]
-        case .h8: return [.g6,.f7]
+        case .h1: return Space.g3.rawValue | Space.f2.rawValue
+        case .h2: return Space.g4.rawValue | Space.f1.rawValue | Space.f3.rawValue
+        case .h3: return Space.g5.rawValue | Space.g1.rawValue | Space.f4.rawValue | Space.f2.rawValue
+        case .h4: return Space.g6.rawValue | Space.g2.rawValue | Space.f5.rawValue | Space.f3.rawValue
+        case .h5: return Space.g7.rawValue | Space.g3.rawValue | Space.f6.rawValue | Space.f4.rawValue
+        case .h6: return Space.g8.rawValue | Space.g4.rawValue | Space.f7.rawValue | Space.f5.rawValue
+        case .h7: return Space.g5.rawValue | Space.f8.rawValue | Space.f6.rawValue
+        case .h8: return Space.g6.rawValue | Space.f7.rawValue
         }
     }
     
-    var adjacentSpaces: Set<Space> {
+    var adjacentSpaces: UInt64 {
+        switch self {
+        case .a1: return Space.a2.rawValue | Space.b1.rawValue | Space.b2.rawValue
+        case .a2: return Space.a1.rawValue | Space.a3.rawValue | Space.b1.rawValue | Space.b2.rawValue | Space.b3.rawValue
+        case .a3: return Space.a2.rawValue | Space.a4.rawValue | Space.b2.rawValue | Space.b3.rawValue | Space.b4.rawValue
+        case .a4: return Space.a3.rawValue | Space.a5.rawValue | Space.b3.rawValue | Space.b4.rawValue | Space.b5.rawValue
+        case .a5: return Space.a4.rawValue | Space.a6.rawValue | Space.b4.rawValue | Space.b5.rawValue | Space.b6.rawValue
+        case .a6: return Space.a5.rawValue | Space.a7.rawValue | Space.b5.rawValue | Space.b6.rawValue | Space.b7.rawValue
+        case .a7: return Space.a6.rawValue | Space.a8.rawValue | Space.b6.rawValue | Space.b7.rawValue | Space.b8.rawValue
+        case .a8: return Space.a7.rawValue | Space.b7.rawValue | Space.b8.rawValue
+            
+        case .b1: return Space.a1.rawValue | Space.a2.rawValue | Space.b2.rawValue | Space.c1.rawValue | Space.c2.rawValue
+        case .b2: return Space.a1.rawValue | Space.a2.rawValue | Space.a3.rawValue | Space.b1.rawValue | Space.b3.rawValue | Space.c1.rawValue | Space.c2.rawValue | Space.c3.rawValue
+        case .b3: return Space.a2.rawValue | Space.a3.rawValue | Space.a4.rawValue | Space.b2.rawValue | Space.b4.rawValue | Space.c2.rawValue | Space.c3.rawValue | Space.c4.rawValue
+        case .b4: return Space.a3.rawValue | Space.a4.rawValue | Space.a5.rawValue | Space.b3.rawValue | Space.b5.rawValue | Space.c3.rawValue | Space.c4.rawValue | Space.c5.rawValue
+        case .b5: return Space.a4.rawValue | Space.a5.rawValue | Space.a6.rawValue | Space.b4.rawValue | Space.b6.rawValue | Space.c4.rawValue | Space.c5.rawValue | Space.c6.rawValue
+        case .b6: return Space.a5.rawValue | Space.a6.rawValue | Space.a7.rawValue | Space.b5.rawValue | Space.b7.rawValue | Space.c5.rawValue | Space.c6.rawValue | Space.c7.rawValue
+        case .b7: return Space.a6.rawValue | Space.a7.rawValue | Space.a8.rawValue | Space.b6.rawValue | Space.b8.rawValue | Space.c6.rawValue | Space.c7.rawValue | Space.c8.rawValue
+        case .b8: return Space.a7.rawValue | Space.a8.rawValue | Space.b7.rawValue | Space.c7.rawValue | Space.c8.rawValue
+            
+        case .c1: return Space.b1.rawValue | Space.b2.rawValue | Space.c2.rawValue | Space.d1.rawValue | Space.d2.rawValue
+        case .c2: return Space.b1.rawValue | Space.b2.rawValue | Space.b3.rawValue | Space.c1.rawValue | Space.c3.rawValue | Space.d1.rawValue | Space.d2.rawValue | Space.d3.rawValue
+        case .c3: return Space.b2.rawValue | Space.b3.rawValue | Space.b4.rawValue | Space.c2.rawValue | Space.c4.rawValue | Space.d2.rawValue | Space.d3.rawValue | Space.d4.rawValue
+        case .c4: return Space.b3.rawValue | Space.b4.rawValue | Space.b5.rawValue | Space.c3.rawValue | Space.c5.rawValue | Space.d3.rawValue | Space.d4.rawValue | Space.d5.rawValue
+        case .c5: return Space.b4.rawValue | Space.b5.rawValue | Space.b6.rawValue | Space.c4.rawValue | Space.c6.rawValue | Space.d4.rawValue | Space.d5.rawValue | Space.d6.rawValue
+        case .c6: return Space.b5.rawValue | Space.b6.rawValue | Space.b7.rawValue | Space.c5.rawValue | Space.c7.rawValue | Space.d5.rawValue | Space.d6.rawValue | Space.d7.rawValue
+        case .c7: return Space.b6.rawValue | Space.b7.rawValue | Space.b8.rawValue | Space.c6.rawValue | Space.c8.rawValue | Space.d6.rawValue | Space.d7.rawValue | Space.d8.rawValue
+        case .c8: return Space.b7.rawValue | Space.b8.rawValue | Space.c7.rawValue | Space.d7.rawValue | Space.d8.rawValue
+            
+        case .d1: return Space.c1.rawValue | Space.c2.rawValue | Space.d2.rawValue | Space.e1.rawValue | Space.e2.rawValue
+        case .d2: return Space.c1.rawValue | Space.c2.rawValue | Space.c3.rawValue | Space.d1.rawValue | Space.d3.rawValue | Space.e1.rawValue | Space.e2.rawValue | Space.e3.rawValue
+        case .d3: return Space.c2.rawValue | Space.c3.rawValue | Space.c4.rawValue | Space.d2.rawValue | Space.d4.rawValue | Space.e2.rawValue | Space.e3.rawValue | Space.e4.rawValue
+        case .d4: return Space.c3.rawValue | Space.c4.rawValue | Space.c5.rawValue | Space.d3.rawValue | Space.d5.rawValue | Space.e3.rawValue | Space.e4.rawValue | Space.e5.rawValue
+        case .d5: return Space.c4.rawValue | Space.c5.rawValue | Space.c6.rawValue | Space.d4.rawValue | Space.d6.rawValue | Space.e4.rawValue | Space.e5.rawValue | Space.e6.rawValue
+        case .d6: return Space.c5.rawValue | Space.c6.rawValue | Space.c7.rawValue | Space.d5.rawValue | Space.d7.rawValue | Space.e5.rawValue | Space.e6.rawValue | Space.e7.rawValue
+        case .d7: return Space.c6.rawValue | Space.c7.rawValue | Space.c8.rawValue | Space.d6.rawValue | Space.d8.rawValue | Space.e6.rawValue | Space.e7.rawValue | Space.e8.rawValue
+        case .d8: return Space.c7.rawValue | Space.c8.rawValue | Space.d7.rawValue | Space.e7.rawValue | Space.e8.rawValue
+            
+        case .e1: return Space.d1.rawValue | Space.d2.rawValue | Space.e2.rawValue | Space.f1.rawValue | Space.f2.rawValue
+        case .e2: return Space.d1.rawValue | Space.d2.rawValue | Space.d3.rawValue | Space.e1.rawValue | Space.e3.rawValue | Space.f1.rawValue | Space.f2.rawValue | Space.f3.rawValue
+        case .e3: return Space.d2.rawValue | Space.d3.rawValue | Space.d4.rawValue | Space.e2.rawValue | Space.e4.rawValue | Space.f2.rawValue | Space.f3.rawValue | Space.f4.rawValue
+        case .e4: return Space.d3.rawValue | Space.d4.rawValue | Space.d5.rawValue | Space.e3.rawValue | Space.e5.rawValue | Space.f3.rawValue | Space.f4.rawValue | Space.f5.rawValue
+        case .e5: return Space.d4.rawValue | Space.d5.rawValue | Space.d6.rawValue | Space.e4.rawValue | Space.e6.rawValue | Space.f4.rawValue | Space.f5.rawValue | Space.f6.rawValue
+        case .e6: return Space.d5.rawValue | Space.d6.rawValue | Space.d7.rawValue | Space.e5.rawValue | Space.e7.rawValue | Space.f5.rawValue | Space.f6.rawValue | Space.f7.rawValue
+        case .e7: return Space.d6.rawValue | Space.d7.rawValue | Space.d8.rawValue | Space.e6.rawValue | Space.e8.rawValue | Space.f6.rawValue | Space.f7.rawValue | Space.f8.rawValue
+        case .e8: return Space.d7.rawValue | Space.d8.rawValue | Space.e7.rawValue | Space.f7.rawValue | Space.f8.rawValue
+            
+        case .f1: return Space.e1.rawValue | Space.e2.rawValue | Space.f2.rawValue | Space.g1.rawValue | Space.g2.rawValue
+        case .f2: return Space.e1.rawValue | Space.e2.rawValue | Space.e3.rawValue | Space.f1.rawValue | Space.f3.rawValue | Space.g1.rawValue | Space.g2.rawValue | Space.g3.rawValue
+        case .f3: return Space.e2.rawValue | Space.e3.rawValue | Space.e4.rawValue | Space.f2.rawValue | Space.f4.rawValue | Space.g2.rawValue | Space.g3.rawValue | Space.g4.rawValue
+        case .f4: return Space.e3.rawValue | Space.e4.rawValue | Space.e5.rawValue | Space.f3.rawValue | Space.f5.rawValue | Space.g3.rawValue | Space.g4.rawValue | Space.g5.rawValue
+        case .f5: return Space.e4.rawValue | Space.e5.rawValue | Space.e6.rawValue | Space.f4.rawValue | Space.f6.rawValue | Space.g4.rawValue | Space.g5.rawValue | Space.g6.rawValue
+        case .f6: return Space.e5.rawValue | Space.e6.rawValue | Space.e7.rawValue | Space.f5.rawValue | Space.f7.rawValue | Space.g5.rawValue | Space.g6.rawValue | Space.g7.rawValue
+        case .f7: return Space.e6.rawValue | Space.e7.rawValue | Space.e8.rawValue | Space.f6.rawValue | Space.f8.rawValue | Space.g6.rawValue | Space.g7.rawValue | Space.g8.rawValue
+        case .f8: return Space.e7.rawValue | Space.e8.rawValue | Space.f7.rawValue | Space.g7.rawValue | Space.g8.rawValue
+            
+        case .g1: return Space.f1.rawValue | Space.f2.rawValue | Space.g2.rawValue | Space.h1.rawValue | Space.h2.rawValue
+        case .g2: return Space.f1.rawValue | Space.f2.rawValue | Space.f3.rawValue | Space.g1.rawValue | Space.g3.rawValue | Space.h1.rawValue | Space.h2.rawValue | Space.h3.rawValue
+        case .g3: return Space.f2.rawValue | Space.f3.rawValue | Space.f4.rawValue | Space.g2.rawValue | Space.g4.rawValue | Space.h2.rawValue | Space.h3.rawValue | Space.h4.rawValue
+        case .g4: return Space.f3.rawValue | Space.f4.rawValue | Space.f5.rawValue | Space.g3.rawValue | Space.g5.rawValue | Space.h3.rawValue | Space.h4.rawValue | Space.h5.rawValue
+        case .g5: return Space.f4.rawValue | Space.f5.rawValue | Space.f6.rawValue | Space.g4.rawValue | Space.g6.rawValue | Space.h4.rawValue | Space.h5.rawValue | Space.h6.rawValue
+        case .g6: return Space.f5.rawValue | Space.f6.rawValue | Space.f7.rawValue | Space.g5.rawValue | Space.g7.rawValue | Space.h5.rawValue | Space.h6.rawValue | Space.h7.rawValue
+        case .g7: return Space.f6.rawValue | Space.f7.rawValue | Space.f8.rawValue | Space.g6.rawValue | Space.g8.rawValue | Space.h6.rawValue | Space.h7.rawValue | Space.h8.rawValue
+        case .g8: return Space.f7.rawValue | Space.f8.rawValue | Space.g7.rawValue | Space.h7.rawValue | Space.h8.rawValue
+            
+        case .h1: return Space.h2.rawValue | Space.g1.rawValue | Space.g2.rawValue
+        case .h2: return Space.h1.rawValue | Space.h3.rawValue | Space.g1.rawValue | Space.g2.rawValue | Space.g3.rawValue
+        case .h3: return Space.h2.rawValue | Space.h4.rawValue | Space.g2.rawValue | Space.g3.rawValue | Space.g4.rawValue
+        case .h4: return Space.h3.rawValue | Space.h5.rawValue | Space.g3.rawValue | Space.g4.rawValue | Space.g5.rawValue
+        case .h5: return Space.h4.rawValue | Space.h6.rawValue | Space.g4.rawValue | Space.g5.rawValue | Space.g6.rawValue
+        case .h6: return Space.h5.rawValue | Space.h7.rawValue | Space.g5.rawValue | Space.g6.rawValue | Space.g7.rawValue
+        case .h7: return Space.h6.rawValue | Space.h8.rawValue | Space.g6.rawValue | Space.g7.rawValue | Space.g8.rawValue
+        case .h8: return Space.h7.rawValue | Space.g7.rawValue | Space.g8.rawValue
+        }
+    }
+    
+    var adjacentSpacesOld: Set<Space> {
         switch self {
         case .a1: return [.a2,.b1,.b2]
         case .a2: return [.a1,.a3,.b1,.b2,.b3]
@@ -491,6 +567,7 @@ enum Space: UInt64 {
         case .h8: return [.h7,.g7,.g8]
         }
     }
+
 }
 
 enum CastleMoves: String {

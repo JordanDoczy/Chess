@@ -79,50 +79,50 @@ class Fen {
         return board
     }
     
-    static func getFen(from board: Board) -> String {
-        
-        func getFen(at rank: Rank) -> String {
-            let pieces = board.getPieces(at: rank)
-            var value = ""
-            var spaceCount = 0
-            
-            for piece in pieces {
-                if let piece = piece {
-                    if spaceCount > 0 {
-                        value += "\(spaceCount)"
-                    }
-                    value += piece.rawValue
-                    spaceCount = 0
-                } else {
-                    spaceCount += 1
-                }
-            }
-            
-            if spaceCount > 0 {
-                value += "\(spaceCount)"
-            }
-            
-            return value
-        }
-        
-        let castleMoves = board.castleOptions.map { $0.rawValue }
-        let castleOptions = castleMoves.count > 0 ? castleMoves.joined() : "-"
-        //let enPassant = board.enPassant? ?? "-"
-        
-        var value = getFen(at: ._8) + "/"
-        value += getFen(at: ._7) + "/"
-        value += getFen(at: ._6) + "/"
-        value += getFen(at: ._5) + "/"
-        value += getFen(at: ._4) + "/"
-        value += getFen(at: ._3) + "/"
-        value += getFen(at: ._2) + "/"
-        value += getFen(at: ._1)
-        value += " \(board.color.rawValue)"
-        value += " \(castleOptions)"
-        //value += " \(enPassant)"
-        value += " \(board.halfMove)"
-        value += " \(board.fullMove)"
-        
-        return value
-    }
+//    static func getFen(from board: Board) -> String {
+//        
+//        func getFen(at rank: Rank) -> String {
+//            let pieces = board.getPieces(at: rank)
+//            var value = ""
+//            var spaceCount = 0
+//            
+//            for piece in pieces {
+//                if let piece = piece {
+//                    if spaceCount > 0 {
+//                        value += "\(spaceCount)"
+//                    }
+//                    value += piece.rawValue
+//                    spaceCount = 0
+//                } else {
+//                    spaceCount += 1
+//                }
+//            }
+//            
+//            if spaceCount > 0 {
+//                value += "\(spaceCount)"
+//            }
+//            
+//            return value
+//        }
+//        
+//        let castleMoves = board.castleOptions.map { $0.rawValue }
+//        let castleOptions = castleMoves.count > 0 ? castleMoves.joined() : "-"
+//        //let enPassant = board.enPassant? ?? "-"
+//        
+//        var value = getFen(at: ._8) + "/"
+//        value += getFen(at: ._7) + "/"
+//        value += getFen(at: ._6) + "/"
+//        value += getFen(at: ._5) + "/"
+//        value += getFen(at: ._4) + "/"
+//        value += getFen(at: ._3) + "/"
+//        value += getFen(at: ._2) + "/"
+//        value += getFen(at: ._1)
+//        value += " \(board.color.rawValue)"
+//        value += " \(castleOptions)"
+//        //value += " \(enPassant)"
+//        value += " \(board.halfMove)"
+//        value += " \(board.fullMove)"
+//        
+//        return value
+//    }
 }
