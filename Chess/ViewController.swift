@@ -12,8 +12,27 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         test1()
+        
+        
+        //print(Space.a1.diagonals ) // 9241421688590303745  9241421688590172673
+        
+    }
+    
+    func test3() {
+        var start = Date()
+        let bound = 640000
+        (0..<bound).forEach {
+            let position = 0b1 << UInt64($0%64)
+        }
+        print(Date().timeIntervalSince(start))
+        
+        start = Date()
+        for index in 0..<bound {
+            let position = 0b1 << UInt64(index%64)
+        }
+        print(Date().timeIntervalSince(start))
+        
     }
     
     func test1() {
@@ -50,7 +69,7 @@ class ViewController: UIViewController {
         //        }
         
         let start = Date()
-        for _ in 0..<1000000 {
+        for _ in 0..<5000 {
             board.getValidMoves()
         }
         

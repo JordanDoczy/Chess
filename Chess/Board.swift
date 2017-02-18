@@ -90,21 +90,21 @@ class Board: NSCopying {
     }
     
     static func getPawnMoves(at space: Space, color: Color) -> Set<Space> {
-        let adjacentSpaces = space.adjacentSpacesOld
+        let adjacentSpaces = space.adjacentSpaces
         var validSpaces = Set<Space>()
         
-        switch color {
-        case .black:
-            validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue < space.rank.rawValue })
-            if space.rank == ._7 {
-                validSpaces.insert(getSpace(rank: ._5, file: space.file))
-            }
-        case .white:
-            validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue > space.rank.rawValue })
-            if space.rank == ._2 {
-                validSpaces.insert(getSpace(rank: ._4, file: space.file))
-            }
-        }
+//        switch color {
+//        case .black:
+//            validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue < space.rank.rawValue })
+//            if space.rank == ._7 {
+//                validSpaces.insert(getSpace(rank: ._5, file: space.file))
+//            }
+//        case .white:
+//            validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue > space.rank.rawValue })
+//            if space.rank == ._2 {
+//                validSpaces.insert(getSpace(rank: ._4, file: space.file))
+//            }
+//        }
         
         return validSpaces
     }
@@ -193,54 +193,43 @@ class Board: NSCopying {
         return (blackSpaces: blackSpaces, whiteSpaces: whiteSpaces)
     }
     
-    func getMoves() -> (blackMoves: [Move], whiteMoves: [Move]) {
-        var blackMoves = [Move]()
-        var whiteMoves = [Move]()
+    func getMoves() -> (blackMoves: Dictionary<Space,UInt64>, whiteMoves: Dictionary<Space,UInt64>) {
+        var blackMoves = Dictionary<Space,UInt64>()
+        var whiteMoves = Dictionary<Space,UInt64>()
         
         var position: UInt64 = 0b1
-        for _ in 0..<64 {
-            let space = Space(rawValue: position)!
+        for index in 0..<64 {
+            let space = Board.spaces[index]
             
             if blackPawns & position > 0 {
-                convertToSpaces(from: getPossibleMoves(at: space, for: .blackPawn))
-                //blackMoves += getPossibleMoves(at: space, for: .blackPawn).map{ Move(from: space, to: $0) }
+                blackMoves[space] = getPossibleMoves(at: space, for: .blackPawn)
             } else if blackKnights & position > 0 {
-                getPossibleMoves(at: space, for: .blackKnight)
-                //blackMoves += getPossibleMoves(at: space, for: .blackKnight).map{ Move(from: space, to: $0) }
+                blackMoves[space] = getPossibleMoves(at: space, for: .blackKnight)
             } else if blackBishops & position > 0 {
-                getPossibleMoves(at: space, for: .blackBishop)
-                //blackMoves += getPossibleMoves(at: space, for: .blackBishop).map{ Move(from: space, to: $0) }
+                blackMoves[space] = getPossibleMoves(at: space, for: .blackBishop)
             } else if blackRooks & position > 0 {
-                getPossibleMoves(at: space, for: .blackRook)
-                //blackMoves += getPossibleMoves(at: space, for: .blackRook).map{ Move(from: space, to: $0) }
+                blackMoves[space] = getPossibleMoves(at: space, for: .blackRook)
             } else if blackQueen & position > 0 {
-                getPossibleMoves(at: space, for: .blackQueen)
-                //blackMoves += getPossibleMoves(at: space, for: .blackQueen).map{ Move(from: space, to: $0) }
+                blackMoves[space] = getPossibleMoves(at: space, for: .blackQueen)
             } else if blackKing & position > 0 {
-                getPossibleMoves(at: space, for: .blackKing)
-                //blackMoves += getPossibleMoves(at: space, for: .blackKing).map{ Move(from: space, to: $0) }
+                blackMoves[space] = getPossibleMoves(at: space, for: .blackKing)
             } else if whitePawns & position > 0 {
-                getPossibleMoves(at: space, for: .whitePawn)
-                //whiteMoves += getPossibleMoves(at: space, for: .whitePawn).map{ Move(from: space, to: $0) }
+                whiteMoves[space] = getPossibleMoves(at: space, for: .whitePawn)
             } else if whiteKing & position > 0 {
-                getPossibleMoves(at: space, for: .whiteKnight)
-                //whiteMoves += getPossibleMoves(at: space, for: .whiteKnight).map{ Move(from: space, to: $0) }
+                whiteMoves[space] = getPossibleMoves(at: space, for: .whiteKnight)
             } else if whiteBishops & position > 0 {
-                getPossibleMoves(at: space, for: .whiteBishop)
-                //whiteMoves += getPossibleMoves(at: space, for: .whiteBishop).map{ Move(from: space, to: $0) }
+                whiteMoves[space] = getPossibleMoves(at: space, for: .whiteBishop)
             } else if whiteRooks & position > 0 {
-                getPossibleMoves(at: space, for: .whiteRook)
-                //whiteMoves += getPossibleMoves(at: space, for: .whiteRook).map{ Move(from: space, to: $0) }
+                whiteMoves[space] = getPossibleMoves(at: space, for: .whiteRook)
             } else if whiteQueen & position > 0 {
-                getPossibleMoves(at: space, for: .whiteQueen)
-                //whiteMoves += getPossibleMoves(at: space, for: .whiteQueen).map{ Move(from: space, to: $0) }
+                whiteMoves[space] = getPossibleMoves(at: space, for: .whiteQueen)
             } else if whiteKing & position > 0 {
-                getPossibleMoves(at: space, for: .whiteKing)
-                //whiteMoves += getPossibleMoves(at: space, for: .whiteKing).map{ Move(from: space, to: $0) }
+                whiteMoves[space] = getPossibleMoves(at: space, for: .whiteKing)
             }
-
+            
             position = position << 1
         }
+        
         
         return (blackMoves: blackMoves, whiteMoves: whiteMoves)
     }
@@ -264,10 +253,13 @@ class Board: NSCopying {
 
     func getValidMoves() -> [Move] {
         let kingPosition = getKingPosition(with: color)
-        let moves = getMoves()
+        let moves = getMoves().blackMoves
+        let move = Move(from: .a1, to: .a2)
+        moves.filter { $0
+            return isValidMove(move, checks: [])}
         return []
         
-        print(kingPosition)
+        // print(kingPosition)
         
         //let checks = opponentOccupiedSpaces.flatMap { space in getPossibleMoves(at: space, for: getPiece(at: space)!).filter{ $0 == kingPosition }.map{ Move(from: space, to: $0) }}
         //return moves.filter { isValidMove($0, checks: checks) }
@@ -564,3 +556,7 @@ func == (lhs: Space, rhs: Space) -> Bool {
 func ~=(lhs: Move, rhs: Move) -> Bool {
     return lhs.from ~= rhs.from && lhs.to ~= rhs.to
 }
+
+
+
+
