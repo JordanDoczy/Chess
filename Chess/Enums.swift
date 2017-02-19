@@ -315,6 +315,10 @@ enum Space: UInt64 {
         }
     }
     
+    var bishopMoves: UInt64 {
+        return diagonals
+    }
+    
     var knightMoves: UInt64 {
         switch self {
         case .a1: return 132096
@@ -388,6 +392,158 @@ enum Space: UInt64 {
         case .h6: return 38368557762871296
         case .h7: return 4679521487814656
         case .h8: return 9077567998918656
+        }
+    }
+    
+    var blackPawnMoves: UInt64 {
+        switch self {
+        case .a1: return 0
+        case .a2: return 257
+        case .a3: return 514
+        case .a4: return 1028
+        case .a5: return 2056
+        case .a6: return 4112
+        case .a7: return 8240
+        case .a8: return 0
+            
+        case .b1: return 0
+        case .b2: return 65793
+        case .b3: return 131586
+        case .b4: return 263172
+        case .b5: return 526344
+        case .b6: return 1052688
+        case .b7: return 2109472
+        case .b8: return 0
+            
+        case .c1: return 0
+        case .c2: return 16843008
+        case .c3: return 33686016
+        case .c4: return 67372032
+        case .c5: return 134744064
+        case .c6: return 269488128
+        case .c7: return 540024832
+        case .c8: return 0
+            
+        case .d1: return 0
+        case .d2: return 4311810048
+        case .d3: return 8623620096
+        case .d4: return 17247240192
+        case .d5: return 34494480384
+        case .d6: return 68988960768
+        case .d7: return 138246356992
+        case .d8: return 0
+            
+        case .e1: return 0
+        case .e2: return 1103823372288
+        case .e3: return 2207646744576
+        case .e4: return 4415293489152
+        case .e5: return 8830586978304
+        case .e6: return 17661173956608
+        case .e7: return 35391067389952
+        case .e8: return 0
+            
+        case .f1: return 0
+        case .f2: return 282578783305728
+        case .f3: return 565157566611456
+        case .f4: return 1130315133222912
+        case .f5: return 2260630266445824
+        case .f6: return 4521260532891648
+        case .f7: return 9060113251827712
+        case .f8: return 0
+            
+        case .g1: return 0
+        case .g2: return 72340168526266368
+        case .g3: return 144680337052532736
+        case .g4: return 289360674105065472
+        case .g5: return 578721348210130944
+        case .g6: return 1157442696420261888
+        case .g7: return 2319388992467894272
+        case .g8: return 0
+            
+        case .h1: return 0
+        case .h2: return 72339069014638592
+        case .h3: return 144678138029277184
+        case .h4: return 289356276058554368
+        case .h5: return 578712552117108736
+        case .h6: return 1157425104234217472
+        case .h7: return 2314850208468434960
+        case .h8: return 0
+        }
+    }
+    
+    var whitePawnMoves: UInt64 {
+        switch self {
+        case .a1: return 0
+        case .a2: return 1036
+        case .a3: return 2056
+        case .a4: return 4112
+        case .a5: return 8224
+        case .a6: return 16448
+        case .a7: return 32896
+        case .a8: return 0
+            
+        case .b1: return 0
+        case .b2: return 265220
+        case .b3: return 526344
+        case .b4: return 1052688
+        case .b5: return 2105376
+        case .b6: return 4210752
+        case .b7: return 8421504
+        case .b8: return 0
+            
+        case .c1: return 0
+        case .c2: return 67896320
+        case .c3: return 134744064
+        case .c4: return 269488128
+        case .c5: return 538976256
+        case .c6: return 1077952512
+        case .c7: return 2155905024
+        case .c8: return 0
+            
+        case .d1: return 0
+        case .d2: return 17381457920
+        case .d3: return 34494480384
+        case .d4: return 68988960768
+        case .d5: return 137977921536
+        case .d6: return 275955843072
+        case .d7: return 551911686144
+        case .d8: return 0
+            
+        case .e1: return 0
+        case .e2: return 4449653227520
+        case .e3: return 8830586978304
+        case .e4: return 17661173956608
+        case .e5: return 35322347913216
+        case .e6: return 70644695826432
+        case .e7: return 141289391652864
+        case .e8: return 0
+            
+        case .f1: return 0
+        case .f2: return 1139111226245120
+        case .f3: return 2260630266445824
+        case .f4: return 4521260532891648
+        case .f5: return 9042521065783296
+        case .f6: return 18085042131566592
+        case .f7: return 36170084263133184
+        case .f8: return 0
+            
+        case .g1: return 0
+        case .g2: return 291612473918750720
+        case .g3: return 578721348210130944
+        case .g4: return 1157442696420261888
+        case .g5: return 2314885392840523776
+        case .g6: return 4629770785681047552
+        case .g7: return 9259541571362095104
+        case .g8: return 0
+            
+        case .h1: return 0
+        case .h2: return 289356276058554376
+        case .h3: return 578712552117108736
+        case .h4: return 1157425104234217472
+        case .h5: return 2314850208468434944
+        case .h6: return 4629700416936869888
+        case .h7: return 9259400833873739776
+        case .h8: return 0
         }
     }
     
@@ -466,8 +622,6 @@ enum Space: UInt64 {
         case .h8: return 4665729213955833856
         }
     }
-    
-    
 }
 
 enum CastleMoves: String {
@@ -847,10 +1001,10 @@ extension Space {
         }
     }
     
-    var calculatedWhitePawnMoves: UInt64 {
+    var computedWhitePawnMoves: UInt64 {
         switch self {
         case .a1, .b1, .c1, .d1, .e1, .f1, .g1, .h1, .a8, .b8, .c8, .d8, .e8, .f8, .g8, .h8: return 0
-
+            
         case .a2: return Space.a3.rawValue | Space.a4.rawValue                     | Space.b3.rawValue
         case .b2: return Space.b3.rawValue | Space.b4.rawValue | Space.a3.rawValue | Space.c3.rawValue
         case .c2: return Space.c3.rawValue | Space.c4.rawValue | Space.b3.rawValue | Space.d3.rawValue
@@ -859,7 +1013,7 @@ extension Space {
         case .f2: return Space.f3.rawValue | Space.f4.rawValue | Space.e3.rawValue | Space.g3.rawValue
         case .g2: return Space.g3.rawValue | Space.g4.rawValue | Space.f3.rawValue | Space.h3.rawValue
         case .h2: return Space.h3.rawValue | Space.a4.rawValue | Space.g3.rawValue
-
+            
         case .a3: return Space.a4.rawValue                     | Space.b4.rawValue
         case .b3: return Space.b4.rawValue | Space.a4.rawValue | Space.c4.rawValue
         case .c3: return Space.c4.rawValue | Space.b4.rawValue | Space.d4.rawValue
@@ -868,7 +1022,7 @@ extension Space {
         case .f3: return Space.f4.rawValue | Space.e4.rawValue | Space.g4.rawValue
         case .g3: return Space.g4.rawValue | Space.f4.rawValue | Space.h4.rawValue
         case .h3: return Space.h4.rawValue | Space.g4.rawValue
-
+            
         case .a4: return Space.a5.rawValue                     | Space.b5.rawValue
         case .b4: return Space.b5.rawValue | Space.a5.rawValue | Space.c5.rawValue
         case .c4: return Space.c5.rawValue | Space.b5.rawValue | Space.d5.rawValue
@@ -877,7 +1031,7 @@ extension Space {
         case .f4: return Space.f5.rawValue | Space.e5.rawValue | Space.g5.rawValue
         case .g4: return Space.g5.rawValue | Space.f5.rawValue | Space.h5.rawValue
         case .h4: return Space.h5.rawValue | Space.g5.rawValue
-
+            
         case .a5: return Space.a6.rawValue                     | Space.b6.rawValue
         case .b5: return Space.b6.rawValue | Space.a6.rawValue | Space.c6.rawValue
         case .c5: return Space.c6.rawValue | Space.b6.rawValue | Space.d6.rawValue
@@ -886,7 +1040,7 @@ extension Space {
         case .f5: return Space.f6.rawValue | Space.e6.rawValue | Space.g6.rawValue
         case .g5: return Space.g6.rawValue | Space.f6.rawValue | Space.h6.rawValue
         case .h5: return Space.h6.rawValue | Space.g6.rawValue
-
+            
         case .a6: return Space.a7.rawValue                     | Space.b7.rawValue
         case .b6: return Space.b7.rawValue | Space.a7.rawValue | Space.c7.rawValue
         case .c6: return Space.c7.rawValue | Space.b7.rawValue | Space.d7.rawValue
@@ -895,7 +1049,7 @@ extension Space {
         case .f6: return Space.f7.rawValue | Space.e7.rawValue | Space.g7.rawValue
         case .g6: return Space.g7.rawValue | Space.f7.rawValue | Space.h7.rawValue
         case .h6: return Space.h7.rawValue | Space.g7.rawValue
-
+            
         case .a7: return Space.a8.rawValue                     | Space.b8.rawValue
         case .b7: return Space.b8.rawValue | Space.a8.rawValue | Space.c8.rawValue
         case .c7: return Space.c8.rawValue | Space.b8.rawValue | Space.d8.rawValue
@@ -907,7 +1061,7 @@ extension Space {
         }
     }
     
-    var calculatedBlackawnMoves: UInt64 {
+    var computedBlackPawnMoves: UInt64 {
         switch self {
         case .a1, .b1, .c1, .d1, .e1, .f1, .g1, .h1, .a8, .b8, .c8, .d8, .e8, .f8, .g8, .h8: return 0
             
@@ -966,22 +1120,14 @@ extension Space {
         case .h7: return Space.h6.rawValue | Space.a5.rawValue | Space.g6.rawValue
         }
     }
+    
+    var computedRookMoves: UInt64 {
+        return self.rank.computedSpaces | self.file.computedSpaces
+    }
+    
+    var computedQueenMoves: UInt64 {
+        return computedRookMoves | computedDiagonals
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
