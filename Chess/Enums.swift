@@ -625,77 +625,70 @@ enum Space: UInt64 {
     
     var queenMoves: UInt64 {
         switch self {
-        case .a1: return 9313761861428380671
-        case .a2: return 180779649147209727
-        case .a3: return 289501704256556799
-        case .a4: return 578721933553179903
-        case .a5: return 1157442771889699071
-        case .a6: return 2314886638996058367
-        case .a7: return 4630054752952049919
-        case .a8: return 9332167099941961983
-            
-        case .b1: return 4693051017133293315
-        case .b2: return 9386102034266586887
-        case .b3: return 325459994840334094
-        case .b4: return 578862399937642268
-        case .b5: return 1157444424410136376
-        case .b6: return 2315169224285290352
-        case .b7: return 4702396038313476064
-        case .b8: return 9404792076610109376
-            
-        case .c1: return 2382695595002233605
-        case .c2: return 4765391190004533002
-        case .c3: return 9530782384287321621
-        case .c4: return 614821794360007722
-        case .c5: return 1157867469642086484
-        case .c6: return 2387511058328678568
-        case .c7: return 4775021017129017424
-        case .c8: return 9550042029946290336
-            
-        case .d1: return 1227517888156599561
-        case .d2: return 2455035776330041874
-        case .d3: return 4910072647893521700
-        case .d4: return 9820426766485563977
-        case .d5: return 1266167049021314194
-        case .d6: return 2460276499726510116
-        case .d7: return 4920271520198053960
-        case .d8: return 9840541936589512848
-            
-        case .e1: return 649930115027110161
-        case .e2: return 1299860234365964834
-        case .e3: return 2600000848492045380
-        case .e4: return 5272058195805358472
-        case .e5: return 10544115296394056209
-        case .e6: return 2641485423861834786
-        case .e7: return 5210912158452303940
-        case .e8: return 10421541742416269448
-            
-        case .f1: return 361412783554236705
-        case .f2: return 722826670915068482
-        case .f3: return 1517430560419759236
-        case .f4: return 3034580745374500872
-        case .f5: return 6068881115283853584
-        case .f6: return 12137481855085847073
-        case .f7: return 5827939256702092354
-        case .f8: return 11583539444389546116
-            
-        case .g1: return 287952221336838465
-        case .g2: return 576187017162015362
-        case .g3: return 1080597919557780484
-        case .g4: return 2089419720071055368
-        case .g5: return 4107063321064181776
-        case .g6: return 8142350518772179232
-        case .g7: return 16212923818971513409
-        case .g8: return 13907045970195547266
-            
-        case .h1: return 18375536441101992321
-        case .h2: return 18376667877509071362
-        case .h3: return 18378650374858081284
-        case .h4: return 18382614274322728968
-        case .h5: return 18390542064695644176
-        case .h6: return 18406396550208102432
-        case .h7: return 18437825145767870784
-        case .h8: return 18428906217826189953
+            case .a1: return 72340172838076927
+            case .a2: return 144680345676153599
+            case .a3: return 289360691352306943
+            case .a4: return 578721382704613631
+            case .a5: return 1157442765409227007
+            case .a6: return 2314885530818453759
+            case .a7: return 4629771061636907263
+            case .a8: return 9259542123273814271
+            case .b1: return 72340172838141697
+            case .b2: return 144680345676218114
+            case .b3: return 289360691352370948
+            case .b4: return 578721382704676616
+            case .b5: return 1157442765409287952
+            case .b6: return 2314885530818510624
+            case .b7: return 4629771061636955968
+            case .b8: return 9259542123273846656
+            case .c1: return 72340172854722817
+            case .c2: return 144680345692733954
+            case .c3: return 289360691368756228
+            case .c4: return 578721382720800776
+            case .c5: return 1157442765424889872
+            case .c6: return 2314885530833068064
+            case .c7: return 4629771061649424448
+            case .c8: return 9259542123282137216
+            case .d1: return 72340177099489537
+            case .d2: return 144680349920788994
+            case .d3: return 289360695563387908
+            case .d4: return 578721386848585736
+            case .d5: return 1157442769418981392
+            case .d6: return 2314885534559772704
+            case .d7: return 4629771064841355328
+            case .d8: return 9259542125404520576
+            case .e1: return 72341263759769857
+            case .e2: return 144681432302879234
+            case .e3: return 289361769389097988
+            case .e4: return 578722443561535496
+            case .e5: return 1157443791906410512
+            case .e6: return 2314886488596160544
+            case .e7: return 4629771881975660608
+            case .e8: return 9259542668734660736
+            case .f1: return 72619448791531777
+            case .f2: return 144958522117980674
+            case .f3: return 289636668770878468
+            case .f4: return 578992962076674056
+            case .f5: return 1157705548688265232
+            case .f6: return 2315130721911447584
+            case .f7: return 4629981068357812288
+            case .f8: return 9259681761250541696
+            case .g1: return 143834816922583297
+            case .g2: return 215893514783949314
+            case .g3: return 360010910506681348
+            case .g4: return 648245701952145416
+            case .g5: return 1224715284843073552
+            case .g6: return 2377654450624929824
+            case .g7: return 4683532782188642368
+            case .g8: return 9295289445316067456
+            case .h1: return 18374969058471772417
+            case .h2: return 18375251637271921154
+            case .h3: return 18375816794872218628
+            case .h4: return 18376947110072813576
+            case .h5: return 18379207740474003472
+            case .h6: return 18383729001276383264
+            case .h7: return 18392771522881142848
+            case .h8: return 18410856566090662016
         }
     }
     

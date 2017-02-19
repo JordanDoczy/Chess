@@ -15,19 +15,24 @@ class ViewController: UIViewController {
             if spaceIndex >= Board.spaces.count {
                 spaceIndex = 0
                 pieceIndex += 1
+            } else if spaceIndex < 0 {
+                spaceIndex = Board.spaces.count - 1
+                pieceIndex -= 1
             }
         }
     }
     
-    var pieceIndex = 2 {
+    var pieceIndex = 6 {
         didSet{
-            if pieceIndex > pieces.count {
+            if pieceIndex >= pieces.count {
                 pieceIndex = 0
+            } else if pieceIndex < 0 {
+                pieceIndex = pieces.count - 1
             }
         }
     }
     
-    let pieces = [Piece.blackPawn, .whitePawn, .blackKnight, .whiteKnight, .blackBishop, .whiteBishop, .blackRook, .whiteRook, .blackQueen, .whiteQueen, .blackKing, .whiteKing]
+    let pieces = [Piece.blackPawn, .whitePawn, .whiteKnight, .whiteBishop, .whiteRook, .whiteQueen, .whiteKing]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,13 +65,13 @@ class ViewController: UIViewController {
     
     private func getMoves(_ piece: Piece, at space: Space) -> UInt64 {
         switch (piece) {
-        case .blackPawn: return space.blackPawnMoves
-        case .whitePawn: return space.whitePawnMoves
-        case .blackKnight, .whiteKnight: return space.knightMoves
-        case .blackBishop, .whiteBishop: return space.bishopMoves
-        case .blackRook, .whiteRook: return space.rookMoves
-        case .blackQueen, .whiteQueen: return space.queenMoves
-        case .blackKing, .whiteKing: return space.kingMoves
+        case .blackPawn: return space.computedBlackPawnMoves
+        case .whitePawn: return space.computedWhitePawnMoves
+        case .blackKnight, .whiteKnight: return space.computedKnightMoves
+        case .blackBishop, .whiteBishop: return space.computedDiagonals
+        case .blackRook, .whiteRook: return space.computedRookMoves
+        case .blackQueen, .whiteQueen: return space.computedQueenMoves
+        case .blackKing, .whiteKing: return space.computedAdjacentSpaces
         }
     }
     

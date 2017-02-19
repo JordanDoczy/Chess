@@ -508,9 +508,9 @@ class Board: NSCopying {
             case .whiteRook:
                 whiteRooks += space.rawValue
             case .whiteQueen:
-                whiteQueen = space.rawValue
+                whiteQueen += space.rawValue // TODO: revert to =
             case .whiteKing:
-                whiteKing = space.rawValue
+                whiteKing += space.rawValue // TODO: revert to =
             }
         } else {
             blackPawns   &= ~space.rawValue

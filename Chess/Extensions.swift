@@ -154,77 +154,77 @@ extension Space {
     
     var computedDiagonals: UInt64 {
         switch self {
-        case .a1: return Diagonal.a1h8.spaces
-        case .a2: return Diagonal.g8a2.spaces | Diagonal.b1a2.spaces
-        case .a3: return Diagonal.f8a3.spaces | Diagonal.c1a3.spaces
-        case .a4: return Diagonal.e8a4.spaces | Diagonal.d1a4.spaces
-        case .a5: return Diagonal.d8a5.spaces | Diagonal.e1a5.spaces
-        case .a6: return Diagonal.c8a6.spaces | Diagonal.f1a6.spaces
-        case .a7: return Diagonal.b8a7.spaces | Diagonal.g1a7.spaces
-        case .a8: return Diagonal.h1a8.spaces
+        case .a1: return Diagonal.a1h8.spaces & ~self.int
+        case .a2: return Diagonal.g8a2.spaces & ~self.int | Diagonal.b1a2.spaces & ~self.int
+        case .a3: return Diagonal.f8a3.spaces & ~self.int | Diagonal.c1a3.spaces & ~self.int
+        case .a4: return Diagonal.e8a4.spaces & ~self.int | Diagonal.d1a4.spaces & ~self.int
+        case .a5: return Diagonal.d8a5.spaces & ~self.int | Diagonal.e1a5.spaces & ~self.int
+        case .a6: return Diagonal.c8a6.spaces & ~self.int | Diagonal.f1a6.spaces & ~self.int
+        case .a7: return Diagonal.b8a7.spaces & ~self.int | Diagonal.g1a7.spaces & ~self.int
+        case .a8: return Diagonal.h1a8.spaces & ~self.int 
             
-        case .b1: return Diagonal.b1a2.spaces | Diagonal.b1h7.spaces
-        case .b2: return Diagonal.a1h8.spaces | Diagonal.c1a3.spaces
-        case .b3: return Diagonal.g8a2.spaces | Diagonal.d1a4.spaces
-        case .b4: return Diagonal.f8a3.spaces | Diagonal.e1a5.spaces
-        case .b5: return Diagonal.e8a4.spaces | Diagonal.f1a6.spaces
-        case .b6: return Diagonal.d8a5.spaces | Diagonal.g1a7.spaces
-        case .b7: return Diagonal.c8a6.spaces | Diagonal.h1a8.spaces
-        case .b8: return Diagonal.b8a7.spaces | Diagonal.b8h2.spaces
+        case .b1: return Diagonal.b1a2.spaces & ~self.int | Diagonal.b1h7.spaces & ~self.int
+        case .b2: return Diagonal.a1h8.spaces & ~self.int | Diagonal.c1a3.spaces & ~self.int
+        case .b3: return Diagonal.g8a2.spaces & ~self.int | Diagonal.d1a4.spaces & ~self.int
+        case .b4: return Diagonal.f8a3.spaces & ~self.int | Diagonal.e1a5.spaces & ~self.int
+        case .b5: return Diagonal.e8a4.spaces & ~self.int | Diagonal.f1a6.spaces & ~self.int
+        case .b6: return Diagonal.d8a5.spaces & ~self.int | Diagonal.g1a7.spaces & ~self.int
+        case .b7: return Diagonal.c8a6.spaces & ~self.int | Diagonal.h1a8.spaces & ~self.int
+        case .b8: return Diagonal.b8a7.spaces & ~self.int | Diagonal.b8h2.spaces & ~self.int
             
-        case .c1: return Diagonal.c1a3.spaces | Diagonal.c1h6.spaces
-        case .c2: return Diagonal.d1a4.spaces | Diagonal.b1h7.spaces
-        case .c3: return Diagonal.e1a5.spaces | Diagonal.a1h8.spaces
-        case .c4: return Diagonal.g8a2.spaces | Diagonal.f1a6.spaces
-        case .c5: return Diagonal.f8a3.spaces | Diagonal.g1a7.spaces
-        case .c6: return Diagonal.e8a4.spaces | Diagonal.h1a8.spaces
-        case .c7: return Diagonal.d8a5.spaces | Diagonal.b8h2.spaces
-        case .c8: return Diagonal.c8a6.spaces | Diagonal.c8h3.spaces
+        case .c1: return Diagonal.c1a3.spaces & ~self.int | Diagonal.c1h6.spaces & ~self.int
+        case .c2: return Diagonal.d1a4.spaces & ~self.int | Diagonal.b1h7.spaces & ~self.int
+        case .c3: return Diagonal.e1a5.spaces & ~self.int | Diagonal.a1h8.spaces & ~self.int
+        case .c4: return Diagonal.g8a2.spaces & ~self.int | Diagonal.f1a6.spaces & ~self.int
+        case .c5: return Diagonal.f8a3.spaces & ~self.int | Diagonal.g1a7.spaces & ~self.int
+        case .c6: return Diagonal.e8a4.spaces & ~self.int | Diagonal.h1a8.spaces & ~self.int
+        case .c7: return Diagonal.d8a5.spaces & ~self.int | Diagonal.b8h2.spaces & ~self.int
+        case .c8: return Diagonal.c8a6.spaces & ~self.int | Diagonal.c8h3.spaces & ~self.int
             
-        case .d1: return Diagonal.d1a4.spaces | Diagonal.d1h5.spaces
-        case .d2: return Diagonal.c1h6.spaces | Diagonal.e1a5.spaces
-        case .d3: return Diagonal.b1h7.spaces | Diagonal.f1a6.spaces
-        case .d4: return Diagonal.a1h8.spaces | Diagonal.g1a7.spaces
-        case .d5: return Diagonal.g8a2.spaces | Diagonal.h1a8.spaces
-        case .d6: return Diagonal.f8a3.spaces | Diagonal.b8h2.spaces
-        case .d7: return Diagonal.e8a4.spaces | Diagonal.c8h3.spaces
-        case .d8: return Diagonal.d8a5.spaces | Diagonal.d8h4.spaces
+        case .d1: return Diagonal.d1a4.spaces & ~self.int | Diagonal.d1h5.spaces & ~self.int
+        case .d2: return Diagonal.c1h6.spaces & ~self.int | Diagonal.e1a5.spaces & ~self.int
+        case .d3: return Diagonal.b1h7.spaces & ~self.int | Diagonal.f1a6.spaces & ~self.int
+        case .d4: return Diagonal.a1h8.spaces & ~self.int | Diagonal.g1a7.spaces & ~self.int
+        case .d5: return Diagonal.g8a2.spaces & ~self.int | Diagonal.h1a8.spaces & ~self.int
+        case .d6: return Diagonal.f8a3.spaces & ~self.int | Diagonal.b8h2.spaces & ~self.int
+        case .d7: return Diagonal.e8a4.spaces & ~self.int | Diagonal.c8h3.spaces & ~self.int
+        case .d8: return Diagonal.d8a5.spaces & ~self.int | Diagonal.d8h4.spaces & ~self.int
             
-        case .e1: return Diagonal.e1a5.spaces | Diagonal.e1h4.spaces
-        case .e2: return Diagonal.d1h5.spaces | Diagonal.f1a6.spaces
-        case .e3: return Diagonal.c1h6.spaces | Diagonal.g1a7.spaces
-        case .e4: return Diagonal.b1h7.spaces | Diagonal.h1a8.spaces
-        case .e5: return Diagonal.a1h8.spaces | Diagonal.b8h2.spaces
-        case .e6: return Diagonal.g8a2.spaces | Diagonal.c8h3.spaces
-        case .e7: return Diagonal.f8a3.spaces | Diagonal.d8h4.spaces
-        case .e8: return Diagonal.e8a4.spaces | Diagonal.e8h5.spaces
+        case .e1: return Diagonal.e1a5.spaces & ~self.int | Diagonal.e1h4.spaces & ~self.int
+        case .e2: return Diagonal.d1h5.spaces & ~self.int | Diagonal.f1a6.spaces & ~self.int
+        case .e3: return Diagonal.c1h6.spaces & ~self.int | Diagonal.g1a7.spaces & ~self.int
+        case .e4: return Diagonal.b1h7.spaces & ~self.int | Diagonal.h1a8.spaces & ~self.int
+        case .e5: return Diagonal.a1h8.spaces & ~self.int | Diagonal.b8h2.spaces & ~self.int
+        case .e6: return Diagonal.g8a2.spaces & ~self.int | Diagonal.c8h3.spaces & ~self.int
+        case .e7: return Diagonal.f8a3.spaces & ~self.int | Diagonal.d8h4.spaces & ~self.int
+        case .e8: return Diagonal.e8a4.spaces & ~self.int | Diagonal.e8h5.spaces & ~self.int
             
-        case .f1: return Diagonal.f1a6.spaces | Diagonal.f1h3.spaces
-        case .f2: return Diagonal.e1h4.spaces | Diagonal.g1a7.spaces
-        case .f3: return Diagonal.d1h5.spaces | Diagonal.h1a8.spaces
-        case .f4: return Diagonal.c1h6.spaces | Diagonal.b8h2.spaces
-        case .f5: return Diagonal.b1h7.spaces | Diagonal.c8h3.spaces
-        case .f6: return Diagonal.a1h8.spaces | Diagonal.d8h4.spaces
-        case .f7: return Diagonal.g8a2.spaces | Diagonal.e8h5.spaces
-        case .f8: return Diagonal.f8a3.spaces | Diagonal.f8h6.spaces
+        case .f1: return Diagonal.f1a6.spaces & ~self.int | Diagonal.f1h3.spaces & ~self.int
+        case .f2: return Diagonal.e1h4.spaces & ~self.int | Diagonal.g1a7.spaces & ~self.int
+        case .f3: return Diagonal.d1h5.spaces & ~self.int | Diagonal.h1a8.spaces & ~self.int
+        case .f4: return Diagonal.c1h6.spaces & ~self.int | Diagonal.b8h2.spaces & ~self.int
+        case .f5: return Diagonal.b1h7.spaces & ~self.int | Diagonal.c8h3.spaces & ~self.int
+        case .f6: return Diagonal.a1h8.spaces & ~self.int | Diagonal.d8h4.spaces & ~self.int
+        case .f7: return Diagonal.g8a2.spaces & ~self.int | Diagonal.e8h5.spaces & ~self.int
+        case .f8: return Diagonal.f8a3.spaces & ~self.int | Diagonal.f8h6.spaces & ~self.int
             
-        case .g1: return Diagonal.g1a7.spaces | Diagonal.g1h2.spaces
-        case .g2: return Diagonal.f1h3.spaces | Diagonal.h1a8.spaces
-        case .g3: return Diagonal.e1h4.spaces | Diagonal.b8h2.spaces
-        case .g4: return Diagonal.d1h5.spaces | Diagonal.c8h3.spaces
-        case .g5: return Diagonal.c1h6.spaces | Diagonal.d8h4.spaces
-        case .g6: return Diagonal.b1h7.spaces | Diagonal.e8h5.spaces
-        case .g7: return Diagonal.a1h8.spaces | Diagonal.f8h6.spaces
-        case .g8: return Diagonal.g8a2.spaces | Diagonal.g8h7.spaces
+        case .g1: return Diagonal.g1a7.spaces & ~self.int | Diagonal.g1h2.spaces & ~self.int
+        case .g2: return Diagonal.f1h3.spaces & ~self.int | Diagonal.h1a8.spaces & ~self.int
+        case .g3: return Diagonal.e1h4.spaces & ~self.int | Diagonal.b8h2.spaces & ~self.int
+        case .g4: return Diagonal.d1h5.spaces & ~self.int | Diagonal.c8h3.spaces & ~self.int
+        case .g5: return Diagonal.c1h6.spaces & ~self.int | Diagonal.d8h4.spaces & ~self.int
+        case .g6: return Diagonal.b1h7.spaces & ~self.int | Diagonal.e8h5.spaces & ~self.int
+        case .g7: return Diagonal.a1h8.spaces & ~self.int | Diagonal.f8h6.spaces & ~self.int
+        case .g8: return Diagonal.g8a2.spaces & ~self.int | Diagonal.g8h7.spaces & ~self.int
             
-        case .h1: return Diagonal.h1a8.spaces
-        case .h2: return Diagonal.b8h2.spaces | Diagonal.g1h2.spaces
-        case .h3: return Diagonal.c8h3.spaces | Diagonal.f1h3.spaces
-        case .h4: return Diagonal.d8h4.spaces | Diagonal.e1h4.spaces
-        case .h5: return Diagonal.e8h5.spaces | Diagonal.d1h5.spaces
-        case .h6: return Diagonal.f8h6.spaces | Diagonal.c1h6.spaces
-        case .h7: return Diagonal.g8h7.spaces | Diagonal.b1h7.spaces
-        case .h8: return Diagonal.a1h8.spaces
+        case .h1: return Diagonal.h1a8.spaces & ~self.int
+        case .h2: return Diagonal.b8h2.spaces & ~self.int | Diagonal.g1h2.spaces & ~self.int
+        case .h3: return Diagonal.c8h3.spaces & ~self.int | Diagonal.f1h3.spaces & ~self.int
+        case .h4: return Diagonal.d8h4.spaces & ~self.int | Diagonal.e1h4.spaces & ~self.int
+        case .h5: return Diagonal.e8h5.spaces & ~self.int | Diagonal.d1h5.spaces & ~self.int
+        case .h6: return Diagonal.f8h6.spaces & ~self.int | Diagonal.c1h6.spaces & ~self.int
+        case .h7: return Diagonal.g8h7.spaces & ~self.int | Diagonal.b1h7.spaces & ~self.int
+        case .h8: return Diagonal.a1h8.spaces & ~self.int
         }
     }
     
@@ -425,7 +425,7 @@ extension Space {
     }
     
     var computedRookMoves: UInt64 {
-        return self.rank.computedSpaces | self.file.computedSpaces
+        return rank.computedSpaces & ~self.int | file.computedSpaces & ~self.int
     }
     
     var computedQueenMoves: UInt64 {
@@ -447,7 +447,7 @@ extension Space {
 //let g = [Space.g1, .g2, .g3, .g4, .g5, .g6, .g7, .g8]
 //let h = [Space.h1, .h2, .h3, .h4, .h5, .h6, .h7, .h8]
 //
-//print ("swift self {")
+//print ("switch self {")
 //a.forEach { printSpace(space: $0) }
 //b.forEach { printSpace(space: $0) }
 //c.forEach { printSpace(space: $0) }
