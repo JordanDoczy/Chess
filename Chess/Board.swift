@@ -89,24 +89,8 @@ class Board: NSCopying {
         return color == .white ? Space(rawValue: whiteKing) : Space(rawValue: blackKing)
     }
     
-    static func getPawnMoves(at space: Space, color: Color) -> Set<Space> {
-        let adjacentSpaces = space.adjacentSpaces
-        var validSpaces = Set<Space>()
-        
-//        switch color {
-//        case .black:
-//            validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue < space.rank.rawValue })
-//            if space.rank == ._7 {
-//                validSpaces.insert(getSpace(rank: ._5, file: space.file))
-//            }
-//        case .white:
-//            validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue > space.rank.rawValue })
-//            if space.rank == ._2 {
-//                validSpaces.insert(getSpace(rank: ._4, file: space.file))
-//            }
-//        }
-        
-        return validSpaces
+    static func getPawnMoves(at space: Space, color: Color) -> UInt64 {
+        return color == .black ? space.blackPawnMoves : space.whitePawnMoves
     }
 
     func getPiece(at space: Space) -> Piece? {
@@ -125,8 +109,8 @@ class Board: NSCopying {
             return .blackKing
         } else if whitePawns & space.rawValue > 0 {
             return .whitePawn
-        } else if whiteKing & space.rawValue > 0 {
-            return .whiteKing
+        } else if whiteKnights & space.rawValue > 0 {
+            return .whiteKnight
         } else if whiteBishops & space.rawValue > 0 {
             return .whiteBishop
         } else if whiteRooks & space.rawValue > 0 {
@@ -142,18 +126,13 @@ class Board: NSCopying {
     
     func getPossibleMoves(at space: Space, for piece: Piece) -> UInt64 {
         switch piece {
-        case .blackPawn, .whitePawn:
-            return space.adjacentSpaces
-        case .blackKnight, .whiteKnight:
-            return space.knightMoves
-        case .blackBishop, .whiteBishop:
-            return space.diagonals
-        case .blackRook, .whiteRook:
-            return  space.rank.spaces | space.file.spaces
-        case .blackQueen, .whiteQueen:
-            return space.diagonals | space.rank.spaces | space.file.spaces
-        case .blackKing, .whiteKing:
-            return space.adjacentSpaces //space.adjacentSpacesOld.union(castleOptions.map { $0.king.to })
+        case .blackPawn: return space.blackPawnMoves
+        case .whitePawn: return space.whitePawnMoves
+        case .blackKnight, .whiteKnight: return space.knightMoves
+        case .blackBishop, .whiteBishop: return space.bishopMoves
+        case .blackRook, .whiteRook: return  space.rookMoves
+        case .blackQueen, .whiteQueen: return space.queenMoves
+        case .blackKing, .whiteKing: return space.kingMoves
         }
     }
     
@@ -161,7 +140,7 @@ class Board: NSCopying {
         return Space(rawValue: rank.spaces & file.spaces)!
     }
     
-    func convertToSpaces(from model: UInt64) -> [Space] {
+    static func convertToSpaces(from model: UInt64) -> [Space] {
         var spaces = [Space]()
         var space: UInt64 = 0b1
         for _ in 0..<64 {
@@ -236,18 +215,18 @@ class Board: NSCopying {
     
     func getSpaces(for piece: Piece) -> [Space] {
         switch (piece) {
-        case .blackPawn:   return convertToSpaces(from: blackPawns)
-        case .blackKnight: return convertToSpaces(from: blackKnights)
-        case .blackBishop: return convertToSpaces(from: blackBishops)
-        case .blackRook:   return convertToSpaces(from: blackRooks)
-        case .blackQueen:  return convertToSpaces(from: blackQueen)
-        case .blackKing:   return convertToSpaces(from: blackKing)
-        case .whitePawn:   return convertToSpaces(from: whitePawns)
-        case .whiteKnight: return convertToSpaces(from: whiteKnights)
-        case .whiteBishop: return convertToSpaces(from: whiteBishops)
-        case .whiteRook:   return convertToSpaces(from: whiteRooks)
-        case .whiteQueen:  return convertToSpaces(from: whiteQueen)
-        case .whiteKing:   return convertToSpaces(from: whiteKing)
+        case .blackPawn:   return Board.convertToSpaces(from: blackPawns)
+        case .blackKnight: return Board.convertToSpaces(from: blackKnights)
+        case .blackBishop: return Board.convertToSpaces(from: blackBishops)
+        case .blackRook:   return Board.convertToSpaces(from: blackRooks)
+        case .blackQueen:  return Board.convertToSpaces(from: blackQueen)
+        case .blackKing:   return Board.convertToSpaces(from: blackKing)
+        case .whitePawn:   return Board.convertToSpaces(from: whitePawns)
+        case .whiteKnight: return Board.convertToSpaces(from: whiteKnights)
+        case .whiteBishop: return Board.convertToSpaces(from: whiteBishops)
+        case .whiteRook:   return Board.convertToSpaces(from: whiteRooks)
+        case .whiteQueen:  return Board.convertToSpaces(from: whiteQueen)
+        case .whiteKing:   return Board.convertToSpaces(from: whiteKing)
         }
     }
 
@@ -501,7 +480,8 @@ class Board: NSCopying {
     }
 
     func printRank(rank: Rank) {
-        //print( getPieces(at: rank).map { $0?.description ?? "[]" })
+        let spaces = Board.convertToSpaces(from: rank.spaces)
+        print(spaces.enumerated().map { (index, element) in "[\(getPiece(at: element)?.symbol ?? "　")]" })
     }
     
     func setSpace(_ space: Space, to piece: Piece?) {
@@ -556,7 +536,3 @@ func == (lhs: Space, rhs: Space) -> Bool {
 func ~=(lhs: Move, rhs: Move) -> Bool {
     return lhs.from ~= rhs.from && lhs.to ~= rhs.to
 }
-
-
-
-

@@ -253,7 +253,7 @@ extension Space {
         case .c3: return Space.a2.int | Space.a4.int | Space.b1.int | Space.b5.int | Space.d1.int | Space.d5.int | Space.e2.int | Space.e4.int
         case .c4: return Space.a3.int | Space.a5.int | Space.b2.int | Space.b6.int | Space.d2.int | Space.d6.int | Space.e3.int | Space.e5.int
         case .c5: return Space.a4.int | Space.a6.int | Space.b3.int | Space.b7.int | Space.d3.int | Space.d7.int | Space.e4.int | Space.e6.int
-        case .c6: return Space.a5.int | Space.a7.int | Space.b4.int | Space.b8.int | Space.d4.int | Space.d8.int | Space.e6.int | Space.e7.int
+        case .c6: return Space.a5.int | Space.a7.int | Space.b4.int | Space.b8.int | Space.d4.int | Space.d8.int | Space.e5.int | Space.e7.int
         case .c7: return Space.a6.int | Space.a8.int | Space.b5.int | Space.d5.int | Space.e6.int | Space.e8.int
         case .c8: return Space.a7.int | Space.b6.int | Space.d6.int | Space.e7.int
             
@@ -262,7 +262,7 @@ extension Space {
         case .d3: return Space.b2.int | Space.b4.int | Space.c1.int | Space.c5.int | Space.e1.int | Space.e5.int | Space.f2.int | Space.f4.int
         case .d4: return Space.b3.int | Space.b5.int | Space.c2.int | Space.c6.int | Space.e2.int | Space.e6.int | Space.f3.int | Space.f5.int
         case .d5: return Space.b4.int | Space.b6.int | Space.c3.int | Space.c7.int | Space.e3.int | Space.e7.int | Space.f4.int | Space.f6.int
-        case .d6: return Space.b5.int | Space.b7.int | Space.c4.int | Space.c8.int | Space.e4.int | Space.e8.int | Space.f6.int | Space.f7.int
+        case .d6: return Space.b5.int | Space.b7.int | Space.c4.int | Space.c8.int | Space.e4.int | Space.e8.int | Space.f5.int | Space.f7.int
         case .d7: return Space.b6.int | Space.b8.int | Space.c5.int | Space.e5.int | Space.f6.int | Space.f8.int
         case .d8: return Space.b7.int | Space.c6.int | Space.e6.int | Space.f7.int
             
@@ -271,16 +271,16 @@ extension Space {
         case .e3: return Space.c2.int | Space.c4.int | Space.d1.int | Space.d5.int | Space.f1.int | Space.f5.int | Space.g2.int | Space.g4.int
         case .e4: return Space.c3.int | Space.c5.int | Space.d2.int | Space.d6.int | Space.f2.int | Space.f6.int | Space.g3.int | Space.g5.int
         case .e5: return Space.c4.int | Space.c6.int | Space.d3.int | Space.d7.int | Space.f3.int | Space.f7.int | Space.g4.int | Space.g6.int
-        case .e6: return Space.c5.int | Space.c7.int | Space.d4.int | Space.d8.int | Space.f4.int | Space.f8.int | Space.g6.int | Space.g7.int
+        case .e6: return Space.c5.int | Space.c7.int | Space.d4.int | Space.d8.int | Space.f4.int | Space.f8.int | Space.g5.int | Space.g7.int
         case .e7: return Space.c6.int | Space.c8.int | Space.d5.int | Space.f5.int | Space.g6.int | Space.g8.int
         case .e8: return Space.c7.int | Space.d6.int | Space.f6.int | Space.g7.int
             
         case .f1: return Space.d2.int | Space.e3.int | Space.g3.int | Space.h2.int
-        case .f2: return Space.d1.int | Space.d3.int | Space.e4.int | Space.g4.int | Space.g1.int | Space.h3.int
+        case .f2: return Space.d1.int | Space.d3.int | Space.e4.int | Space.g4.int | Space.h1.int | Space.h3.int
         case .f3: return Space.d2.int | Space.d4.int | Space.e1.int | Space.e5.int | Space.g1.int | Space.g5.int | Space.h2.int | Space.h4.int
         case .f4: return Space.d3.int | Space.d5.int | Space.e2.int | Space.e6.int | Space.g2.int | Space.g6.int | Space.h3.int | Space.h5.int
         case .f5: return Space.d4.int | Space.d6.int | Space.e3.int | Space.e7.int | Space.g3.int | Space.g7.int | Space.h4.int | Space.h6.int
-        case .f6: return Space.d5.int | Space.d7.int | Space.e4.int | Space.e8.int | Space.g4.int | Space.g8.int | Space.h6.int | Space.h7.int
+        case .f6: return Space.d5.int | Space.d7.int | Space.e4.int | Space.e8.int | Space.g4.int | Space.g8.int | Space.h5.int | Space.h7.int
         case .f7: return Space.d6.int | Space.d8.int | Space.e5.int | Space.g5.int | Space.h6.int | Space.h8.int
         case .f8: return Space.d7.int | Space.e6.int | Space.g6.int | Space.h7.int
             
@@ -308,16 +308,16 @@ extension Space {
         switch self {
         case .a1, .b1, .c1, .d1, .e1, .f1, .g1, .h1, .a8, .b8, .c8, .d8, .e8, .f8, .g8, .h8: return 0
             
-        case .a2: return Space.a3.int | Space.a4.int                     | Space.b3.int
+        case .a2: return Space.a3.int | Space.a4.int                | Space.b3.int
         case .b2: return Space.b3.int | Space.b4.int | Space.a3.int | Space.c3.int
         case .c2: return Space.c3.int | Space.c4.int | Space.b3.int | Space.d3.int
         case .d2: return Space.d3.int | Space.d4.int | Space.c3.int | Space.e3.int
         case .e2: return Space.e3.int | Space.e4.int | Space.d3.int | Space.f3.int
         case .f2: return Space.f3.int | Space.f4.int | Space.e3.int | Space.g3.int
         case .g2: return Space.g3.int | Space.g4.int | Space.f3.int | Space.h3.int
-        case .h2: return Space.h3.int | Space.a4.int | Space.g3.int
+        case .h2: return Space.h3.int | Space.h4.int | Space.g3.int
             
-        case .a3: return Space.a4.int                     | Space.b4.int
+        case .a3: return Space.a4.int                | Space.b4.int
         case .b3: return Space.b4.int | Space.a4.int | Space.c4.int
         case .c3: return Space.c4.int | Space.b4.int | Space.d4.int
         case .d3: return Space.d4.int | Space.c4.int | Space.e4.int
@@ -326,7 +326,7 @@ extension Space {
         case .g3: return Space.g4.int | Space.f4.int | Space.h4.int
         case .h3: return Space.h4.int | Space.g4.int
             
-        case .a4: return Space.a5.int                     | Space.b5.int
+        case .a4: return Space.a5.int                | Space.b5.int
         case .b4: return Space.b5.int | Space.a5.int | Space.c5.int
         case .c4: return Space.c5.int | Space.b5.int | Space.d5.int
         case .d4: return Space.d5.int | Space.c5.int | Space.e5.int
@@ -335,7 +335,7 @@ extension Space {
         case .g4: return Space.g5.int | Space.f5.int | Space.h5.int
         case .h4: return Space.h5.int | Space.g5.int
             
-        case .a5: return Space.a6.int                     | Space.b6.int
+        case .a5: return Space.a6.int                | Space.b6.int
         case .b5: return Space.b6.int | Space.a6.int | Space.c6.int
         case .c5: return Space.c6.int | Space.b6.int | Space.d6.int
         case .d5: return Space.d6.int | Space.c6.int | Space.e6.int
@@ -344,7 +344,7 @@ extension Space {
         case .g5: return Space.g6.int | Space.f6.int | Space.h6.int
         case .h5: return Space.h6.int | Space.g6.int
             
-        case .a6: return Space.a7.int                     | Space.b7.int
+        case .a6: return Space.a7.int                | Space.b7.int
         case .b6: return Space.b7.int | Space.a7.int | Space.c7.int
         case .c6: return Space.c7.int | Space.b7.int | Space.d7.int
         case .d6: return Space.d7.int | Space.c7.int | Space.e7.int
@@ -353,14 +353,14 @@ extension Space {
         case .g6: return Space.g7.int | Space.f7.int | Space.h7.int
         case .h6: return Space.h7.int | Space.g7.int
             
-        case .a7: return Space.a8.int                     | Space.b8.int
+        case .a7: return Space.a8.int                | Space.b8.int
         case .b7: return Space.b8.int | Space.a8.int | Space.c8.int
         case .c7: return Space.c8.int | Space.b8.int | Space.d8.int
         case .d7: return Space.d8.int | Space.c8.int | Space.e8.int
-        case .e7: return Space.e8.int  | Space.d8.int  | Space.f8.int
-        case .f7: return Space.f8.int  | Space.e8.int  | Space.g8.int
-        case .g7: return Space.g8.int  | Space.f8.int  | Space.h8.int
-        case .h7: return Space.h8.int  | Space.g8.int
+        case .e7: return Space.e8.int | Space.d8.int | Space.f8.int
+        case .f7: return Space.f8.int | Space.e8.int | Space.g8.int
+        case .g7: return Space.g8.int | Space.f8.int | Space.h8.int
+        case .h7: return Space.h8.int | Space.g8.int
         }
     }
     
@@ -368,7 +368,7 @@ extension Space {
         switch self {
         case .a1, .b1, .c1, .d1, .e1, .f1, .g1, .h1, .a8, .b8, .c8, .d8, .e8, .f8, .g8, .h8: return 0
             
-        case .a2: return Space.a1.int                      | Space.b1.int
+        case .a2: return Space.a1.int                  | Space.b1.int
         case .b2: return Space.b1.int  | Space.a1.int  | Space.c1.int
         case .c2: return Space.c1.int  | Space.b1.int  | Space.d1.int
         case .d2: return Space.d1.int  | Space.c1.int  | Space.e1.int
@@ -377,7 +377,7 @@ extension Space {
         case .g2: return Space.g1.int  | Space.f1.int  | Space.h1.int
         case .h2: return Space.h1.int  | Space.g1.int
             
-        case .a3: return Space.a2.int                      | Space.b2.int
+        case .a3: return Space.a2.int                  | Space.b2.int
         case .b3: return Space.b2.int  | Space.a2.int  | Space.c2.int
         case .c3: return Space.c2.int  | Space.b2.int  | Space.d2.int
         case .d3: return Space.d2.int  | Space.c2.int  | Space.e2.int
@@ -386,7 +386,7 @@ extension Space {
         case .g3: return Space.g2.int  | Space.f2.int  | Space.h2.int
         case .h3: return Space.h2.int  | Space.g2.int
             
-        case .a4: return Space.a3.int                      | Space.b3.int
+        case .a4: return Space.a3.int                  | Space.b3.int
         case .b4: return Space.b3.int  | Space.a3.int  | Space.c3.int
         case .c4: return Space.c3.int  | Space.b3.int  | Space.d3.int
         case .d4: return Space.d3.int  | Space.c3.int  | Space.e3.int
@@ -395,7 +395,7 @@ extension Space {
         case .g4: return Space.g3.int  | Space.f3.int  | Space.h3.int
         case .h4: return Space.h3.int  | Space.g3.int
             
-        case .a5: return Space.a4.int                      | Space.b4.int
+        case .a5: return Space.a4.int                  | Space.b4.int
         case .b5: return Space.b4.int  | Space.a4.int  | Space.c4.int
         case .c5: return Space.c4.int  | Space.b4.int  | Space.d4.int
         case .d5: return Space.d4.int  | Space.c4.int  | Space.e4.int
@@ -404,7 +404,7 @@ extension Space {
         case .g5: return Space.g4.int  | Space.f4.int  | Space.h4.int
         case .h5: return Space.h4.int  | Space.g4.int
             
-        case .a6: return Space.a5.int                      | Space.b5.int
+        case .a6: return Space.a5.int                  | Space.b5.int
         case .b6: return Space.b5.int  | Space.a5.int  | Space.c5.int
         case .c6: return Space.c5.int  | Space.b5.int  | Space.d5.int
         case .d6: return Space.d5.int  | Space.c5.int  | Space.e5.int
@@ -413,14 +413,14 @@ extension Space {
         case .g6: return Space.g5.int  | Space.f5.int  | Space.h5.int
         case .h6: return Space.h5.int  | Space.g5.int
             
-        case .a7: return Space.a6.int  | Space.a5.int                      | Space.b6.int
+        case .a7: return Space.a6.int  | Space.a5.int                  | Space.b6.int
         case .b7: return Space.b6.int  | Space.b5.int  | Space.a6.int  | Space.c6.int
         case .c7: return Space.c6.int  | Space.c5.int  | Space.b6.int  | Space.d6.int
         case .d7: return Space.d6.int  | Space.d5.int  | Space.c6.int  | Space.e6.int
         case .e7: return Space.e6.int  | Space.e5.int  | Space.d6.int  | Space.f6.int
         case .f7: return Space.f6.int  | Space.f5.int  | Space.e6.int  | Space.g6.int
         case .g7: return Space.g6.int  | Space.g5.int  | Space.f6.int  | Space.h6.int
-        case .h7: return Space.h6.int  | Space.a5.int  | Space.g6.int
+        case .h7: return Space.h6.int  | Space.h5.int  | Space.g6.int
         }
     }
     

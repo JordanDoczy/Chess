@@ -449,7 +449,7 @@ enum Space: UInt64 {
         case .h4: return 289356276058554368
         case .h5: return 578712552117108736
         case .h6: return 1157425104234217472
-        case .h7: return 2314850208468434960
+        case .h7: return 3467771713075281920
         case .h8: return 0
         }
     }
@@ -543,6 +543,10 @@ enum Space: UInt64 {
         }
     }
     
+    var kingMoves: UInt64 {
+        return adjacentSpaces
+    }
+    
     var knightMoves: UInt64 {
         switch self {
         case .a1: return 132096
@@ -568,7 +572,7 @@ enum Space: UInt64 {
         case .c3: return 43234889994
         case .c4: return 86469779988
         case .c5: return 172939559976
-        case .c6: return 414598596688
+        case .c6: return 345879119952
         case .c7: return 687463207072
         case .c8: return 275414786112
             
@@ -577,7 +581,7 @@ enum Space: UInt64 {
         case .d3: return 11068131838464
         case .d4: return 22136263676928
         case .d5: return 44272527353856
-        case .d6: return 106137240752128
+        case .d6: return 88545054707712
         case .d7: return 175990581010432
         case .d8: return 70506185244672
             
@@ -586,16 +590,16 @@ enum Space: UInt64 {
         case .e3: return 2833441750646784
         case .e4: return 5666883501293568
         case .e5: return 11333767002587136
-        case .e6: return 27171133632544768
+        case .e6: return 22667534005174272
         case .e7: return 45053588738670592
         case .e8: return 18049583422636032
             
         case .f1: return 145241105196122112
-        case .f2: return 290763685385732096
+        case .f2: return 362539804446949376
         case .f3: return 725361088165576704
         case .f4: return 1450722176331153408
         case .f5: return 2901444352662306816
-        case .f6: return 6955810209931460608
+        case .f6: return 5802888705324613632
         case .f7: return 11533718717099671552
         case .f8: return 4620693356194824192
             
@@ -850,7 +854,7 @@ enum Space: UInt64 {
         case .g8: return 0
             
         case .h1: return 0
-        case .h2: return 289356276058554376
+        case .h2: return 865817028361977856
         case .h3: return 578712552117108736
         case .h4: return 1157425104234217472
         case .h5: return 2314850208468434944
