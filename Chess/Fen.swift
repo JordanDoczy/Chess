@@ -20,13 +20,17 @@ enum FenElements: Int {
 class Fen {
     
     static var StandardBoard:String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-    
+    static var cache = [String:Board]()
     static func createBoard() -> Board {
         return createBoard(from: StandardBoard)!
     }
     
     static func createBoard(from fen: String) -> Board? {
 
+        guard cache[fen] == nil else {
+            return cache[fen]
+        }
+        
         func createBoard(fen: String) -> Board {
             let board = Board()
             var rank: Rank = ._8
@@ -76,6 +80,7 @@ class Fen {
         board.halfMove = Int(parts[FenElements.halfMove.rawValue]) ?? 0
         board.fullMove = Int(parts[FenElements.fullMove.rawValue]) ?? 0
         
+        cache[fen] = board
         return board
     }
     

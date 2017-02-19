@@ -433,27 +433,36 @@ extension Space {
     }
 }
 
-//func printSpace(space: Space) {
-//    let name = String(describing: space)
-//    print("case .\(name): return \(space.computedRookMoves)")
+//private static func printSpaces() {
+//    let a = [Space.a1, .a2, .a3, .a4, .a5, .a6, .a7, .a8]
+//    let b = [Space.b1, .b2, .b3, .b4, .b5, .b6, .b7, .b8]
+//    let c = [Space.c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8]
+//    let d = [Space.d1, .d2, .d3, .d4, .d5, .d6, .d7, .d8]
+//    let e = [Space.e1, .e2, .e3, .e4, .e5, .e6, .e7, .e8]
+//    let f = [Space.f1, .f2, .f3, .f4, .f5, .f6, .f7, .f8]
+//    let g = [Space.g1, .g2, .g3, .g4, .g5, .g6, .g7, .g8]
+//    let h = [Space.h1, .h2, .h3, .h4, .h5, .h6, .h7, .h8]
+//    
+//    print ("switch self {")
+//    a.forEach { printSpace(space: $0) }
+//    print("")
+//    b.forEach { printSpace(space: $0) }
+//    print("")
+//    c.forEach { printSpace(space: $0) }
+//    print("")
+//    d.forEach { printSpace(space: $0) }
+//    print("")
+//    e.forEach { printSpace(space: $0) }
+//    print("")
+//    f.forEach { printSpace(space: $0) }
+//    print("")
+//    g.forEach { printSpace(space: $0) }
+//    print("")
+//    h.forEach { printSpace(space: $0) }
+//    print ("}")
 //}
 //
-//let a = [Space.a1, .a2, .a3, .a4, .a5, .a6, .a7, .a8]
-//let b = [Space.b1, .b2, .b3, .b4, .b5, .b6, .b7, .b8]
-//let c = [Space.c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8]
-//let d = [Space.d1, .d2, .d3, .d4, .d5, .d6, .d7, .d8]
-//let e = [Space.e1, .e2, .e3, .e4, .e5, .e6, .e7, .e8]
-//let f = [Space.f1, .f2, .f3, .f4, .f5, .f6, .f7, .f8]
-//let g = [Space.g1, .g2, .g3, .g4, .g5, .g6, .g7, .g8]
-//let h = [Space.h1, .h2, .h3, .h4, .h5, .h6, .h7, .h8]
-//
-//print ("switch self {")
-//a.forEach { printSpace(space: $0) }
-//b.forEach { printSpace(space: $0) }
-//c.forEach { printSpace(space: $0) }
-//d.forEach { printSpace(space: $0) }
-//e.forEach { printSpace(space: $0) }
-//f.forEach { printSpace(space: $0) }
-//g.forEach { printSpace(space: $0) }
-//h.forEach { printSpace(space: $0) }
-//print ("}")
+//private static func printSpace(space: Space) {
+//    let name = String(describing: space)
+//    print("case .\(name): return \(space.computedDiagonals)")
+//}

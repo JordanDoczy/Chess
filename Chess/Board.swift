@@ -19,16 +19,7 @@ struct Move {
 }
 
 class Board: NSCopying {
-    
-    static let spaces: [Space] = [.a1, .a2, .a3, .a4, .a5, .a6, .a7, .a8,
-                                  .b1, .b2, .b3, .b4,. b5, .b6, .b7, .b8,
-                                  .c1, .c2, .c3, .c4,. c5, .c6, .c7, .c8,
-                                  .d1, .d2, .d3, .d4,. d5, .d6, .d7, .d8,
-                                  .e1, .e2, .e3, .e4,. e5, .e6, .e7, .e8,
-                                  .f1, .f2, .f3, .f4,. f5, .f6, .f7, .f8,
-                                  .g1, .g2, .g3, .g4,. g5, .g6, .g7, .g8,
-                                  .h1, .h2, .h3, .h4,. h5, .h6, .h7, .h8]
-    
+
     var castleOptions = Set<CastleMoves>()
     var color:Color = .white
     var data = [Space: Piece]()
@@ -36,8 +27,6 @@ class Board: NSCopying {
     var halfMove: Int = 0
     var fullMove: Int = 0
 
-    var test =  Array<Piece?>(repeating: nil, count: 64);
-    
     var blackPawns: UInt64   = 0
     var blackKnights: UInt64 = 0
     var blackBishops: UInt64 = 0
@@ -60,9 +49,7 @@ class Board: NSCopying {
         return whitePawns + whiteKnights + whiteBishops + whiteRooks + whiteQueen + whiteKing
     }
     
-    init() {
-        
-    }
+    init() { }
     
     init(data: [Space: Piece], castleOptions: Set<CastleMoves>, color: Color, enPassant: Space?, halfMove: Int, fullMove: Int) {
         self.data = data
@@ -89,50 +76,34 @@ class Board: NSCopying {
         return color == .white ? Space(rawValue: whiteKing) : Space(rawValue: blackKing)
     }
     
-    static func getPawnMoves(at space: Space, color: Color) -> UInt64 {
-        return color == .black ? space.blackPawnMoves : space.whitePawnMoves
-    }
-
     func getPiece(at space: Space) -> Piece? {
         
-        if blackPawns & space.rawValue > 0 {
-            return .blackPawn
-        } else if blackKnights & space.rawValue > 0 {
-            return .blackKnight
-        } else if blackBishops & space.rawValue > 0 {
-            return .blackBishop
-        } else if blackRooks & space.rawValue > 0 {
-            return .blackRook
-        } else if blackQueen & space.rawValue > 0 {
-            return .blackQueen
-        } else if blackKing & space.rawValue > 0 {
-            return .blackKing
-        } else if whitePawns & space.rawValue > 0 {
-            return .whitePawn
-        } else if whiteKnights & space.rawValue > 0 {
-            return .whiteKnight
-        } else if whiteBishops & space.rawValue > 0 {
-            return .whiteBishop
-        } else if whiteRooks & space.rawValue > 0 {
-            return .whiteRook
-        } else if whiteQueen & space.rawValue > 0 {
-            return .whiteQueen
-        } else if whiteKing & space.rawValue > 0 {
-            return .whiteKing
-        }
+             if blackPawns   & space.int > 0 { return .blackPawn   }
+        else if blackKnights & space.int > 0 { return .blackKnight }
+        else if blackBishops & space.int > 0 { return .blackBishop }
+        else if blackRooks   & space.int > 0 { return .blackRook   }
+        else if blackQueen   & space.int > 0 { return .blackQueen  }
+        else if blackKing    & space.int > 0 { return .blackKing   }
+             
+        else if whitePawns   & space.int > 0 { return .whitePawn   }
+        else if whiteKnights & space.int > 0 { return .whiteKnight }
+        else if whiteBishops & space.int > 0 { return .whiteBishop }
+        else if whiteRooks   & space.int > 0 { return .whiteRook   }
+        else if whiteQueen   & space.int > 0 { return .whiteQueen  }
+        else if whiteKing    & space.int > 0 { return .whiteKing   }
 
         return nil
     }
     
     func getPossibleMoves(at space: Space, for piece: Piece) -> UInt64 {
         switch piece {
-        case .blackPawn: return space.blackPawnMoves
-        case .whitePawn: return space.whitePawnMoves
+        case .blackPawn:                 return space.blackPawnMoves
+        case .whitePawn:                 return space.whitePawnMoves
         case .blackKnight, .whiteKnight: return space.knightMoves
         case .blackBishop, .whiteBishop: return space.bishopMoves
-        case .blackRook, .whiteRook: return  space.rookMoves
-        case .blackQueen, .whiteQueen: return space.queenMoves
-        case .blackKing, .whiteKing: return space.kingMoves
+        case .blackRook,   .whiteRook:   return space.rookMoves
+        case .blackQueen,  .whiteQueen:  return space.queenMoves
+        case .blackKing,   .whiteKing:   return space.kingMoves
         }
     }
     
@@ -178,7 +149,7 @@ class Board: NSCopying {
         
         var position: UInt64 = 0b1
         for index in 0..<64 {
-            let space = Board.spaces[index]
+            let space = Constants.spaces[index]
             
             if blackPawns & position > 0 {
                 blackMoves[space] = getPossibleMoves(at: space, for: .blackPawn)

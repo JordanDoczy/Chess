@@ -17,6 +17,7 @@
 		E64AD1831DE7976B00F55B49 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1821DE7976B00F55B49 /* Board.swift */; };
 		E64AD1871DEA40EA00F55B49 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1861DEA40EA00F55B49 /* Game.swift */; };
 		E6B12FEC1E593A9D007B4A7A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B12FEB1E593A9D007B4A7A /* Extensions.swift */; };
+		E6B12FEE1E59DEF1007B4A7A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B12FED1E59DEF1007B4A7A /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		E64AD1821DE7976B00F55B49 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		E64AD1861DEA40EA00F55B49 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		E6B12FEB1E593A9D007B4A7A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		E6B12FED1E59DEF1007B4A7A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,12 +67,13 @@
 			isa = PBXGroup;
 			children = (
 				E6019CF81DD7800400B8D613 /* AppDelegate.swift */,
-				E6019CFA1DD7800400B8D613 /* ViewController.swift */,
+				E64AD1821DE7976B00F55B49 /* Board.swift */,
+				E6B12FED1E59DEF1007B4A7A /* Constants.swift */,
 				E64AD1801DE791C800F55B49 /* Enums.swift */,
 				E6B12FEB1E593A9D007B4A7A /* Extensions.swift */,
-				E64AD1861DEA40EA00F55B49 /* Game.swift */,
 				E61337651DECFBD500072506 /* Fen.swift */,
-				E64AD1821DE7976B00F55B49 /* Board.swift */,
+				E64AD1861DEA40EA00F55B49 /* Game.swift */,
+				E6019CFA1DD7800400B8D613 /* ViewController.swift */,
 				E6019CFC1DD7800400B8D613 /* Main.storyboard */,
 				E6019CFF1DD7800400B8D613 /* Assets.xcassets */,
 				E6019D011DD7800400B8D613 /* LaunchScreen.storyboard */,
@@ -158,6 +161,7 @@
 				E64AD1831DE7976B00F55B49 /* Board.swift in Sources */,
 				E64AD1811DE791C800F55B49 /* Enums.swift in Sources */,
 				E6B12FEC1E593A9D007B4A7A /* Extensions.swift in Sources */,
+				E6B12FEE1E59DEF1007B4A7A /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
