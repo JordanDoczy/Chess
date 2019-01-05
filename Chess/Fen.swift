@@ -35,7 +35,7 @@ class Fen {
                 var file: File = .a
                 for character in row {
                     if let piece = Piece(rawValue: String(character)) {
-                        let space = Board.getSpace(rank: rank, file: file)
+                        let space = Space(rank: rank, file: file)
                         data[space] = piece
                         file = file.nextFile
                     } else if let emptySpaces = Int(String(character)) {

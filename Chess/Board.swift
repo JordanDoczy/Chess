@@ -46,12 +46,12 @@ class Board: NSCopying {
         case .black:
             validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue < space.rank.rawValue })
             if space.rank == ._7 {
-                validSpaces.insert(getSpace(rank: ._5, file: space.file))
+                validSpaces.insert(Space(rank: ._5, file: space.file))
             }
         case .white:
             validSpaces = Set(adjacentSpaces.filter { $0.rank.rawValue > space.rank.rawValue })
             if space.rank == ._2 {
-                validSpaces.insert(getSpace(rank: ._4, file: space.file))
+                validSpaces.insert(Space(rank: ._4, file: space.file))
             }
         }
         
@@ -94,10 +94,6 @@ class Board: NSCopying {
         }
     }
     
-    static func getSpace(rank: Rank, file: File) -> Space {
-        return file.spaces.filter { $0.rank.rawValue == rank.rawValue }.first!
-    }
-
     func getSpaces(with color: Color?) -> [Space] {
         return data.filter { $0.value.color == color }.map { $0.key }
     }
@@ -107,8 +103,7 @@ class Board: NSCopying {
         let opponentOccupiedSpaces = getSpaces(with: color.opposite)
         var validMoves = [Move]()
         
-        let king = spaces.filter{ data[$0] == (color == .white ? Piece.whiteKing : Piece.blackKing) }.first
-        guard let kingPosition = king else {
+        guard let kingPosition = (spaces.filter{ data[$0] == (color == .white ? Piece.whiteKing : Piece.blackKing) }.first) else {
             return []
         }
 
@@ -229,11 +224,11 @@ class Board: NSCopying {
                 
                 switch move.to.file {
                 case .g:
-                    rookMove = Move(from: Board.getSpace(rank: move.to.rank, file: .h),
-                                    to: Board.getSpace(rank: move.to.rank, file: .f))
+                    rookMove = Move(from: Space(rank: move.to.rank, file: .h),
+                                    to: Space(rank: move.to.rank, file: .f))
                 case .c:
-                    rookMove = Move(from: Board.getSpace(rank: move.to.rank, file: .a),
-                                    to: Board.getSpace(rank: move.to.rank, file: .d))
+                    rookMove = Move(from: Space(rank: move.to.rank, file: .a),
+                                    to: Space(rank: move.to.rank, file: .d))
                 default: return false
                 }
                 
@@ -251,9 +246,9 @@ class Board: NSCopying {
         
         func enPassantCapture(_ space: Space) {
             if space.rank == ._3 {
-                setSpace(Board.getSpace(rank: ._4, file: space.file), to: nil)
+                setSpace(Space(rank: ._4, file: space.file), to: nil)
             } else {
-                setSpace(Board.getSpace(rank: ._7, file: space.file), to: nil)
+                setSpace(Space(rank: ._7, file: space.file), to: nil)
             }
         }
 
@@ -276,7 +271,10 @@ class Board: NSCopying {
             if move.to == currentEnPassant {
                 enPassantCapture(move.to)
             } else if abs(move.to.rank.rawValue - move.from.rank.rawValue) == 2 {
-                enPassant = move.to
+                switch piece.color {
+                case .white: enPassant = Space(rank: move.to.rank.previousRank, file: move.to.file)
+                case .black: enPassant = Space(rank: move.to.rank.nextRank, file: move.to.file)
+                }
             }
             
             halfMove = 0

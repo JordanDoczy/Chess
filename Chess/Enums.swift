@@ -20,6 +20,19 @@ enum File: Int {
     case g
     case h
     
+    var description: String {
+        switch self {
+        case .a: return "a"
+        case .b: return "b"
+        case .c: return "c"
+        case .d: return "d"
+        case .e: return "e"
+        case .f: return "f"
+        case .g: return "g"
+        case .h: return "h"
+        }
+    }
+    
     var spaces: Set<Space> {
         switch self {
         case .a: return [.a1,.a2,.a3,.a4,.a5,.a6,.a7,.a8]
@@ -70,6 +83,10 @@ enum Rank: Int {
     case _6
     case _7
     case _8
+    
+    var description: String {
+        return "\(rawValue)"
+    }
     
     var spaces: Set<Space> {
         switch self {
@@ -237,6 +254,10 @@ enum Space: String, Equatable {
     case h6 = "h6"
     case h7 = "h7"
     case h8 = "h8"
+    
+    init(rank: Rank, file: File) {
+        self = Space(rawValue: file.description + rank.description)!
+    }
     
     var index: Int {
         return ((self.file.rawValue-1) * 8) + self.rank.rawValue - 1
