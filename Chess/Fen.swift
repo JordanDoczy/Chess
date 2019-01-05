@@ -33,7 +33,7 @@ class Fen {
             let rows = fen.components(separatedBy: "/")
             for row in rows {
                 var file: File = .a
-                for character in row.characters {
+                for character in row {
                     if let piece = Piece(rawValue: String(character)) {
                         let space = Board.getSpace(rank: rank, file: file)
                         data[space] = piece
@@ -53,7 +53,7 @@ class Fen {
         
         func createCastleOptions(fen: String) -> Set<CastleMoves> {
             var castleOptions = Set<CastleMoves>()
-            for castle in fen.characters {
+            for castle in fen {
                 if let castleMove = CastleMoves(rawValue: String(castle)) {
                     castleOptions.insert(castleMove)
                 }

@@ -33,29 +33,16 @@ class ViewController: UIViewController {
         let board4 = board.copy() as! Board
 
         
-        var start = Date()
-        for index in 0..<500 {
+        let start = Date()
+        for _ in 0..<500 {
             _ = board.getValidMoves()
         }
-//        _ = board1.getValidMoves()
-//        _ = board2.getValidMoves()
-//        _ = board3.getValidMoves()
-//        _ = board4.getValidMoves()
-        var end = Date()
+        _ = board1.getValidMoves()
+        _ = board2.getValidMoves()
+        _ = board3.getValidMoves()
+        _ = board4.getValidMoves()
+        let end = Date()
         print(end.timeIntervalSince(start))
-
-        
-//        start = Date()
-//        _ = board.getValidMoves()
-//        _ = board1.getValidMoves()
-//        _ = board2.getValidMoves()
-//        _ = board3.getValidMoves()
-//        _ = board4.getValidMoves()
-//        end = Date()
-//        print(end.timeIntervalSince(start))
-//
-
-
         print("")
         board.printBoard()
 
