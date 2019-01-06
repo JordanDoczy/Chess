@@ -220,7 +220,9 @@ class Board: NSCopying {
                 return validMoves[move]!
             }
             
-            guard move.to == enPassant || (move.from.file == move.to.file && !isOccupiedByOpponent(at: move.to, myColor: piece.color)) else {
+            guard move.to == enPassant
+                || (move.from.file != move.to.file && isOccupiedByOpponent(at: move.to, myColor: piece.color))
+                || (move.from.file == move.to.file && isEmpty(at: move.to)) else {
                 validMoves[move] = false
                 return validMoves[move]!
             }

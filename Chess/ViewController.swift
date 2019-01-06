@@ -48,18 +48,19 @@ class ViewController: UIViewController {
 //        board.printBoard()
 
         //let fen = "rnbqk2r/pppp1ppp/5n2/8/1Q2P3/2N5/PPP2PPP/R1B1KBNR b KQkq - 0 6"
-        let fen = "rnbqk2r/pppp1pp1/5n1p/8/Q3P3/2N5/PPP2PPP/R1B1KBNR b KQkq - 1 7"
+        //let fen = "rnbqk2r/pppp1pp1/5n1p/8/Q3P3/2N5/PPP2PPP/R1B1KBNR b KQkq - 1 7" // for castling
+        let fen = "r1bqk2r/ppp2pp1/2n2n1p/3pP3/1Q6/2N1B3/PPP2PPP/R3KBNR w KQkq d6 0 9" // for en passant
         guard let board = Fen.createBoard(from: fen) else {
             return
         }
         
-        print(board.castleOptions)
-        board.move(Move(from: .e8, to: .g8))
-        print(board.castleOptions)
-        board.move(Move(from: .c1, to: .e3))
-        board.move(Move(from: .b8, to: .c6))
-        board.move(Move(from: .e1, to: .c1))
-        print(board.castleOptions)
+//        print(board.castleOptions)
+//        board.move(Move(from: .e8, to: .g8))
+//        print(board.castleOptions)
+//        board.move(Move(from: .c1, to: .e3))
+//        board.move(Move(from: .b8, to: .c6))
+//        board.move(Move(from: .e1, to: .c1))
+//        print(board.castleOptions)
 
 //        let whiteQueenMoves = board.getValidMoves(for: .b4).map { $0.to }.sorted { $0.index < $1.index}
 //        let blackKingMoves = board.getValidMoves(for: .e8).map { $0.to }.sorted { $0.index < $1.index}
@@ -70,14 +71,19 @@ class ViewController: UIViewController {
         //let blackKingMoves = board.getValidMoves(for: .e8).map { $0.to }.sorted { $0.index < $1.index}
         //print(blackKingMoves)
         
+//        let c2 = board.getValidMoves(for: .c2).map { $0.to }.sorted { $0.index < $1.index}
+//        print(c2)
+//
+//        let e5 = board.getValidMoves(for: .e5).map { $0.to }.sorted { $0.index < $1.index}
+//        print(e5)
         
-//        var moves = board.getValidMoves()
-//        moves = moves.sorted { $0.from.rawValue < $1.from.rawValue }
-//        moves.forEach { move in
-//            if let piece = board.getPiece(at: move.from) {
-//                print(piece.description, move)
-//            }
-//        }
+        var moves = board.getValidMoves()
+        moves = moves.sorted { $0.from.rawValue < $1.from.rawValue }
+        moves.forEach { move in
+            if let piece = board.getPiece(at: move.from) {
+                print(piece.description, move)
+            }
+        }
         
         // TODO: work on api - need a way to try a move or confirm isValid in one call
         //board.move(Move(from: .d7, to: .d6))
