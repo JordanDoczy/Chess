@@ -38,6 +38,14 @@ class Board: NSCopying {
         return copy
     }
     
+    func getKingPosition(for color: Color) -> Space? {
+        let spaces = getSpaces(with: color)
+        guard let kingPosition = (spaces.filter{ data[$0] == (color == .white ? Piece.whiteKing : Piece.blackKing) }.first) else {
+            return nil
+        }
+        return kingPosition
+    }
+    
     static func getPawnMoves(at space: Space, color: Color) -> Set<Space> {
         let adjacentSpaces = space.adjacentSpaces
         var validSpaces = Set<Space>()
@@ -77,7 +85,9 @@ class Board: NSCopying {
         return spaces.map{ getPiece(at: $0) }
     }
     
-    func getPossibleMoves(at space: Space, for piece: Piece) -> Set<Space> {
+    func getPossibleSpaces(at space: Space) -> Set<Space>? {
+        guard let piece = getPiece(at: space) else { return nil }
+        
         switch piece {
         case .whitePawn, .blackPawn:
             return Board.getPawnMoves(at: space, color: piece.color)
@@ -89,8 +99,10 @@ class Board: NSCopying {
             return space.rank.spaces.union(space.file.spaces)
         case .whiteQueen, .blackQueen:
             return Set(space.diagonals.flatMap { $0.spaces }).union(space.rank.spaces).union(space.file.spaces)
-        case .whiteKing, .blackKing:
-            return space.adjacentSpaces.union(castleOptions.map { $0.king.to })
+        case .whiteKing:
+            return space.adjacentSpaces.union(castleOptions.map { $0.king.to }.filter { $0.rank == ._1 })
+        case .blackKing:
+            return space.adjacentSpaces.union(castleOptions.map { $0.king.to }.filter { $0.rank == ._8 })
         }
     }
     
@@ -100,26 +112,47 @@ class Board: NSCopying {
 
     func getValidMoves() -> [Move] {
         let spaces = getSpaces(with: color)
-        let opponentOccupiedSpaces = getSpaces(with: color.opposite)
-        var validMoves = [Move]()
-        
-        guard let kingPosition = (spaces.filter{ data[$0] == (color == .white ? Piece.whiteKing : Piece.blackKing) }.first) else {
-            return []
-        }
-
-        let moves = spaces.flatMap { space in getPossibleMoves(at: space, for: getPiece(at: space)!).map{ Move(from: space, to: $0) }}
-        let checks = opponentOccupiedSpaces.flatMap { space in getPossibleMoves(at: space, for: getPiece(at: space)!).filter{ $0 == kingPosition }.map{ Move(from: space, to: $0) }}
-
-        validMoves = moves.filter { isValidMove($0, checks: checks) }
-        return validMoves
+        return getValidMoves(for: spaces, with: color)
     }
     
-    func isInCheck(checks: [Move]) -> Bool {
-        guard checks.count > 0 else {
-            return false
+    func getValidMoves(for space: Space) -> [Move] {
+        guard let piece = getPiece(at: space) else { return [] }
+        return getValidMoves(for: [space], with: piece.color)
+    }
+    
+    func getValidMoves(for spaces: [Space], with color: Color) -> [Move] {
+        validMoves.removeAll()
+        var moves = [Move]()
+        spaces.forEach { space in
+            moves += getPossibleSpaces(at: space)!.compactMap {
+                Move(from: space, to: $0)
+            }
+        }
+        return moves.filter { isValidMove($0) }
+    }
+
+    func getPossibleChecks(for color: Color) -> [Move] {
+        guard let kingPosition = getKingPosition(for: color) else {
+            return []
         }
         
-        return checks.filter { isValidMove($0, checks: []) }.count > 0
+        var checks = [Move]()
+        let opponentSpaces = getSpaces(with: color.opposite)
+        opponentSpaces.forEach { space in
+            guard getPossibleSpaces(at: space)?.contains(kingPosition) ?? false else {
+                return
+            }
+            
+            if isValidMove(Move(from: space, to: kingPosition)) {
+                checks.append(Move(from: space, to: kingPosition))
+            }
+        }
+        
+        return checks
+    }
+    
+    func isInCheck(color: Color) -> Bool {
+        return getPossibleChecks(for: color).count > 0
     }
 
     func isEmpty(at space: Space) -> Bool {
@@ -165,10 +198,17 @@ class Board: NSCopying {
         return isPathClearBetween(Move(from: from, to: to))
     }
     
-    func isValidMove(_ move: Move, checks: [Move]) -> Bool {
+    var validMoves = [Move:Bool]()
+    func isValidMove(_ move: Move) -> Bool {
+        
+        if validMoves.keys.contains(move) {
+            return validMoves[move]!
+        }
+        
         guard let piece = getPiece(at: move.from),
             isEmpty(at: move.to) || isOccupiedByOpponent(at: move.to, myColor: piece.color) else {
-            return false
+                validMoves[move] = false
+            return validMoves[move]!
         }
         
         let board = copy() as! Board
@@ -176,69 +216,73 @@ class Board: NSCopying {
         switch piece {
         case .blackPawn, .whitePawn:
             guard isPathClearBetween(from: move.from, to: move.to) else {
-                return false
+                validMoves[move] = false
+                return validMoves[move]!
             }
             
             guard move.to == enPassant || (move.from.file == move.to.file && !isOccupiedByOpponent(at: move.to, myColor: piece.color)) else {
-                return false
+                validMoves[move] = false
+                return validMoves[move]!
             }
             
             board.move(move)
-            return !board.isInCheck(checks: checks)
+            validMoves[move] = !board.isInCheck(color: color)
+            return validMoves[move]!
             
         case .blackKnight, .whiteKnight:
             board.move(move)
-            return !board.isInCheck(checks: checks)
+            validMoves[move] = !board.isInCheck(color: color)
+            return validMoves[move]!
             
-        case .blackBishop, .whiteBishop:
+        case .blackBishop, .whiteBishop, .blackRook, .whiteRook, .blackQueen, .whiteQueen:
             guard isPathClearBetween(from: move.from, to: move.to) else {
-                return false
+                validMoves[move] = false
+                return validMoves[move]!
             }
             
             board.move(move)
-            return !board.isInCheck(checks: checks)
-            
-        case .blackRook, .whiteRook:
-            guard isPathClearBetween(from: move.from, to: move.to) else {
-                return false
-            }
-            
-            board.move(move)
-            return !board.isInCheck(checks: checks)
-            
-        case .blackQueen, .whiteQueen:
-            guard isPathClearBetween(from: move.from, to: move.to) else {
-                return false
-            }
-            
-            board.move(move)
-            return !board.isInCheck(checks: checks)
+            validMoves[move] = !board.isInCheck(color: color)
+            return validMoves[move]!
             
         case .blackKing, .whiteKing:
             guard isPathClearBetween(from: move.from, to: move.to) else {
-                return false
+                validMoves[move] = false
+                return validMoves[move]!
             }
             
             if abs(move.from.file.rawValue - move.to.file.rawValue) == 2 {
-                let rookMove:Move
+                let rookMove: Move
                 
                 switch move.to.file {
                 case .g:
+                    guard isValidMove(Move(from: move.from, to: Space(rank: move.to.rank, file: .f))) else {
+                        validMoves[move] = false
+                        return validMoves[move]!
+                    }
+                    
                     rookMove = Move(from: Space(rank: move.to.rank, file: .h),
                                     to: Space(rank: move.to.rank, file: .f))
+                    
                 case .c:
+                    guard isValidMove(Move(from: move.from, to: Space(rank: move.to.rank, file: .d))) else {
+                        validMoves[move] = false
+                        return validMoves[move]!
+                    }
+                    
                     rookMove = Move(from: Space(rank: move.to.rank, file: .a),
                                     to: Space(rank: move.to.rank, file: .d))
                 default: return false
                 }
                 
-                if !isValidMove(rookMove, checks: checks) {
-                    return false
+                if !isValidMove(rookMove) {
+                    validMoves[move] = false
+                    return validMoves[move]!
                 }
             }
             
             board.move(move)
-            return !board.isInCheck(checks: checks)
+            validMoves[move] = !board.isInCheck(color: color)
+            return validMoves[move]!
         }
     }
 
@@ -292,12 +336,18 @@ class Board: NSCopying {
             default:
                 break
             }
-        case .whiteKing, .blackKing:
+        case .blackKing:
             switch move {
             case CastleMoves.blackKingSide.king:
                 self.move(CastleMoves.blackKingSide.rook)
             case CastleMoves.blackQueenSide.king:
                 self.move(CastleMoves.blackQueenSide.rook)
+            default:
+                break
+            }
+            castleOptions = castleOptions.filter { $0.king.to.rank == ._1 }
+        case .whiteKing:
+            switch move {
             case CastleMoves.whiteKingSide.king:
                 self.move(CastleMoves.whiteKingSide.rook)
             case CastleMoves.whiteQueenSide.king:
@@ -305,7 +355,7 @@ class Board: NSCopying {
             default:
                 break
             }
-            castleOptions.removeAll()
+            castleOptions = castleOptions.filter { $0.king.to.rank == ._8 }
         default:
             break
         }

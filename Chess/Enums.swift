@@ -8,7 +8,25 @@
 
 import Foundation
 
-typealias Move = (from: Space, to: Space)
+//typealias Move = (from: Space, to: Space)
+
+struct Move: Hashable, Equatable {
+    var from: Space
+    var to: Space
+    
+//    init(from: Space, to: Space) {
+//        self.from = from
+//        self.to = to
+//    }
+    
+    public static func == (lhs: Move, rhs: Move) -> Bool {
+        return lhs.from == rhs.from && lhs.to == rhs.to
+    }
+    
+    var hashValue: Int {
+        return Int("\(from.index)\(to.index)")!
+    }
+}
 
 enum File: Int {
     case a = 1
@@ -526,19 +544,19 @@ enum CastleMoves: String {
     
     var king: Move {
         switch  self {
-        case .blackKingSide:  return (from: .e8, to: .g8)
-        case .blackQueenSide: return (from: .e8, to: .c8)
-        case .whiteKingSide:  return (from: .e1, to: .g1)
-        case .whiteQueenSide: return (from: .e1, to: .c1)
+        case .blackKingSide:  return Move(from: .e8, to: .g8)
+        case .blackQueenSide: return Move(from: .e8, to: .c8)
+        case .whiteKingSide:  return Move(from: .e1, to: .g1)
+        case .whiteQueenSide: return Move(from: .e1, to: .c1)
         }
     }
     
     var rook: Move {
         switch self {
-        case .blackKingSide:  return (from: .h8, to: .f8)
-        case .blackQueenSide: return (from: .a8, to: .d8)
-        case .whiteKingSide:  return (from: .h1, to: .f1)
-        case .whiteQueenSide: return (from: .a1, to: .d1)
+        case .blackKingSide:  return Move(from: .h8, to: .f8)
+        case .blackQueenSide: return Move(from: .a8, to: .d8)
+        case .whiteKingSide:  return Move(from: .h1, to: .f1)
+        case .whiteQueenSide: return Move(from: .a1, to: .d1)
         }
     }
 }
