@@ -12,6 +12,49 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        testSpeed()
+    }
+    
+    func testSpeed() {
+        let start = Date()
+        let fen = "rnbqk2r/pppp1ppp/5n2/8/1Q2P3/2N5/PPP2PPP/R1B1KBNR b KQkq - 0 6"
+        let board = Fen.createBoard(from: fen)!
+        
+        for _ in 0..<1000 {
+            board.getValidMoves(for: .b4) // todo finish testing speed 
+            //board.isValidMove(Move(from: .b4, to: .e7))
+        
+        }
+        
+        let end = Date()
+        print(end.timeIntervalSince(start))
+    }
+    
+    func playGame() {
+        let board = Fen.createBoard()
+        var validMoves = board.getValidMoves()
+        while validMoves.isEmpty == false {
+            let start = Date()
+            board.computerMove()
+            let end = Date()
+            print(end.timeIntervalSince(start))
+            //board.printBoard()
+            print("move:", board.fullMove, board.halfMove)
+            validMoves = board.getValidMoves()
+            
+            guard board.fullMove < 2000 else {
+                return
+            }
+        }
+        
+        print("isCheckmate?", board.isCheckmate())
+        board.printBoard()
+    }
+    
+}
+
+
+
 
 //        let board = Fen.createBoard()
 //        print(Fen.getFen(from: board))
@@ -47,13 +90,13 @@ class ViewController: UIViewController {
 //        print("")
 //        board.printBoard()
 
-        //let fen = "rnbqk2r/pppp1ppp/5n2/8/1Q2P3/2N5/PPP2PPP/R1B1KBNR b KQkq - 0 6"
-        //let fen = "rnbqk2r/pppp1pp1/5n1p/8/Q3P3/2N5/PPP2PPP/R1B1KBNR b KQkq - 1 7" // for castling
-        let fen = "r1bqk2r/ppp2pp1/2n2n1p/3pP3/1Q6/2N1B3/PPP2PPP/R3KBNR w KQkq d6 0 9" // for en passant
-        guard let board = Fen.createBoard(from: fen) else {
-            return
-        }
-        
+//let fen = "rnbqk2r/pppp1ppp/5n2/8/1Q2P3/2N5/PPP2PPP/R1B1KBNR b KQkq - 0 6"
+//let fen = "rnbqk2r/pppp1pp1/5n1p/8/Q3P3/2N5/PPP2PPP/R1B1KBNR b KQkq - 1 7" // for castling
+//        let fen = "r1bqk2r/ppp2pp1/2n2n1p/3pP3/1Q6/2N1B3/PPP2PPP/R3KBNR w KQkq d6 0 9" // for en passant
+//        guard let board = Fen.createBoard(from: fen) else {
+//            return
+//        }
+
 //        print(board.castleOptions)
 //        board.move(Move(from: .e8, to: .g8))
 //        print(board.castleOptions)
@@ -67,29 +110,12 @@ class ViewController: UIViewController {
 //        let isInCheck = board.isInCheck(color: .black)
 //        print("isInCheck", isInCheck)
 //        print(blackKingMoves)
-        
-        //let blackKingMoves = board.getValidMoves(for: .e8).map { $0.to }.sorted { $0.index < $1.index}
-        //print(blackKingMoves)
-        
+
+//let blackKingMoves = board.getValidMoves(for: .e8).map { $0.to }.sorted { $0.index < $1.index}
+//print(blackKingMoves)
+
 //        let c2 = board.getValidMoves(for: .c2).map { $0.to }.sorted { $0.index < $1.index}
 //        print(c2)
 //
 //        let e5 = board.getValidMoves(for: .e5).map { $0.to }.sorted { $0.index < $1.index}
 //        print(e5)
-        
-        var moves = board.getValidMoves()
-        moves = moves.sorted { $0.from.rawValue < $1.from.rawValue }
-        moves.forEach { move in
-            if let piece = board.getPiece(at: move.from) {
-                print(piece.description, move)
-            }
-        }
-        
-        // TODO: work on api - need a way to try a move or confirm isValid in one call
-        //board.move(Move(from: .d7, to: .d6))
-        board.printBoard()
-        
-    }
-    
-}
-
