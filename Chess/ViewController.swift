@@ -12,7 +12,30 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        testSpeed()
+        //testSpeed()
+        testNewModel()
+    }
+    
+    @IBAction func onRunTestPressed(_ sender: UIButton) {
+        testNewModel()
+    }
+    
+    func testNewModel() {
+        let start = Date()
+        for _ in 0..<1000000 {
+            let space = SpacesA.model[.b4]
+            space.fileSpaces
+            space.rankSpaces
+            space.rank
+            space.file
+            
+//            Spaces.getFileSpaces(at: .b4)
+//            Spaces.getRankSpaces(at: .b4)
+//            Spaces.getRank(at: .b4)
+//            Spaces.getFile(at: .b4)
+        }
+        let end = Date()
+        print(end.timeIntervalSince(start))
     }
     
     func testSpeed() {

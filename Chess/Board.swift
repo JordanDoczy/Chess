@@ -186,6 +186,7 @@ class Board: NSCopying {
     
     func getValidMoves(for spaces: [Space], with color: Color) -> [Move] {
         validMoves.removeAll()
+        possibleChecks.removeAll()
         guard isCheckmatePossible() else { return [] }
         var moves = [Move]()
         spaces.forEach { space in
@@ -196,9 +197,14 @@ class Board: NSCopying {
         return moves.filter { isValidMove($0) }
     }
 
+    var possibleChecks = [Space: [Move]]()
     func getPossibleChecks(for color: Color) -> [Move] {
         guard let kingPosition = getKingPosition(for: color) else {
             return []
+        }
+        
+        if let possibleChecks = possibleChecks[kingPosition] {
+            return possibleChecks
         }
         
         var checks = [Move]()
@@ -212,6 +218,8 @@ class Board: NSCopying {
                 checks.append(Move(from: space, to: kingPosition))
             }
         }
+        
+        possibleChecks[kingPosition] = checks
         
         return checks
     }
