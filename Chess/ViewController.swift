@@ -39,11 +39,10 @@ class ViewController: UIViewController {
         let start = Date()
         let fen = "rnbqk2r/pppp1ppp/5n2/8/1Q2P3/2N5/PPP2PPP/R1B1KBNR b KQkq - 0 6"
         let board = Fen.createBoard(from: fen)!
-        
-        for _ in 0..<1000000 {
-            board.getValidMoves(for: [.b4], with: .white) // todo finish testing speed
-            //board.isValidMove(Move(from: .b4, to: .e7))
-        
+        let iterations = 1000000
+
+        for _ in 0 ..< iterations {
+            let validMoves = board.getValidMoves()
         }
         
         let end = Date()

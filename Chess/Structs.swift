@@ -16,13 +16,16 @@ struct Constants {
 struct Move: Hashable, Equatable {
     var from: Space
     var to: Space
-
-    public static func == (lhs: Move, rhs: Move) -> Bool {
-        return lhs.from == rhs.from && lhs.to == rhs.to
+    let hashValue: Int
+    
+    init(from: Space, to: Space) {
+        self.from = from
+        self.to = to
+        hashValue = Int("\(Constants.squares[from].index)\(Constants.squares[to].index)")!
     }
     
-    var hashValue: Int {
-        return Int("\(Constants.squares[from].index)\(Constants.squares[to].index)")!
+    public static func == (lhs: Move, rhs: Move) -> Bool {
+        return lhs.hashValue == rhs.hashValue
     }
 }
 

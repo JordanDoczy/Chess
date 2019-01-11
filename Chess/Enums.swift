@@ -531,12 +531,31 @@ enum CastleMoves: String {
         }
     }
     
+    var kingStep: Move {
+        switch  self {
+        case .blackKingSide:  return Move(from: .e8, to: .f8)
+        case .blackQueenSide: return Move(from: .e8, to: .d8)
+        case .whiteKingSide:  return Move(from: .e1, to: .f1)
+        case .whiteQueenSide: return Move(from: .e1, to: .d1)
+        }
+    }
+    
     var rook: Move {
         switch self {
         case .blackKingSide:  return Move(from: .h8, to: .f8)
         case .blackQueenSide: return Move(from: .a8, to: .d8)
         case .whiteKingSide:  return Move(from: .h1, to: .f1)
         case .whiteQueenSide: return Move(from: .a1, to: .d1)
+        }
+    }
+    
+    init?(move: Move) {
+        switch move.hashValue {
+        case Move(from: .e8, to: .g8).hashValue: self = .blackKingSide
+        case Move(from: .e8, to: .c8).hashValue: self = .blackQueenSide
+        case Move(from: .e1, to: .g1).hashValue: self = .whiteKingSide
+        case Move(from: .e1, to: .c1).hashValue: self = .whiteKingSide
+        default: return nil
         }
     }
 }
