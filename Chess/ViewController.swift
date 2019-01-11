@@ -13,11 +13,18 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //testSpeed()
-        testNewModel()
+        //testNewModel()
+        printIndicies()
     }
     
     @IBAction func onRunTestPressed(_ sender: UIButton) {
         testNewModel()
+    }
+    
+    func printIndicies() {
+        Space.allCases.forEach {
+            print($0, $0.index)
+        }
     }
     
     func testNewModel() {
