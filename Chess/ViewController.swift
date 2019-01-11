@@ -12,34 +12,24 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //testSpeed()
-        //testNewModel()
-        printIndicies()
     }
     
     @IBAction func onRunTestPressed(_ sender: UIButton) {
-        testNewModel()
+        //testNewModel()
+        testSpeed()
     }
-    
-    func printIndicies() {
-        Space.allCases.forEach {
-            print($0, $0.index)
-        }
-    }
-    
+
     func testNewModel() {
+        
+        let squares = Constants.squares
         let start = Date()
         for _ in 0..<1000000 {
-            let space = SpacesA.model[.b4]
+            let space = squares[.b4]
             space.fileSpaces
             space.rankSpaces
             space.rank
             space.file
-            
-//            Spaces.getFileSpaces(at: .b4)
-//            Spaces.getRankSpaces(at: .b4)
-//            Spaces.getRank(at: .b4)
-//            Spaces.getFile(at: .b4)
+            space.diagonalSpaces
         }
         let end = Date()
         print(end.timeIntervalSince(start))
@@ -50,8 +40,8 @@ class ViewController: UIViewController {
         let fen = "rnbqk2r/pppp1ppp/5n2/8/1Q2P3/2N5/PPP2PPP/R1B1KBNR b KQkq - 0 6"
         let board = Fen.createBoard(from: fen)!
         
-        for _ in 0..<1000 {
-            board.getValidMoves(for: .b4) // todo finish testing speed 
+        for _ in 0..<1000000 {
+            board.getValidMoves(for: [.b4], with: .white) // todo finish testing speed
             //board.isValidMove(Move(from: .b4, to: .e7))
         
         }

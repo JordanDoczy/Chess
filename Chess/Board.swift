@@ -11,9 +11,9 @@ import Foundation
 class Board: NSCopying {
     
     private(set) var castleOptions = Set<CastleMoves>()
-    private(set) var color:Color = .white
+    private(set) var color: Color = .white
     private(set) var data = [Space: Piece]()
-    private(set) var enPassant:Space?
+    private(set) var enPassant: Space?
     private(set) var halfMove: Int = 0
     private(set) var fullMove: Int = 0
 
@@ -25,24 +25,32 @@ class Board: NSCopying {
         self.halfMove = halfMove
         self.fullMove = fullMove
     }
-    
+
     func isCheckmatePossible() -> Bool {
         
         var whiteCount = 0
         var blackCount = 0
-        var result = false
-        data.values.forEach { piece in
+        
+        for piece in data.values {
             switch(piece) {
-            case .blackQueen, .whiteQueen, .blackRook, .whiteRook, .blackPawn, .whitePawn: result = true
-            case .whiteBishop, .whiteKnight: whiteCount += 1
-            case .blackBishop, .blackKnight: blackCount += 1
+            case .blackQueen, .whiteQueen, .blackRook, .whiteRook, .blackPawn, .whitePawn: return true
+            case .whiteBishop, .whiteKnight:
+                whiteCount += 1
+                if whiteCount > 1 {
+                    return true
+                }
+            case .blackBishop, .blackKnight:
+                blackCount += 1
+                if blackCount > 1 {
+                    return true
+                }
             default: break
             }
         }
         
-        return result ? result : whiteCount > 1 || blackCount > 1
+        return false
     }
-    
+
     func isCheckmate() -> Bool {
         return getValidMoves().count == 0 && isInCheck(color: color)
     }
@@ -100,20 +108,21 @@ class Board: NSCopying {
     }
     
     static func getPawnMoves(at space: Space, color: Color) -> Set<Space> {
-        let adjacentSpaces = Spaces.getAdjacentSpaces(at: space)
+        let square = Constants.squares[space]
+        let adjacentSpaces = square.adjacentSpaces
         var validSpaces = Set<Space>()
         
-        let rank = Spaces.getRank(at: space)
-        let file = Spaces.getFile(at: space)
+        let rank = square.rank
+        let file = square.file
         
         switch color {
         case .black:
-            validSpaces = Set(adjacentSpaces.filter { Spaces.getRank(at: $0).rawValue < rank.rawValue })
+            validSpaces = Set(adjacentSpaces.filter { Constants.squares[$0].rank.rawValue < rank.rawValue })
             if rank == ._7 {
                 validSpaces.insert(Space(rank: ._5, file: file))
             }
         case .white:
-            validSpaces = Set(adjacentSpaces.filter { Spaces.getRank(at: $0).rawValue > rank.rawValue })
+            validSpaces = Set(adjacentSpaces.filter { Constants.squares[$0].rank.rawValue > rank.rawValue })
             if rank == ._2 {
                 validSpaces.insert(Space(rank: ._4, file: file))
             }
@@ -125,51 +134,48 @@ class Board: NSCopying {
     func getPiece(at space: Space) -> Piece? {
         return data[space]
     }
-
-// not used
-//    func getPieces(at diagonal: Diagonal) -> [Piece?] {
-//        let spaces = Diagonals.getSpaces(diagonal: diagonal).sorted {
-//
-//            $0.file.rawValue < $1.file.rawValue
-//        }
-//        return spaces.map{ getPiece(at: $0) }
-//    }
-//
-//    func getPieces(at file: File) -> [Piece?] {
-//        let spaces = file.spaces.sorted { $0.rank.rawValue < $1.rank.rawValue }
-//        return spaces.map{ getPiece(at: $0) }
-//    }
     
     func getPieces(at rank: Rank) -> [Piece?] {
-        let spaces = Ranks.getSpaces(rank: rank).sorted {
-            Spaces.getFile(at: $0).rawValue < Spaces.getFile(at: $1).rawValue
+        let squares = Constants.squares
+        let spaces = Constants.ranks[rank].sorted {
+            squares[$0].file.rawValue < squares[$1].file.rawValue
         }
         return spaces.map{ getPiece(at: $0) }
     }
-    
+
+    var spaces = [String:Set<Space>]()
     func getPossibleSpaces(at space: Space) -> Set<Space>? {
         guard let piece = getPiece(at: space) else { return nil }
         
+        let key = piece.rawValue + space.rawValue
+        
+        if let value = spaces[key] {
+            return value
+        }
+        
+        let squares = Constants.squares
         switch piece {
         case .whitePawn, .blackPawn:
-            return Board.getPawnMoves(at: space, color: piece.color)
+            spaces[key] = Board.getPawnMoves(at: space, color: piece.color)
         case .whiteKnight, .blackKnight:
-            return Spaces.getKnightMoves(at: space)
+            spaces[key] = squares[space].knightMoves
         case .whiteBishop, .blackBishop:
-            return Spaces.getDiagnolSpaces(at: space)
+            spaces[key] = squares[space].diagonalSpaces
         case .whiteRook, .blackRook:
-            return Spaces.getRankSpaces(at: space).union(Spaces.getFileSpaces(at: space))
+            spaces[key] = squares[space].fileSpaces.union(squares[space].rankSpaces)
         case .whiteQueen, .blackQueen:
-            return Spaces.getDiagnolSpaces(at: space).union(Spaces.getRankSpaces(at: space).union(Spaces.getFileSpaces(at: space)))
+            spaces[key] = squares[space].fileSpaces.union(squares[space].rankSpaces).union(squares[space].diagonalSpaces)
         case .whiteKing:
-            return Spaces.getAdjacentSpaces(at: space).union(castleOptions.map { $0.king.to }.filter {
-                Spaces.getRank(at: $0) == ._1 })
+            spaces[key] = squares[space].adjacentSpaces.union(castleOptions.map { $0.king.to }.filter {
+                squares[$0].rank == ._1 })
         case .blackKing:
-            return Spaces.getAdjacentSpaces(at: space).union(castleOptions.map { $0.king.to }.filter {
-                Spaces.getRank(at: $0) == ._8 })
+            spaces[key] = squares[space].adjacentSpaces.union(castleOptions.map { $0.king.to }.filter {
+                squares[$0].rank == ._8 })
         }
+        
+        return spaces[key]
     }
-    
+
     func getSpaces(with color: Color?) -> [Space] {
         return data.filter { $0.value.color == color }.map { $0.key }
     }
@@ -184,14 +190,22 @@ class Board: NSCopying {
         return getValidMoves(for: [space], with: piece.color)
     }
     
+    var possibleMoves = [String:[Move]]()
     func getValidMoves(for spaces: [Space], with color: Color) -> [Move] {
         validMoves.removeAll()
         possibleChecks.removeAll()
         guard isCheckmatePossible() else { return [] }
+        
         var moves = [Move]()
-        spaces.forEach { space in
-            moves += getPossibleSpaces(at: space)!.compactMap {
-                Move(from: space, to: $0)
+        for space in spaces {
+            let key = space.rawValue + getPiece(at: space)!.rawValue
+            if let possibleMoves = possibleMoves[key] {
+                moves += possibleMoves
+            } else {
+                possibleMoves[key] = getPossibleSpaces(at: space)!.map {
+                    Move(from: space, to: $0)
+                }
+                moves += possibleMoves[key]!
             }
         }
         return moves.filter { isValidMove($0) }
@@ -209,9 +223,9 @@ class Board: NSCopying {
         
         var checks = [Move]()
         let opponentSpaces = getSpaces(with: color.opposite)
-        opponentSpaces.forEach { space in
+        for space in opponentSpaces {
             guard getPossibleSpaces(at: space)?.contains(kingPosition) ?? false else {
-                return
+                return []
             }
             
             if isValidMove(Move(from: space, to: kingPosition)) {
@@ -237,30 +251,33 @@ class Board: NSCopying {
             return false
         }
         
-        return myColor == .white ? piece.color == .black : piece.color == .white
+        return piece.color != myColor
     }
     
     func isPathClearBetween(_ move: Move) -> Bool {
-        let origin = Spaces.getIndex(at: move.from) < Spaces.getIndex(at: move.to) ? move.from : move.to
+        let squares = Constants.squares
+        let squareFrom = squares[move.from]
+        let squareTo = squares[move.to]
+        let origin = squareFrom.index < squareTo.index ? move.from : move.to
         let destination = origin == move.from ? move.to : move.from
         
         let spaces: Set<Space>
-        
-        if Spaces.getRank(at: move.from) == Spaces.getRank(at: move.to) {
-            spaces = Spaces.getRankSpaces(at: move.from)
-        } else if Spaces.getFile(at: move.from) == Spaces.getFile(at: move.to) {
-            spaces = Spaces.getFileSpaces(at: move.from)
-        } else if let diagonal = Spaces.getDiagnols(at: move.from).intersection(Spaces.getDiagnols(at: move.to)).first {
+
+        if squareFrom.rank == squareTo.rank {
+            spaces = squareFrom.rankSpaces
+        } else if squareFrom.file == squareTo.file {
+            spaces = squareFrom.fileSpaces
+        } else if let diagonal = squareFrom.diagonals.intersection(squareTo.diagonals).first {
             spaces = Diagonals.getSpaces(diagonal: diagonal)
         } else {
             return false
         }
 
-        let originIndex = Spaces.getIndex(at: origin)
-        let destinationIndex = Spaces.getIndex(at: destination)
+        let originIndex = squares[origin].index
+        let destinationIndex = squares[destination].index
         let isClear = spaces.filter { space in
-            Spaces.getIndex(at: space) > originIndex
-                && Spaces.getIndex(at: space) < destinationIndex
+            squares[space].index > originIndex
+                && squares[space].index  < destinationIndex
                 && !isEmpty(at: space)
             }.count == 0
 
@@ -274,23 +291,41 @@ class Board: NSCopying {
     
     var validMoves = [Move:Bool]()
     func isValidMove(_ move: Move) -> Bool {
-        
-        if validMoves.keys.contains(move) {
-            return validMoves[move]!
+
+        if let hasMove = validMoves[move] {
+            return hasMove
         }
         
-        guard let piece = getPiece(at: move.from),
-            isEmpty(at: move.to) || isOccupiedByOpponent(at: move.to, myColor: piece.color) else {
+//        guard let piece = getPiece(at: move.from),
+//            isEmpty(at: move.to) || isOccupiedByOpponent(at: move.to, myColor: piece.color) else {
+//                validMoves[move] = false
+//                return validMoves[move]!
+//        }
+        
+        guard let piece = getPiece(at: move.from) else {
                 validMoves[move] = false
-            return validMoves[move]!
+                return validMoves[move]!
         }
         
+        // TODO: investigate speed performance
+//        if let toPiece = getPiece(at: move.to) {
+//            if toPiece.color == color {
+//                validMoves[move] = false
+//                return validMoves[move]!
+//            }
+//        }
+
+        return false
+        
+
+
+
         let board = copy() as! Board
         
-        let fromFile = Spaces.getFile(at: move.from)
-        let toFile = Spaces.getFile(at: move.to)
-        let toRank = Spaces.getRank(at: move.to)
-        
+        let squares = Constants.squares
+        let squareFrom = squares[move.from]
+        let squareTo = squares[move.to]
+
         switch piece {
         case .blackPawn, .whitePawn:
             guard isPathClearBetween(from: move.from, to: move.to) else {
@@ -299,8 +334,8 @@ class Board: NSCopying {
             }
 
             guard move.to == enPassant
-                || (fromFile != toFile && isOccupiedByOpponent(at: move.to, myColor: piece.color))
-                || (fromFile == toFile && isEmpty(at: move.to)) else {
+                || (squareFrom.file != squareTo.file && isOccupiedByOpponent(at: move.to, myColor: piece.color))
+                || (squareFrom.file == squareTo.file && isEmpty(at: move.to)) else {
                 validMoves[move] = false
                 return validMoves[move]!
             }
@@ -330,27 +365,27 @@ class Board: NSCopying {
                 return validMoves[move]!
             }
             
-            if abs(fromFile.rawValue - toFile.rawValue) == 2 {
+            if abs(squareFrom.file.rawValue - squareTo.file.rawValue) == 2 {
                 let rookMove: Move
                 
-                switch toFile {
+                switch squareTo.file {
                 case .g:
-                    guard isValidMove(Move(from: move.from, to: Space(rank: toRank, file: .f))) else {
+                    guard isValidMove(Move(from: move.from, to: Space(rank: squareTo.rank, file: .f))) else {
                         validMoves[move] = false
                         return validMoves[move]!
                     }
                     
-                    rookMove = Move(from: Space(rank: toRank, file: .h),
-                                    to: Space(rank: toRank, file: .f))
+                    rookMove = Move(from: Space(rank: squareTo.rank, file: .h),
+                                    to: Space(rank: squareTo.rank, file: .f))
                     
                 case .c:
-                    guard isValidMove(Move(from: move.from, to: Space(rank: toRank, file: .d))) else {
+                    guard isValidMove(Move(from: move.from, to: Space(rank: squareTo.rank, file: .d))) else {
                         validMoves[move] = false
                         return validMoves[move]!
                     }
                     
-                    rookMove = Move(from: Space(rank: toRank, file: .a),
-                                    to: Space(rank: toRank, file: .d))
+                    rookMove = Move(from: Space(rank: squareTo.rank, file: .a),
+                                    to: Space(rank: squareTo.rank, file: .d))
                 default: return false
                 }
                 
@@ -369,12 +404,11 @@ class Board: NSCopying {
     func move(_ move: Move) {
         
         func enPassantCapture(_ space: Space) {
-            let rank = Spaces.getRank(at: space)
-            let file = Spaces.getFile(at: space)
-            if rank == ._3 {
-                setSpace(Space(rank: ._4, file: file), to: nil)
+            let square = Constants.squares[space]
+            if square.rank == ._3 {
+                setSpace(Space(rank: ._4, file: square.file), to: nil)
             } else {
-                setSpace(Space(rank: ._7, file: file), to: nil)
+                setSpace(Space(rank: ._7, file: square.file), to: nil)
             }
         }
 
@@ -392,21 +426,20 @@ class Board: NSCopying {
             halfMove += 1
         }
         
-        let toFile = Spaces.getFile(at: move.to)
+        let squares = Constants.squares
+        let squareTo = squares[move.to]
+        let squareFrom = squares[move.from]
         
         switch piece {
         case .whitePawn, .blackPawn:
-            let toRank = Spaces.getRank(at: move.to)
-            let fromRank = Spaces.getRank(at: move.from)
-            
             if move.to == currentEnPassant {
                 enPassantCapture(move.to)
-            } else if abs(toRank.rawValue - fromRank.rawValue) == 2 {
+            } else if abs(squareTo.rank.rawValue - squareFrom.rank.rawValue) == 2 {
                 switch piece.color {
-                case .white: enPassant = Space(rank: toRank.previousRank, file: toFile)
-                case .black: enPassant = Space(rank: toRank.nextRank, file: toFile)
+                case .white: enPassant = Space(rank: squareTo.rank.previousRank, file: squareTo.file)
+                case .black: enPassant = Space(rank: squareTo.rank.nextRank, file: squareTo.file)
                 }
-            } else if toRank == ._1 || toRank == ._8 {
+            } else if squareTo.rank == ._1 || squareTo.rank == ._8 {
                 piece = choosePiece(color: color)
             }
             
@@ -434,7 +467,7 @@ class Board: NSCopying {
             default:
                 break
             }
-            castleOptions = castleOptions.filter { Spaces.getRank(at: $0.king.to) == ._1 }
+            castleOptions = castleOptions.filter { squares[$0.king.to].rank == ._1 }
         case .whiteKing:
             switch move {
             case CastleMoves.whiteKingSide.king:
@@ -444,7 +477,7 @@ class Board: NSCopying {
             default:
                 break
             }
-            castleOptions = castleOptions.filter { Spaces.getRank(at: $0.king.to) == ._8 }
+            castleOptions = castleOptions.filter { squares[$0.king.to].rank == ._8 }
         default:
             break
         }
