@@ -76,7 +76,7 @@ class Fen {
         let halfMove = Int(parts[FenElements.halfMove.rawValue]) ?? 0
         let fullMove = Int(parts[FenElements.fullMove.rawValue]) ?? 0
         
-        return Board(data: data, castleOptions: castleOptions, color: color, enPassant: enPassant, halfMove: halfMove, fullMove: fullMove)
+        return Board(spaces: data, castleOptions: castleOptions, color: color, enPassant: enPassant, halfMove: halfMove, fullMove: fullMove)
     }
     
     static func getFen(from board: Board) -> String {
