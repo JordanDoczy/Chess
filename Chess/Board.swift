@@ -16,13 +16,13 @@ class Board: NSCopying {
     private(set) var whitePieceLocations = Set<Space>()
     private(set) var blackPieceLocations = Set<Space>()
     private(set) var color: Color = .white
-    private(set) var spaces = [Space: Piece]()
+    private(set) var spaces:ArrayModel = ArrayModel() // [Space: Piece]()
     private(set) var enPassant: Space?
     private(set) var halfMove: Int = 0
     private(set) var fullMove: Int = 0
 
     init(spaces: [Space: Piece], castleOptions: Set<CastleMoves>, color: Color, enPassant: Space?, halfMove: Int, fullMove: Int) {
-        self.spaces = spaces
+        // TODO: fix self.spaces = spaces
         self.enPassant = enPassant
         self.color = color
         self.castleOptions = castleOptions
@@ -30,8 +30,8 @@ class Board: NSCopying {
         self.fullMove = fullMove
         
         
-        spaces.keys.forEach { space in
-            setSpace(space, to: getPiece(at: space))
+        for space in spaces {
+            setSpace(space.key, to: space.value)
         }
     }
 
@@ -41,7 +41,7 @@ class Board: NSCopying {
     }
     
     func clear() {
-        spaces = [:]
+        // TODO: fix spaces = [:]
         whitePieceLocations.removeAll()
         blackPieceLocations.removeAll()
         color = .white
@@ -55,7 +55,7 @@ class Board: NSCopying {
         
         var bestMove = validMoves.randomElement()!
         
-        validMoves.forEach { move in
+        for move in validMoves {
             let board = copy() as! Board
             board.move(move)
             
@@ -74,12 +74,13 @@ class Board: NSCopying {
     }
     
     func copy(with zone: NSZone? = nil) -> Any {
-        let copy = Board(spaces: spaces, castleOptions: castleOptions, color: color, enPassant: enPassant, halfMove: halfMove, fullMove: fullMove)
+        //  TODO: fix      let copy = Board(spaces: spaces, castleOptions: castleOptions, color: color, enPassant: enPassant, halfMove: halfMove, fullMove: fullMove)
+        let copy = Board(spaces: [:], castleOptions: castleOptions, color: color, enPassant: enPassant, halfMove: halfMove, fullMove: fullMove)
         return copy
     }
     
     func getBoardValue() -> Float {
-        return Float(spaces.values.map { $0.value }.reduce(0, { x, y in x+y }))
+        return 0 // TODO: fix Float(spaces.model.compactMap { $0 }.reduce(0, { x, y in x+y }))
     }
     
     func getKingPosition(for color: Color) -> Space? {
@@ -132,6 +133,25 @@ class Board: NSCopying {
         return color == .white ? whitePieceLocations : blackPieceLocations
     }
     
+    func getValidMovesOptimized() -> [Move] {
+        possibleChecks.removeAll()
+        guard isCheckmatePossible() else { return [] }
+        
+        var validMoves = [Move]()
+        let spaces = getSpaces(with: color)
+        for space in spaces {
+            let piece = getPiece(at: space)!
+            let possibleSpaces = Board.getPossibleSpaces(for: piece, at: space)
+            for possibleSpace in possibleSpaces {
+                if isValidMove(for: piece, from: space, to: possibleSpace, performIsInCheck: true) {
+                    validMoves.append((from: space, to: possibleSpace))
+                }
+            }
+        }
+        
+        return validMoves
+    }
+    
     func getValidMoves(performIsInCheck: Bool = true) -> [Move] {
         let spaces = getSpaces(with: color)
         return getValidMoves(for: spaces, performIsInCheck: performIsInCheck)
@@ -178,20 +198,22 @@ class Board: NSCopying {
         var whiteCount = 0
         var blackCount = 0
         
-        for piece in spaces.values {
-            switch(piece) {
-            case .blackQueen, .whiteQueen, .blackRook, .whiteRook, .blackPawn, .whitePawn: return true
-            case .whiteBishop, .whiteKnight:
-                whiteCount += 1
-                if whiteCount > 1 {
-                    return true
+        for piece in spaces.model {
+            if let piece = piece {
+                switch(piece) {
+                case .blackQueen, .whiteQueen, .blackRook, .whiteRook, .blackPawn, .whitePawn: return true
+                case .whiteBishop, .whiteKnight:
+                    whiteCount += 1
+                    if whiteCount > 1 {
+                        return true
+                    }
+                case .blackBishop, .blackKnight:
+                    blackCount += 1
+                    if blackCount > 1 {
+                        return true
+                    }
+                default: break
                 }
-            case .blackBishop, .blackKnight:
-                blackCount += 1
-                if blackCount > 1 {
-                    return true
-                }
-            default: break
             }
         }
         
@@ -259,6 +281,7 @@ class Board: NSCopying {
         let squareFrom = Constants.squares[from]
         let squareTo = Constants.squares[to]
 
+        // TODO: testing
         return true
 
         switch piece {
@@ -448,31 +471,53 @@ extension Board {
     
     static func getPossibleSpaces(for piece: Piece, at space: Space) -> Set<Space> {
         
-        let squares = Constants.squares
-        let key = piece.rawValue + space.rawValue
-        
-        if let value = Constants.possibleSpaces[key] {
-            return value
-        }
+//        let squares = Constants.squares
+//        let key = piece.rawValue + "\(space.rawValue)"
+//
+//        if let value = Constants.possibleSpaces[key] {
+//            return value
+//        }
         
         switch piece {
         case .whitePawn, .blackPawn:
-            Constants.possibleSpaces[key] = Board.getPawnMoves(at: space, color: piece.color)
+            return Board.getPawnMoves(at: space, color: piece.color)
         case .whiteKnight, .blackKnight:
-            Constants.possibleSpaces[key] = squares[space].knightMoves
+            return Constants.squares[space].knightSpaces
         case .whiteBishop, .blackBishop:
-            Constants.possibleSpaces[key] = squares[space].diagonalSpaces
+            return Constants.squares[space].diagonalSpaces
         case .whiteRook, .blackRook:
-            Constants.possibleSpaces[key] = squares[space].fileSpaces.union(squares[space].rankSpaces)
+            let square = Constants.squares[space]
+            return square.fileSpaces.union(square.rankSpaces)
         case .whiteQueen, .blackQueen:
-            Constants.possibleSpaces[key] = squares[space].fileSpaces.union(squares[space].rankSpaces).union(squares[space].diagonalSpaces)
+            let square = Constants.squares[space]
+            return square.fileSpaces.union(square.rankSpaces).union(square.diagonalSpaces)
         case .whiteKing:
-            Constants.possibleSpaces[key] = squares[space].adjacentSpaces.union(CastleMoves.getSpaces(for: .white).king)
+            return Constants.squares[space].adjacentSpaces.union(CastleMoves.getSpaces(for: .white).king)
         case .blackKing:
-            Constants.possibleSpaces[key] = squares[space].adjacentSpaces.union(CastleMoves.getSpaces(for: .black).king)
+            return Constants.squares[space].adjacentSpaces.union(CastleMoves.getSpaces(for: .black).king)
         }
         
-        return Constants.possibleSpaces[key]!
+        //return Constants.possibleSpaces[key]!
+    }
+    
+    
+    static func getPossibleSpaces2(for piece: Piece, at space: Space) -> Set<Int> {
+        switch piece {
+        case .whitePawn, .blackPawn:
+            return Constants.squaresNormalized[space].adjacentSpaces
+        case .whiteKnight, .blackKnight:
+            return Constants.squaresNormalized[space].knightSpaces
+        case .whiteBishop, .blackBishop:
+            return Constants.squaresNormalized[space].diagonalSpaces
+        case .whiteRook, .blackRook:
+            return Constants.squaresNormalized[space].rookSpaces
+        case .whiteQueen, .blackQueen:
+            return Constants.squaresNormalized[space].queenSpaces
+        case .whiteKing:
+            return Constants.squaresNormalized[space].whiteKingSpaces
+        case .blackKing:
+            return Constants.squaresNormalized[space].blackKingSpaces
+        }
     }
 }
 

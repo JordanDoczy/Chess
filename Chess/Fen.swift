@@ -50,7 +50,7 @@ class Fen {
             
             return data
         }
-        
+
         func createCastleOptions(fen: String) -> Set<CastleMoves> {
             var castleOptions = Set<CastleMoves>()
             for castle in fen {
@@ -72,11 +72,65 @@ class Fen {
         let castleOptions = createCastleOptions(fen: parts[FenElements.castleOptions.rawValue])
         let color = Color(rawValue: parts[FenElements.color.rawValue]) ?? .white
         let data = createBoard(fen: parts[FenElements.board.rawValue])
-        let enPassant = Space(rawValue: parts[FenElements.enPassant.rawValue])
+        let enPassant: Space? = nil // TODO: fix Space(rawValue: parts[FenElements.enPassant.rawValue])
         let halfMove = Int(parts[FenElements.halfMove.rawValue]) ?? 0
         let fullMove = Int(parts[FenElements.fullMove.rawValue]) ?? 0
         
         return Board(spaces: data, castleOptions: castleOptions, color: color, enPassant: enPassant, halfMove: halfMove, fullMove: fullMove)
+    }
+    
+    static func createBoard2(from fen: String) -> Board2? {
+
+        func createBoard2(fen: String) -> ArrayModel {
+            var data = ArrayModel()
+            var rank: Rank = ._8
+            let rows = fen.components(separatedBy: "/")
+            for row in rows {
+                var file: File = .a
+                for character in row {
+                    if let piece = Piece(rawValue: String(character)) {
+                        let space = Space(rank: rank, file: file).rawValue
+                        data[space] = piece
+                        file = file.nextFile
+                    } else if let emptySpaces = Int(String(character)) {
+                        file = File(rawValue: file.rawValue + emptySpaces) ?? .a
+                    }
+                    
+                    if file == .a {
+                        rank = rank.previousRank
+                    }
+                }
+            }
+            
+            return data
+        }
+        
+        func createCastleOptions(fen: String) -> Set<CastleMoves> {
+            var castleOptions = Set<CastleMoves>()
+            for castle in fen {
+                if let castleMove = CastleMoves(rawValue: String(castle)) {
+                    castleOptions.insert(castleMove)
+                }
+            }
+            
+            return castleOptions
+        }
+        
+        
+        let parts = fen.components(separatedBy: " ")
+        
+        guard parts.count == 6 else {
+            return nil
+        }
+        
+        let castleOptions = createCastleOptions(fen: parts[FenElements.castleOptions.rawValue])
+        let color = Color(rawValue: parts[FenElements.color.rawValue]) ?? .white
+        let data = createBoard2(fen: parts[FenElements.board.rawValue])
+        let enPassant = Space(name: parts[FenElements.enPassant.rawValue])?.rawValue
+        let halfMove = Int(parts[FenElements.halfMove.rawValue]) ?? 0
+        let fullMove = Int(parts[FenElements.fullMove.rawValue]) ?? 0
+        
+        return Board2(spaces: data, castleOptions: castleOptions, color: color, enPassant: enPassant, halfMove: halfMove, fullMove: fullMove)
     }
     
     static func getFen(from board: Board) -> String {
@@ -107,7 +161,7 @@ class Fen {
         
         let castleMoves = board.castleOptions.map { $0.rawValue }
         let castleOptions = castleMoves.count > 0 ? castleMoves.joined() : "-"
-        let enPassant = board.enPassant?.rawValue ?? "-"
+        let enPassant = "-" // TODO: fix board.enPassant?.rawValue ?? "-"
         
         var value = getFen(at: ._8) + "/"
         value += getFen(at: ._7) + "/"

@@ -16,6 +16,7 @@
 		E64AD1811DE791C800F55B49 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1801DE791C800F55B49 /* Enums.swift */; };
 		E64AD1831DE7976B00F55B49 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1821DE7976B00F55B49 /* Board.swift */; };
 		E64AD1871DEA40EA00F55B49 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64AD1861DEA40EA00F55B49 /* Game.swift */; };
+		E66A368621FE73F500B7BF0D /* Board2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66A368521FE73F500B7BF0D /* Board2.swift */; };
 		E6BB6A0B21E2AE0F00863EC9 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BB6A0A21E2AE0F00863EC9 /* Structs.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		E64AD1801DE791C800F55B49 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		E64AD1821DE7976B00F55B49 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		E64AD1861DEA40EA00F55B49 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		E66A368521FE73F500B7BF0D /* Board2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board2.swift; sourceTree = "<group>"; };
 		E6BB6A0A21E2AE0F00863EC9 /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,6 +68,7 @@
 			children = (
 				E6019CF81DD7800400B8D613 /* AppDelegate.swift */,
 				E64AD1821DE7976B00F55B49 /* Board.swift */,
+				E66A368521FE73F500B7BF0D /* Board2.swift */,
 				E64AD1801DE791C800F55B49 /* Enums.swift */,
 				E61337651DECFBD500072506 /* Fen.swift */,
 				E64AD1861DEA40EA00F55B49 /* Game.swift */,
@@ -154,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E64AD1871DEA40EA00F55B49 /* Game.swift in Sources */,
+				E66A368621FE73F500B7BF0D /* Board2.swift in Sources */,
 				E61337661DECFBD500072506 /* Fen.swift in Sources */,
 				E6019CFB1DD7800400B8D613 /* ViewController.swift in Sources */,
 				E6BB6A0B21E2AE0F00863EC9 /* Structs.swift in Sources */,
